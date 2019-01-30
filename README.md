@@ -16,9 +16,11 @@ The desired tool will ultimately be used to model, visualise and simulate biolog
 
 List of dependencies
 ====================
-C++11 enabled compiler (default since GCC 6.1)
-Tulip 5.3-dev (https://github.com/Tulip-Dev/tulip)
-Boost 1.60 (see http://www.boost.org/)
+- Tulip 5.3-dev with Python support enabled (https://github.com/Tulip-Dev/tulip)
+- Boost 1.60 (see http://www.boost.org/)
+- All dependencies from Tulip especially: 
+  - C++11 compiler
+  - Qt > 5.0
 
 Basic compilation instruction
 =============================
