@@ -1,6 +1,6 @@
 # Porgy
 
-PORGY aims at designing relevant graphical representations and adequate interactions on dynamic graphs emerging from graph rewriting systems. Graph rewriting systems appear as a powerful formalism to capture and study phenomena occurring in complex systems, such as the evolution of bio-molecular networks, adhoc communication networks or interaction nets.
+PORGY (http://porgy.labri.fr) aims at designing relevant graphical representations and adequate interactions on dynamic graphs emerging from graph rewriting systems. Graph rewriting systems appear as a powerful formalism to capture and study phenomena occurring in complex systems, such as the evolution of bio-molecular networks, adhoc communication networks or interaction nets.
 The ability to act on the simulation of the rewriting calculus will offer the expert a unique mean of interacting with the systems they design and study, turning interactive visualisation of graph rewriting systems into a high-level visual programming environment.
 
 This is a joint work with Maribel Fernandez from King's College London and Hélène Kirchner from Inria. The first version of Porgy was developed thanks to the Inria associate team program (2009-2011) and the ANR grant EVIDEN (ANR 2010-JCJC-0201-01).
