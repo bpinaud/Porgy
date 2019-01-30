@@ -1,4 +1,19 @@
 # Porgy
+
+PORGY aims at designing relevant graphical representations and adequate interactions on dynamic graphs emerging from graph rewriting systems. Graph rewriting systems appear as a powerful formalism to capture and study phenomena occurring in complex systems, such as the evolution of bio-molecular networks, adhoc communication networks or interaction nets.
+The ability to act on the simulation of the rewriting calculus will offer the expert a unique mean of interacting with the systems they design and study, turning interactive visualisation of graph rewriting systems into a high-level visual programming environment.
+
+This is a joint work with Maribel Fernandez from King's College London and Hélène Kirchner from Inria. The first version of Porgy was developed thanks to the Inria associate team program (2009-2011) and the ANR grant EVIDEN (ANR 2010-JCJC-0201-01).
+
+Using as a starting point the Tulip system, we aim to develop an environment that will allow us to:
+
+ -  create a graph using a visual editor;
+ - trigger a series of transformations on the graph using graph rewriting rules to describe transformations;
+ -   display a sequence of graphs obtained by application of transformation steps, as well as the sequence of rules underlying these transformations;
+ -   design analysis and verification tools to check static and dynamic properties of graphs.
+
+The desired tool will ultimately be used to model, visualise and simulate biological systems as well as to program with graphical languages such as interaction nets.
+
 List of dependencies
 ====================
 C++11 enabled compiler (default since GCC 6.1)
