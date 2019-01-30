@@ -1,0 +1,7 @@
+ADD_SUBDIRECTORY(AbstractPorgyGraphView)
+ADD_SUBDIRECTORY(graphview)
+ADD_SUBDIRECTORY(TraceGraphView)
+ADD_SUBDIRECTORY(RuleGraphView)
+ADD_SUBDIRECTORY(porgySMView)
+ADD_SUBDIRECTORY(porgygraphstateview)
+

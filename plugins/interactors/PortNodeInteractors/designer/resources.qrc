@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/" >
+		<file>addPortNode.png</file>
+    </qresource>
+</RCC>

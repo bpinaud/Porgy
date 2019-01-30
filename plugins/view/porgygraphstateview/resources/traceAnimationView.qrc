@@ -1,0 +1,11 @@
+<RCC>
+    <qresource prefix="/traceAnimationView">
+        <file>icons/32/pause.png</file>
+        <file>icons/32/seek-backward.png</file>
+        <file>icons/32/seek-forward.png</file>
+        <file>icons/32/skip-backward.png</file>
+        <file>icons/32/skip-forward.png</file>
+        <file>icons/32/start.png</file>
+        <file>icons/32/stop.png</file>
+    </qresource>
+</RCC>

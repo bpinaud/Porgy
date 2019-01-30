@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<script xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="file:/C:/Users/Hadi/Desktop/porgy-script.xsd">
+    <name></name>
+    <attributes>
+        <instructions color="4697415" style="bold">
+            <instruction>if</instruction>
+            <instruction>else</instruction>
+            <!-- ... -->
+        </instructions>
+        
+        <functions color="6733926" style="italic">
+            <function value=""></function>
+        </functions>
+        
+        <operators color="0" style="none">
+            <operator>=</operator>
+            <operator>==</operator>
+            <!-- ... -->
+        </operators>
+        
+        <symbols color="52" style="bold">
+            <symbol>(</symbol>
+            <symbol>)</symbol>
+            <!-- ... -->
+        </symbols>
+        
+        <comments color="10066380" style="italic">
+            <comment>//</comment>
+            <comment>/*</comment>
+            <!-- ... -->
+        </comments>
+        
+        <quotations color="13408572" style="nonde">
+            <quotation>"</quotation>
+            <quotation>'</quotation>
+            <!-- ... -->
+        </quotations>
+    </attributes>
+</script>

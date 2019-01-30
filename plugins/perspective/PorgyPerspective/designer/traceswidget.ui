@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>TracesWidget</class>
+ <widget class="QWidget" name="TracesWidget">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>495</width>
+    <height>239</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="tlp::TulipLineEdit" name="lineEdit">
+     <property name="placeholderText">
+      <string>Filter derivation trees</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QTreeView" name="traceTreeView">
+     <property name="contextMenuPolicy">
+      <enum>Qt::CustomContextMenu</enum>
+     </property>
+     <property name="editTriggers">
+      <set>QAbstractItemView::EditKeyPressed|QAbstractItemView::SelectedClicked</set>
+     </property>
+     <property name="dragEnabled">
+      <bool>true</bool>
+     </property>
+     <property name="sortingEnabled">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+ <customwidgets>
+  <customwidget>
+   <class>tlp::TulipLineEdit</class>
+   <extends>QLineEdit</extends>
+   <header location="global">tulip/TulipLineEdit.h</header>
+  </customwidget>
+ </customwidgets>
+</ui>

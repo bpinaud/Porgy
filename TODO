@@ -1,0 +1,35 @@
+KNOWN BUGS to fix:
+    - Matching : the induced subgraph from an instance of a LHS in a model should be the same as the instance of LHS (no more edges).
+    => all port of a rule not connected to the arrow node or an edge in LHS **must not be connected** in the model. This is not tested at the moment
+
+    - Strategy : when computing F_1 \ F_2, when removing a node from F_1, its incident edges should be removed too to avoid dandling edges.
+
+Strategy plugin: 
+- Add strategy edge when using all(T). At least add something which works like a strategy edge (to know the beginning and end of a strategy)
+- Add support for ppick(F_1, ..., F_n, \Pi)
+
+
+- Add clear and complete support for Attach, Connect, Ports
+- Map properties to be consistent with the paper:
+    * Colour => viewColor
+    * Name => viewLabel
+    * Self => id
+    * Type => ????
+
+
+Import plugin:
+- add support to import graph/rule from tlpx files
+
+Export plugin:
+- Add support to export all rules in a single tlp file
+
+Perspective:
+- Add in the validation widget for each node and port the list of checked properties for matching
+
+TODO:
+    - matching algorithm: test only edges between portnodes and not all edges from the Tulip Graph
+    - matching algorithm: Avoid to match edges again in VerifyIso
+
+IMPROVEMENTS:
+- use the new tlp::selectShortestPaths instead of bool PorgyTlpGraphStructure::graphIsASimplePath(Graph *graph)
+- use GlGraphRenderingParameters::setDisplayFilteringProperty() instead of my ugly code for displaying the parts of a rule (LHS, RHS)

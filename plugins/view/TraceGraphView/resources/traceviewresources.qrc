@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/porgyicons/TraceView">
+        <file>labels_enabled.png</file>
+        <file>labels_disabled.png</file>
+        <file>edges_arrow_disabled.png</file>
+        <file>edges_arrow_enabled.png</file>
+    </qresource>
+</RCC>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PorgyStrategyLanguage version="0.1">
+        <instructions color="4697415" style="bold">
+            <instruction>\bif\b</instruction>
+            <instruction>\bthen\b</instruction>
+            <instruction>\belse\b</instruction>
+            <instruction>\borelse\b</instruction>
+            <instruction>\brepeat\b</instruction>
+            <instruction>\bwhile\b</instruction>
+            <instruction>\bdo\b</instruction>
+        </instructions>
+
+        <functions color="16737894" style="italic">
+            <function value="\ball\b">Description needed</function>
+            <function value="\bone\b">Description needed</function>
+            <function value="\bcrtGraph\b">Description needed</function>
+            <function value="\bcrtPos\b">Description needed</function>
+            <function value="\bcrtBan\b">Description needed</function>
+            <function value="\bproperty\b">Description needed</function>
+            <function value="\bngb\b">Description needed</function>
+            <function value="\bsetPos\b">Description needed</function>
+            <function value="\bsetBan\b">Description needed</function>
+            <function value="\bupdate\b">Description needed</function>
+            <function value="\bisEmpty\b">Description needed</function>
+            <function value="\bmatch\b">Description needed</function>
+        </functions>
+
+        <operators color="7171510" style="bold">
+            <operator>=</operator>
+            <operator>!=</operator>
+            <operator>==</operator>
+            <operator>!==</operator>
+            <operator>&gt;</operator>
+            <operator>&lt;</operator>
+            <operator>&gt;=</operator>
+            <operator>&lt;=</operator>
+        </operators>
+
+        <symbols color="7171510" style="bold">
+            <symbol>\(</symbol>
+            <symbol>\)</symbol>
+            <symbol>\[</symbol>
+            <symbol>\]</symbol>
+            <symbol>\{</symbol>
+            <symbol>\}</symbol>
+            <symbol>,</symbol>
+            <symbol>;</symbol>
+        </symbols>
+
+<singlecomments color="10066380" style="italic">
+       <singlecomment>//[^\n]*</singlecomment>
+</singlecomments>
+
+<multicomments color="10066380" style="italic">
+        <multicomment>/\*</multicomment>
+        <multicomment>\*/</multicomment>
+</multicomments>
+
+<quotations color="13408572" style="none">
+         <quotation>\&quot;.*\&quot;</quotation>
+         <quotation>\&apos;.\&apos;</quotation>
+</quotations>
+</PorgyStrategyLanguage>

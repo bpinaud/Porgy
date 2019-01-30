@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>GraphWidget</class>
+ <widget class="QWidget" name="GraphWidget">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>300</height>
+   </rect>
+  </property>
+  <property name="focusPolicy">
+   <enum>Qt::NoFocus</enum>
+  </property>
+  <property name="contextMenuPolicy">
+   <enum>Qt::CustomContextMenu</enum>
+  </property>
+  <property name="windowTitle">
+   <string>Graph widget</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <property name="leftMargin">
+    <number>3</number>
+   </property>
+   <property name="topMargin">
+    <number>3</number>
+   </property>
+   <property name="rightMargin">
+    <number>3</number>
+   </property>
+   <property name="bottomMargin">
+    <number>3</number>
+   </property>
+   <property name="spacing">
+    <number>3</number>
+   </property>
+   <item row="1" column="0">
+    <widget class="QTreeView" name="modelsTreeView">
+     <property name="contextMenuPolicy">
+      <enum>Qt::CustomContextMenu</enum>
+     </property>
+     <property name="editTriggers">
+      <set>QAbstractItemView::NoEditTriggers</set>
+     </property>
+     <property name="dragEnabled">
+      <bool>true</bool>
+     </property>
+     <property name="sortingEnabled">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="0">
+    <widget class="tlp::TulipLineEdit" name="filterModelLineEdit">
+     <property name="placeholderText">
+      <string>Filter graphs</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <widget class="QComboBox" name="comboBox">
+     <property name="currentIndex">
+      <number>0</number>
+     </property>
+     <item>
+      <property name="text">
+       <string>No icons</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Small icons</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Medium icons</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Large icons</string>
+      </property>
+     </item>
+    </widget>
+   </item>
+  </layout>
+  <action name="actionShow">
+   <property name="text">
+    <string>Show</string>
+   </property>
+   <property name="toolTip">
+    <string>Display the model in a view</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+ <customwidgets>
+  <customwidget>
+   <class>tlp::TulipLineEdit</class>
+   <extends>QLineEdit</extends>
+   <header location="global">tulip/TulipLineEdit.h</header>
+  </customwidget>
+ </customwidgets>
+</ui>

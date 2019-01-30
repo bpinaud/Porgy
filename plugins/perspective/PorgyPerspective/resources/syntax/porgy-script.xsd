@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"> 
+
+<!--///////////////////////////////////////////////////////////////////////////////////////-->
+<!--///////////////////////////////////////////////////////////////////////////////////////-->
+<!--//                              Author : Hadrien Decoudras                           //-->
+<!--//                                       hdecoudras@gmail.com                        //-->
+<!--//                              Date : 02-06-2016                                    //-->
+<!--//                              Version : 0.1                                        //-->
+<!--//                                                                                   //-->
+<!--// This file is used to produce an XML description of the Tulip Porgy Scripting      //-->
+<!--// Language. It helps to generate valid XML documents gathering the language         //-->
+<!--// properties in order to implement auto-completion, syntax-highlighting and         //-->
+<!--// text-formatting features.                                                         //-->
+<!--//                                                                                   //-->
+<!--// See the attached sample 'script-sample.xml' if you don't know how to follow the   //-->
+<!--// rules established in this document.                                               //-->
+<!--// Or use a dedicated software with validation processes functionalities.            //-->
+<!--///////////////////////////////////////////////////////////////////////////////////////-->
+<!--///////////////////////////////////////////////////////////////////////////////////////-->
+
+
+<!--///////////////////////////////////////////////////////////////////////////////////////-->
+<!--///////////////////////////////////////////////////////////////////////////////////////-->
+<!--// This file is part of Porgy (http://tulip.labri.fr/TulipDrupal/?q=porgy)           //-->
+<!--//                                                                                   //-->
+<!--// from LaBRI, University of Bordeaux, Inria and King's College London               //-->
+<!--//                                                                                   //-->
+<!--// Porgy is free software;  you can redistribute it and/or modify                    //-->
+<!--// it under the terms of the GNU Lesser General Public License                       //-->
+<!--// as published by the Free Software Foundation, either version 3                    //-->
+<!--// of the License, or (at your option) any later version.                            //-->
+<!--//                                                                                   //-->
+<!--// Porgy is distributed in the hope that it will be useful,                          //-->
+<!--// but WITHOUT ANY WARRANTY; without even the implied warranty of                    //-->
+<!--// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                              //-->
+<!--// See the GNU Lesser General Public License for more details.                       //-->
+<!--//                                                                                   //-->
+<!--// You should have received a copy of the GNU Lesser General Public License          //-->
+<!--// along with this Porgy.  If not, see <http://www.gnu.org/licenses/>.               //-->
+<!--///////////////////////////////////////////////////////////////////////////////////////-->
+<!--///////////////////////////////////////////////////////////////////////////////////////-->
+
+
+<!--/////////////////////////////////////////////////////////-->
+<!-- Porgy scripting language 'function' value field.        -->
+<!-- This type definition allows to add a mandatory field    -->
+<!-- 'value' to the 'function' markup which indicates the    -->
+<!-- name of a function. The content of the 'function'       -->
+<!-- markup corresponds to its description.                  -->
+<!--/////////////////////////////////////////////////////////-->
+<xs:complexType name="functions" >
+    <xs:simpleContent>
+        <xs:extension base="xs:string">
+            <xs:attribute name="value" type="xs:string" use="required"></xs:attribute>
+        </xs:extension>
+    </xs:simpleContent>
+</xs:complexType>
+
+<!--/////////////////////////////////////////////////////////-->
+<!--//        Scripting language attibutes * begin         //-->
+<!--/////////////////////////////////////////////////////////-->
+<xs:element name="script">
+    <xs:complexType>
+        <xs:sequence>
+            <xs:element name="name" type="xs:string"/>
+            <xs:element name="attributes">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="instructions" maxOccurs="1">
+                            <xs:complexType>
+                                <xs:sequence>
+                                    <xs:element name="instruction" maxOccurs="unbounded"></xs:element>                                   
+                                </xs:sequence>
+                                <xs:attribute name="color" type="xs:unsignedInt" use="required"></xs:attribute>
+                                <xs:attribute name="style" type="xs:string" use="required"></xs:attribute>
+                            </xs:complexType>
+                        </xs:element>
+                        <xs:element name="functions" maxOccurs="1">
+                            <xs:complexType>
+                                <xs:sequence>
+                                    <xs:element name="function" type="functions" maxOccurs="unbounded"></xs:element>
+                                </xs:sequence>
+                                <xs:attribute name="color" type="xs:unsignedInt" use="required"></xs:attribute>
+                                <xs:attribute name="style" type="xs:string" use="required"></xs:attribute>
+                            </xs:complexType>
+                        </xs:element>
+                        <xs:element name="operators" maxOccurs="1">
+                            <xs:complexType>
+                                <xs:sequence>
+                                    <xs:element name="operator" maxOccurs="unbounded"></xs:element>
+                                </xs:sequence>
+                                <xs:attribute name="color" type="xs:unsignedInt" use="required"></xs:attribute>
+                                <xs:attribute name="style" type="xs:string" use="required"></xs:attribute>
+                            </xs:complexType>
+                        </xs:element>
+                        <xs:element name="symbols" maxOccurs="1">
+                            <xs:complexType>
+                                <xs:sequence>
+                                    <xs:element name="symbol" maxOccurs="unbounded"></xs:element>
+                                </xs:sequence>
+                                <xs:attribute name="color" type="xs:unsignedInt" use="required"></xs:attribute>
+                                <xs:attribute name="style" type="xs:string" use="required"></xs:attribute>
+                            </xs:complexType>
+                        </xs:element>
+                        <xs:element name="comments" maxOccurs="1">
+                            <xs:complexType>
+                                <xs:sequence>
+                                    <xs:element name="comment" maxOccurs="unbounded"></xs:element>
+                                </xs:sequence>
+                                <xs:attribute name="color" type="xs:unsignedInt" use="required"></xs:attribute>
+                                <xs:attribute name="style" type="xs:string" use="required"></xs:attribute>
+                            </xs:complexType>
+                        </xs:element>
+                        <xs:element name="quotations" maxOccurs="1">
+                            <xs:complexType>
+                                <xs:sequence>
+                                    <xs:element name="quotation" maxOccurs="unbounded"></xs:element>
+                                </xs:sequence>
+                                <xs:attribute name="color" type="xs:unsignedInt" use="required"></xs:attribute>
+                                <xs:attribute name="style" type="xs:string" use="required"></xs:attribute>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+</xs:element>
+<!--/////////////////////////////////////////////////////////-->
+<!--//          Scripting language attibutes * end         //-->
+<!--/////////////////////////////////////////////////////////-->
+
+</xs:schema>

@@ -1,0 +1,15 @@
+<RCC>
+    <qresource prefix="/porgyicons">
+        <file>icons/camera-photo.png</file>
+    </qresource>
+    <qresource prefix="/porgy/ui">
+        <file>ui/btn_26_pressed.png</file>
+        <file>ui/btn_26.png</file>
+        <file>ui/btn_26_hover.png</file>
+        <file>ui/combobox_arrow.png</file>
+    </qresource>
+    <qresource prefix="/strategymanagementwidget">
+        <file>syntax/porgy-script.xsd</file>
+        <file>syntax/porgystrategylang.xml</file>
+    </qresource>
+</RCC>

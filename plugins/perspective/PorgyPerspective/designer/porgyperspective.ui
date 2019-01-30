@@ -1,0 +1,651 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>PorgyPerspective</class>
+ <widget class="QMainWindow" name="PorgyPerspective">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1280</width>
+    <height>720</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Porgy[*]</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QPushButton, QComboBox {
+border-image: url(:/porgy/ui/btn_26.png) 4;
+border-width: 4;
+padding: 0px 6px;
+font-size: 12px;
+}
+
+#mainWidget{
+background-color:white;
+}
+
+QPushButton::flat{
+border-image: none;
+border-width: 4;
+padding: 0px 6px;
+font-size: 12px;
+background-color: transparent;
+}
+
+QPushButton, QComboBox, QLabel, QToolButton {
+color: black;
+}
+
+QPushButton:hover, QComboBox:hover, QToolButton:hover {
+border-image: url(:/porgy/ui/btn_26_hover.png) 4;
+}
+
+QPushButton:disabled, QComboBox::disabled, QToolButton::disabled {
+color:gray;
+}
+
+QPushButton:pressed, QToolButton:pressed{
+border-image: url(:/porgy/ui/btn_26_pressed.png) 4;
+}
+
+QPushButton::menu-indicator{
+subcontrol-origin: margin;
+subcontrol-position: center right;
+right: 4px;
+}
+
+QPushButton {
+outline: none;
+margin: 2
+}
+
+QComboBox::down-arrow {
+image: url(:/porgy/ui/combobox_arrow.png);
+}
+
+QComboBox:drop-down {
+subcontrol-origin: padding;
+subcontrol-position: top right;
+border-left-style: none; 
+border-top-right-radius: 1px;
+border-bottom-right-radius: 1px;
+}
+
+QSplitter::handle {
+background-color: #C0C0C0;
+border-width:0px;
+}
+
+QFrame[ bottomFrame = &quot;true&quot; ] * {
+font: bold 11px;
+}
+
+QFrame[ bottomFrame = &quot;true&quot; ] {
+border-top: 1px solid black;
+border-bottom: 1px solid rgba(117,117,117,255);
+border-right: 1px solid rgba(117,117,117,255);
+border-left: 0px;
+background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:, y2:1, 
+stop:0 rgb(75,75,75),
+stop:1 rgb(60, 60, 60));
+}
+
+QFrame[ bottomFrame = &quot;true&quot; ] QPushButton, QFrame[ bottomFrame = &quot;true&quot; ] QLabel {
+color: white;
+}
+
+QFrame[ bottomFrame = &quot;true&quot; ] QPushButton {
+border: 0px;
+border-image: none;
+}
+
+QFrame[ bottomFrame = &quot;true&quot; ] QPushButton:hover {
+border: 0px;
+border-image: none;
+background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:, y2:1, 
+stop:0 rgb(85,85,85),
+stop:1 rgb(70, 70, 70));
+}
+
+QFrame[ bottomFrame = &quot;true&quot; ] QPushButton:pressed, QFrame[ bottomFrame = &quot;true&quot; ] .QPushButton:checked {
+border: 0px;
+border-image: none;
+background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:, y2:1, 
+stop:0 rgb(105,105,105),
+stop:1 rgb(90, 90, 90));
+}
+QAbstractItemView {
+background-color: white;
+}</string>
+  </property>
+  <widget class="QWidget" name="centralWidget">
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="ViewManager" name="viewManager" native="true"/>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1280</width>
+     <height>39</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>&amp;File</string>
+    </property>
+    <addaction name="actionNew"/>
+    <addaction name="separator"/>
+    <addaction name="actionNew_Empty_Graph_Model"/>
+    <addaction name="actionOpen"/>
+    <addaction name="actionSaveMenu"/>
+    <addaction name="actionClose"/>
+    <addaction name="separator"/>
+    <addaction name="actionQuit"/>
+   </widget>
+   <widget class="QMenu" name="menuEdit">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
+    <property name="title">
+     <string>&amp;Edit</string>
+    </property>
+    <addaction name="actionUndo"/>
+    <addaction name="actionRedo"/>
+    <addaction name="separator"/>
+    <addaction name="actionCopy"/>
+    <addaction name="actionCut"/>
+    <addaction name="actionPaste"/>
+    <addaction name="separator"/>
+    <addaction name="actionSelect_all"/>
+    <addaction name="actionDeselect_all"/>
+    <addaction name="actionInvert_selection"/>
+    <addaction name="separator"/>
+    <addaction name="actionDel_selection"/>
+    <addaction name="separator"/>
+    <addaction name="actionCreate_new_rule"/>
+    <addaction name="separator"/>
+    <addaction name="actionPropertyManager"/>
+    <addaction name="actionPreferences"/>
+    <addaction name="actionDebug_mode"/>
+    <addaction name="actionValidate_Rules_and_Graphs"/>
+   </widget>
+   <widget class="QMenu" name="menuAlgorithms">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
+    <property name="title">
+     <string>A&amp;lgorithms</string>
+    </property>
+   </widget>
+   <widget class="QMenu" name="menuDocks">
+    <property name="title">
+     <string>&amp;Docks</string>
+    </property>
+   </widget>
+   <widget class="QMenu" name="menuHelp">
+    <property name="title">
+     <string>&amp;Help</string>
+    </property>
+    <addaction name="actionDocumentation"/>
+    <addaction name="actionPython_Documentation"/>
+    <addaction name="action_About"/>
+   </widget>
+   <widget class="QMenu" name="menuWindow">
+    <property name="title">
+     <string>&amp;Window</string>
+    </property>
+    <addaction name="actionFull_Screen"/>
+    <addaction name="action_Close_All"/>
+    <addaction name="actionPython_IDE"/>
+    <addaction name="actionTulip_Spreadsheet_View"/>
+   </widget>
+   <addaction name="menuFile"/>
+   <addaction name="menuEdit"/>
+   <addaction name="menuAlgorithms"/>
+   <addaction name="menuDocks"/>
+   <addaction name="menuWindow"/>
+   <addaction name="menuHelp"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar">
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+  </widget>
+  <widget class="QDockWidget" name="rulesDockWidget">
+   <property name="windowTitle">
+    <string>&amp;Rules</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>1</number>
+   </attribute>
+   <widget class="RulesWidget" name="ruleWidget">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QDockWidget" name="graphsDockWidget">
+   <property name="features">
+    <set>QDockWidget::AllDockWidgetFeatures</set>
+   </property>
+   <property name="windowTitle">
+    <string>&amp;Graphs</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>1</number>
+   </attribute>
+   <widget class="GraphWidget" name="graphWidget">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QDockWidget" name="tracesDockWidget">
+   <property name="windowTitle">
+    <string>Deri&amp;vation trees</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>1</number>
+   </attribute>
+   <widget class="TracesWidget" name="traceWidget">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QDockWidget" name="strategiesDockWidget">
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="windowTitle">
+    <string>Strateg&amp;y editor</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>8</number>
+   </attribute>
+   <widget class="StrategyManagementWidget" name="strategiesManagementWidget">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QToolBar" name="toolBar">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="windowTitle">
+    <string>toolBar</string>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="separator"/>
+   <addaction name="actionNew_Empty_Graph_Model"/>
+   <addaction name="actionOpen"/>
+   <addaction name="actionSaveMenu"/>
+   <addaction name="separator"/>
+   <addaction name="actionUndo"/>
+   <addaction name="actionRedo"/>
+   <addaction name="separator"/>
+   <addaction name="actionCopy"/>
+   <addaction name="actionCut"/>
+   <addaction name="actionPaste"/>
+   <addaction name="separator"/>
+   <addaction name="actionDocumentation"/>
+  </widget>
+  <widget class="QDockWidget" name="logDockWidget">
+   <property name="windowTitle">
+    <string>&amp;Message log</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>2</number>
+   </attribute>
+   <widget class="PorgyPerspectiveLogger" name="logWidget"/>
+  </widget>
+  <action name="actionNew">
+   <property name="text">
+    <string>&amp;New project</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+N</string>
+   </property>
+  </action>
+  <action name="actionOpen">
+   <property name="text">
+    <string>&amp;Open</string>
+   </property>
+   <property name="toolTip">
+    <string>Open...</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
+   </property>
+  </action>
+  <action name="actionSaveMenu">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>&amp;Save</string>
+   </property>
+  </action>
+  <action name="actionQuit">
+   <property name="text">
+    <string>&amp;Quit</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Q</string>
+   </property>
+  </action>
+  <action name="actionCopy">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>&amp;Copy</string>
+   </property>
+  </action>
+  <action name="actionCut">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>C&amp;ut</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+X</string>
+   </property>
+  </action>
+  <action name="actionPaste">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>&amp;Paste</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+V</string>
+   </property>
+  </action>
+  <action name="actionSelect_all">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>&amp;Select all</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+A</string>
+   </property>
+  </action>
+  <action name="actionDeselect_all">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>&amp;Deselect all</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+A</string>
+   </property>
+  </action>
+  <action name="actionInvert_selection">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>&amp;Invert selection</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+I</string>
+   </property>
+  </action>
+  <action name="actionDel_selection">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>D&amp;el selection</string>
+   </property>
+   <property name="toolTip">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Delete selected elements&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
+   <property name="shortcut">
+    <string>Del</string>
+   </property>
+  </action>
+  <action name="actionCreate_new_rule">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Create &amp;new rule</string>
+   </property>
+  </action>
+  <action name="actionDocumentation">
+   <property name="text">
+    <string>&amp;Documentation</string>
+   </property>
+   <property name="shortcut">
+    <string>F1</string>
+   </property>
+  </action>
+  <action name="actionToggleViewManagerImplementation">
+   <property name="text">
+    <string>Toggle view manager implementation</string>
+   </property>
+  </action>
+  <action name="actionUndo">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Und&amp;o</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Z</string>
+   </property>
+  </action>
+  <action name="actionRedo">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>&amp;Redo</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Y</string>
+   </property>
+  </action>
+  <action name="actionFull_Screen">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>&amp;Full Screen</string>
+   </property>
+   <property name="shortcut">
+    <string>F11</string>
+   </property>
+  </action>
+  <action name="action_Close_All">
+   <property name="text">
+    <string>&amp;Close All</string>
+   </property>
+  </action>
+  <action name="actionImport">
+   <property name="text">
+    <string>Import</string>
+   </property>
+  </action>
+  <action name="actionPropertyManager">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Property &amp;Manager</string>
+   </property>
+  </action>
+  <action name="action_About">
+   <property name="text">
+    <string>&amp;About</string>
+   </property>
+  </action>
+  <action name="actionClose">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>&amp;Close</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+W</string>
+   </property>
+  </action>
+  <action name="actionPreferences">
+   <property name="icon">
+    <iconset>
+     <normaloff>:/porgyicons/icons/16/preferences-other.png</normaloff>:/porgyicons/icons/16/preferences-other.png</iconset>
+   </property>
+   <property name="text">
+    <string>Pre&amp;ferences</string>
+   </property>
+  </action>
+  <action name="actionDebug_mode">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>De&amp;bug mode</string>
+   </property>
+   <property name="toolTip">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;When running a strategy, shows some runtime information feedback.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
+  </action>
+  <action name="actionValidate_Rules_and_Graphs">
+   <property name="text">
+    <string>&amp;Validate Rules and G0</string>
+   </property>
+  </action>
+  <action name="actionSave_as">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Sa&amp;ve as...</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+S</string>
+   </property>
+  </action>
+  <action name="actionSave">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Save</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
+   </property>
+  </action>
+  <action name="actionPython_IDE">
+   <property name="text">
+    <string>&amp;Tulip Python IDE</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+P</string>
+   </property>
+  </action>
+  <action name="actionTulip_Spreadsheet_View">
+   <property name="text">
+    <string>Tulip &amp;Spreadsheet View</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+T</string>
+   </property>
+  </action>
+  <action name="actionNew_Empty_Graph_Model">
+   <property name="text">
+    <string>New &amp;Empty Graph Model</string>
+   </property>
+  </action>
+  <action name="actionPython_Documentation">
+   <property name="text">
+    <string>Python Documentation</string>
+   </property>
+  </action>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>RulesWidget</class>
+   <extends>QWidget</extends>
+   <header>ruleswidget.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>GraphWidget</class>
+   <extends>QWidget</extends>
+   <header>GraphWidget.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>TracesWidget</class>
+   <extends>QWidget</extends>
+   <header>traceswidget.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>StrategyManagementWidget</class>
+   <extends>QWidget</extends>
+   <header>strategymanagementwidget.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>ViewManager</class>
+   <extends>QWidget</extends>
+   <header>viewmanager.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>PorgyPerspectiveLogger</class>
+   <extends>QWidget</extends>
+   <header>PorgyPerspectiveLogger.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>actionQuit</sender>
+   <signal>triggered()</signal>
+   <receiver>PorgyPerspective</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>639</x>
+     <y>359</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

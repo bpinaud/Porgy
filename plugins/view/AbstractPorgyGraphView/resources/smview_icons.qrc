@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/Porgy/views/SMView">
+        <file>labels_disabled.png</file>
+        <file>labels_enabled.png</file>
+    </qresource>
+</RCC>
