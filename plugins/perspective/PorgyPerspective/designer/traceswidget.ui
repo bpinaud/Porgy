@@ -15,7 +15,7 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="tlp::TulipLineEdit" name="lineEdit">
+    <widget class="QLineEdit" name="lineEdit">
      <property name="placeholderText">
       <string>Filter derivation trees</string>
      </property>
@@ -41,11 +41,4 @@
  </widget>
  <resources/>
  <connections/>
- <customwidgets>
-  <customwidget>
-   <class>tlp::TulipLineEdit</class>
-   <extends>QLineEdit</extends>
-   <header location="global">tulip/TulipLineEdit.h</header>
-  </customwidget>
- </customwidgets>
 </ui>
