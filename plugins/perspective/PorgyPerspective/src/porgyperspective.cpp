@@ -1697,7 +1697,7 @@ void PorgyPerspective::changeMetric() {
   QAction *action = static_cast<QAction *>(sender());
   QString algorithm = action->data().toString();
   std::string err;
-  if (!changeProperty(algorithm, getCurrentGraph(), err)) {
+  if (getCurrentGraph()&&!changeProperty(algorithm, getCurrentGraph(), err)) {
     tlp::warning() << "Error when applying metric algorithm " << algorithm.toStdString() << endl;
   }
 }
