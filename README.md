@@ -20,7 +20,7 @@ List of dependencies
 - Boost 1.60 (see http://www.boost.org/)
 - All dependencies from Tulip especially: 
   - C++11 compiler
-  - Qt > 5.0
+  - Qt > 5.5
 
 Basic compilation instruction
 =============================
