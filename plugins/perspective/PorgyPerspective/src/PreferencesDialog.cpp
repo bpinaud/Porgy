@@ -62,7 +62,7 @@ void PreferencesDialog::writeSettings() {
       model->data(model->index(0, 1)).value<tlp::Color>());
   TulipSettings::instance().setDefaultLabelColor(
       model->data(model->index(1, 1)).value<tlp::Color>());
-  TulipSettings::instance().setUseTlpFileFormat(_ui->usetlpbformat->isChecked());
+  TulipSettings::instance().setUseTlpbFileFormat(_ui->usetlpbformat->isChecked());
 }
 
 void PreferencesDialog::readSettings() {
