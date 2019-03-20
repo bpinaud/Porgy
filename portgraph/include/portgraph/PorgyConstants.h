@@ -33,6 +33,7 @@ namespace PorgyConstants {
 // Algorithm names
 const static char APPLY_STRATEGY_ALGORITHM[] = "StrategySpirit";
 const static char APPLY_RULE_ALGORITHM[] = "RuleAlgorithm";
+const static char APPLY_RULE_CONDITION[] = "RuleCondition";
 const static char REDRAW_GRAPH[] = "Redraw PortGraph Model";
 const static char REDRAW_RULE[] = "Redraw PortGraph Rule";
 const static char REDRAW_TRACE[] = "Redraw Trace Tree";
@@ -83,6 +84,7 @@ const static std::string N = "N"; // property to indicate if a RHS member has to
 const static std::string W =
     "W"; // property to indicate if the image of a node from LHS has to be in P
 const static std::string RULE_ALGORITHM = "Rule Algorithm";
+const static std::string RULE_CONDITION = "Rule Condition";
 
 // Trace graph properties
 const static std::string TRANSFORMATION_RULE_PROPERTY =
@@ -216,7 +218,7 @@ const static std::string NO_BAN = "NoBan";
 // rulename graph attribute
 const static std::string RULENAME = "rulename";
 const static std::string RULE_IMPORT_ALLOWED[] = {"name", "filename", LAYOUTALGORITHM,
-                                                  RULE_ALGORITHM};
+                                                  RULE_ALGORITHM, RULE_CONDITION};
 const static unsigned int RULE_IMPORT_ALLOWED_SIZE = 4;
 // parallel rule
 const static std::string IS_PARALLEL_RULE = "Is Parallel rule?";

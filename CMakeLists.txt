@@ -131,6 +131,7 @@ add_subdirectory(plugins/measure)
 add_subdirectory(plugins/selection)
 add_subdirectory(plugins/general/CheckApply)
 add_subdirectory(plugins/general/RuleAlgorithm)
+add_subdirectory(plugins/general/RuleCondition)
 add_subdirectory(plugins/general/TraceIsomorphModels)
 
 FIND_PACKAGE(QtX)

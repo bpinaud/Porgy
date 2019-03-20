@@ -104,7 +104,7 @@ void mini_syntax_ast_printer::operator()(binary_op const &bin) const {
   double rhs_double_result = global_tmp_double_result;
 
   if (lhs_type != "ndef" && lhs_type != rhs_type) {
-    std::cerr << "Uncompatible types: " << lhs_type << " and " << rhs_type << std::endl;
+    std::cerr << "BinaryOp Uncompatible types: " << lhs_type << " and " << rhs_type << std::endl;
     return;
   }
 
@@ -276,7 +276,7 @@ void mini_syntax_ast_printer::operator()(unary_op const &un) const {
     tlp::PropertyInterface *pI = _g->getProperty(global_tmp_prop);
     global_type = pI->getTypename();
     if (tmp_type != "ndef" && tmp_type != global_type)
-      std::cerr << "Uncompatible types: " << tmp_type << " and " << global_type << std::endl;
+      std::cerr << "UnaryOp Uncompatible types: " << tmp_type << " and " << global_type << std::endl;
     break;
   }
   case '-': { // case operator "minus"

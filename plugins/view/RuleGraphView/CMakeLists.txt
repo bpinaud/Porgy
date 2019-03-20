@@ -7,17 +7,20 @@ SET(LIB_SRCS
     porgyrulegraphview.cpp
     RuleAttributesWidget.cpp
     RuleAlgorithmWidget.cpp
+    RuleConditionWidget.cpp
     porgyRuleViewQuickAccessBar.cpp)
 
 SET(LIB_UI
     designer/RuleAttributesWidget.ui
     designer/RuleAlgorithmWidget.ui
+    designer/RuleConditionWidget.ui
     )
 
 SET(LIB_MOC
     porgyrulegraphview.h
     RuleAttributesWidget.h
     RuleAlgorithmWidget.h
+    RuleConditionWidget.h
     porgyRuleViewQuickAccessBar.h)
 
 QTX_WRAP_UI(LIB_UI_SRCS ${LIB_UI})

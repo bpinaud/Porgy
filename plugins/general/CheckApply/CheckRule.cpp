@@ -41,6 +41,7 @@ public:
   CheckRule(const PluginContext *context) : Algorithm(context), rulegraph(nullptr), _debug(false) {
 
     addDependency("Equal Value", "1.1");
+        addDependency(PorgyConstants::APPLY_RULE_CONDITION, "1.0");
 
     addInParameter<string>(PorgyConstants::RuleName, "", "rule_1");
     addInParameter<int>(PorgyConstants::maximum_number_of_instances, "", "-1");
@@ -92,6 +93,9 @@ public:
     bool edgeOrientation = false;
     if (rulegraph->getAttribute(PorgyConstants::EDGE_ORIENTATION_ENABLED, edgeOrientation))
       get<0>(lhs_rhs)->setAttribute(PorgyConstants::EDGE_ORIENTATION_ENABLED, edgeOrientation);
+        string cond_text("");
+        if (rulegraph->getAttribute(PorgyConstants::RULE_CONDITION, cond_text))
+            get<0>(lhs_rhs)->setAttribute(PorgyConstants::RULE_CONDITION, cond_text);
     return true;
   }
 
