@@ -49,7 +49,7 @@ namespace ConditionParser {
         iterator_type iter = cond.begin();
         iterator_type end = cond.end();
         comments<iterator_type> comments_;    //comment parsing
-        bool r = phrase_parse(iter, end, g, comments_, ast); //ast is empty, WHY?!
+        bool r = phrase_parse(iter, end, g, comments_, ast); 
         if (!r || iter != end)
         {
             std::string rest(iter, end);
