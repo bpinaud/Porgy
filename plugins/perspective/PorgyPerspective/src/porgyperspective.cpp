@@ -156,6 +156,11 @@ protected:
   }
 };
 
+void PorgyPerspective::usage(string& usage_str) const {
+    usage_str += "List of OPTIONS:\n";
+    usage_str += "  --Debug=on\tActivate Debug mode";
+}
+
 void PorgyPerspective::start(tlp::PluginProgress *progress) {
   _ui = new Ui::PorgyPerspective();
   _ui->setupUi(_mainWindow);
@@ -203,6 +208,13 @@ void PorgyPerspective::start(tlp::PluginProgress *progress) {
   _pythonIDEDialog->setLayout(dialogLayout);
   _pythonIDEDialog->resize(800, 600);
   _pythonIDEDialog->setWindowTitle("Tulip Python IDE");
+
+  //check command line parameters
+  if(_parameters.contains("Debug")) {
+      //enable Debug mode
+      debugPressed(true);
+      _ui->actionDebug_mode->setChecked(true);
+  }
 
   showTrayMessage("Porgy Perspective started");
 }

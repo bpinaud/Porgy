@@ -62,6 +62,7 @@ class PorgyPerspective : public tlp::Perspective {
    * @brief Build all the GUI of the controllers, ie widgets, menu ect...
    **/
   void buildGUI();
+  void usage(std::string& usage_str) const override;
   /**
    * @brief Build the menu bar of the Porgy controller.
    **/
