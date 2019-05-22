@@ -373,7 +373,7 @@ bool PartialMap::verifyIso() const {
   //        if(!e.isValid())
 
   for (edge e : g_left->edges()) {
-    const pair<node, node> &ends = g_left->ends(e);
+    auto ends = g_left->ends(e);
     vector<edge> e_rule = g_left->getEdges(ends.first, ends.second, _edgeOrientation);
     vector<edge> e_model =
         g_model->getEdges((*current)[g_left->nodePos(ends.first)],
