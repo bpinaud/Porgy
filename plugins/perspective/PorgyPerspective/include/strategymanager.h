@@ -121,8 +121,7 @@ private:
     * @brief Replace all the strategy reference in the code by the code of its
     *strategies. Set the error variable with the rigth error code.
     **/
-  QString expandStrategyCode(const QString &metaStrategy, StrategyErrors &error,
-                             std::set<QString> &alreadyExpendedStrategies) const;
+  QString expandStrategyCode(QString metaStrategy, StrategyErrors &error) const;
 
   std::vector<Strategy> strategies;
   tlp::Graph *_graph;

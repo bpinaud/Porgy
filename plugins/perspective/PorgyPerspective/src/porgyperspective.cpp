@@ -47,6 +47,7 @@
 #include <QMessageBox>
 #include <QParallelAnimationGroup>
 #include <QUrl>
+#include <QRegularExpression>
 
 #include "ui_porgyperspective.h"
 
@@ -894,8 +895,9 @@ void PorgyPerspective::renameRule(tlp::Graph *rule) {
       QInputDialog::getText(_mainWindow, tr("Rename rule"), tr("New rule name:"), QLineEdit::Normal,
                             tlp::tlpStringToQString(rule->getName()), &ok);
   if (ok && !text.isEmpty()) {
-    QRegExp regexp(PorgyConstants::STRAT_MACRO_REGEXP);
-    if (regexp.indexIn(text) == -1)
+    QRegularExpression re(PorgyConstants::STRAT_MACRO_REGEXP);
+    QRegularExpressionMatch match = re.match(text);
+    if (!match.hasMatch())
       rule->setName(QStringToTlpString(text));
     else
       QMessageBox::information(_mainWindow, tr("Cannot rename rule"),

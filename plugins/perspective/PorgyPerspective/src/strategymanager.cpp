@@ -25,6 +25,7 @@
 #include <portgraph/PorgyConstants.h>
 
 #include <QMimeData>
+#include <QRegularExpression>
 
 using namespace tlp;
 using namespace std;
@@ -59,9 +60,7 @@ void StrategyManager::removeStrategy(unsigned index) {
 
 const QString StrategyManager::getStrategyCode(unsigned index, StrategyErrors &error) const {
   assert(strategies.size() > index);
-  std::set<QString> tt;
-  const QString &code = strategies[index].code();
-  return expandStrategyCode(code, error, tt);
+  return expandStrategyCode(strategies[index].code(), error);
 }
 
 const QString &StrategyManager::getStrategy(unsigned index) const {
@@ -191,7 +190,7 @@ QMimeData *StrategyManager::mimeData(const QModelIndexList &indexes) const {
         data->setStrategy(strategy);
       } else {
         if (error != StrategyErrors::STRATEGY_NO_ERROR) {
-          tlp::warning() << errorMessage(error).toStdString() << endl;
+          tlp::warning() << tlp::QStringToTlpString(errorMessage(error)) << endl;
         } else {
           tlp::warning() << "Cannot use an empty strategy." << endl;
         }
@@ -201,44 +200,64 @@ QMimeData *StrategyManager::mimeData(const QModelIndexList &indexes) const {
   return data;
 }
 
-QString StrategyManager::expandStrategyCode(const QString &metaStrategy, StrategyErrors &error,
-                                            std::set<QString> &alreadyExpandedStrategies) const {
-  QRegExp rx(PorgyConstants::STRAT_MACRO_REGEXP);
-  QString strategy = metaStrategy;
-  int pos = 0;
-  while ((pos = rx.indexIn(strategy, pos)) != -1) {
-    // Get tokens
-    QString strategyName = rx.cap(0);
-    int length = strategyName.size();
-    // Remove #
-    strategyName = strategyName.mid(1, strategyName.size() - 2);
-    unsigned strategyIndex = indexOfStrategy(strategyName);
-    QString strategyCode;
-    if (strategyIndex != UINT_MAX) {
-      // Check if we have already expanded this strategy to avoid cycle
-      if (alreadyExpandedStrategies.find(strategies[strategyIndex].name()) !=
-          alreadyExpandedStrategies.end()) {
-        error = StrategyErrors::STRATEGY_CIRCULAR_CALL;
-        return "";
-      } else {
-        // Store the name of the properties we will expand to avoid circular
-        // inclusion
-        auto it = alreadyExpandedStrategies.insert(strategies[strategyIndex].name());
-        strategyCode =
-            expandStrategyCode(strategies[strategyIndex].code(), error, alreadyExpandedStrategies);
-        alreadyExpandedStrategies.erase(it.first);
-        if (error != StrategyErrors::STRATEGY_NO_ERROR) {
-          return "";
+QString StrategyManager::expandStrategyCode(QString strategy, StrategyErrors &error) const {
+    QRegularExpression rx(PorgyConstants::STRAT_MACRO_REGEXP);
+    QRegularExpressionMatch m = rx.match(strategy);
+    unsigned count(0);
+    while (m.hasMatch()) {
+        count++;
+        //too many nested levels of macro expansion. Probably a circular call.
+        if(count==10) {
+            error = StrategyErrors::STRATEGY_CIRCULAR_CALL;
+            return "";
         }
-      }
-    } else {
-      error = StrategyErrors::STRATEGY_MISSING_STRATEGY;
-      return "";
+        QString strat = m.captured(1);
+        unsigned strategyIndex = indexOfStrategy(strat);
+        if (strategyIndex != UINT_MAX) {
+            QRegularExpression re(QString("#")+strat+QString("#"));
+            //add an empty-line at the end to avoid problems with comments in strategy or weird behavior
+            strategy.replace(re, strategies[strategyIndex].code()+"\n");
+        }
+        else {
+            error = StrategyErrors::STRATEGY_MISSING_STRATEGY;
+            return "";
+        }
+        m = rx.match(strategy);
     }
-    // Replace the # token by the strategy code.
-    strategy.replace(pos, length, strategyCode);
-    pos += strategyCode.size();
-  }
+//  int pos = 0;
+//  while ((pos = rx.indexIn(strategy, pos)) != -1) {
+//    // Get tokens
+//    QString strategyName = rx.cap(0);
+//    int length = strategyName.size();
+//    // Remove #
+//    strategyName = strategyName.mid(1, strategyName.size() - 2);
+//    unsigned strategyIndex = indexOfStrategy(strategyName);
+//    QString strategyCode;
+//    if (strategyIndex != UINT_MAX) {
+//      // Check if we have already expanded this strategy to avoid cycle
+//      if (alreadyExpandedStrategies.find(strategies[strategyIndex].name()) !=
+//          alreadyExpandedStrategies.end()) {
+//        error = StrategyErrors::STRATEGY_CIRCULAR_CALL;
+//        return "";
+//      } else {
+//        // Store the name of the properties we will expand to avoid circular
+//        // inclusion
+//        auto it = alreadyExpandedStrategies.insert(strategies[strategyIndex].name());
+//        strategyCode =
+//            expandStrategyCode(strategies[strategyIndex].code(), error, alreadyExpandedStrategies);
+//        alreadyExpandedStrategies.erase(it.first);
+//        if (error != StrategyErrors::STRATEGY_NO_ERROR) {
+//          return "";
+//        }
+//      }
+//    } else {
+//      error = StrategyErrors::STRATEGY_MISSING_STRATEGY;
+//      return "";
+//    }
+//    // Replace the # token by the strategy code.
+//    strategy.replace(pos, length, strategyCode);
+//    pos += strategyCode.size();
+//  }
   error = StrategyErrors::STRATEGY_NO_ERROR;
   return strategy;
 }

@@ -189,7 +189,7 @@ const static std::unordered_map<ComparisonOp, const char *, EnumClassHash>
 
 // Strategy
 const static std::string FAILURE_NODE_ADDED = "Failure node added";
-const static char STRAT_MACRO_REGEXP[] = "#[^#]*#";
+const static char STRAT_MACRO_REGEXP[] = "#([^#]*)#";
 
 // checkrule
 const static char maximum_number_of_instances[] = "Maximum number of instances to find";
