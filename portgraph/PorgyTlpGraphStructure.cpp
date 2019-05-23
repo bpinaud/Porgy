@@ -248,9 +248,11 @@ Graph *PorgyTlpGraphStructure::getRootGraph(const Graph *graph) {
   return root;
 }
 
-bool PorgyTlpGraphStructure::checkEdgeState(Graph *modele, Graph *rule, const edge rule_e,
+bool PorgyTlpGraphStructure::checkEdgeState( const bool debug,Graph *modele, Graph *rule, const edge rule_e,
                                             const edge graph_e,
                                             const matchpropvector &matchingPropertiesList) {
+    if(debug)
+        tlp::debug() << "Checking rule edge " << rule_e << " agains model edge " << graph_e << endl;
   for (const matchproptuple &pName : matchingPropertiesList) {
     const string &propertyName = get<0>(pName);
     BooleanProperty *testCurrentProperty = get<1>(pName);
@@ -319,7 +321,7 @@ bool PorgyTlpGraphStructure::checkEdgeState(Graph *modele, Graph *rule, const ed
 }
 
 // Remarque : prend en compte les multi-aretes
-bool PorgyTlpGraphStructure::checkEdgeState(Graph *modele, Graph *rule, const vector<edge> &rule_e,
+bool PorgyTlpGraphStructure::checkEdgeState(const bool debug, Graph *modele, Graph *rule, const vector<edge> &rule_e,
                                             const std::vector<edge> &modele_e, bool exact,
                                             const matchpropvector &matchingPropertiesList,
                                             tlp::EdgeStaticProperty<edge> *edge_map) {
@@ -333,7 +335,7 @@ bool PorgyTlpGraphStructure::checkEdgeState(Graph *modele, Graph *rule, const ve
   for (edge e_rule : rule_e) {
     bool match = false;
     for (edge e_modele : modele_e) {
-      if (checkEdgeState(modele, rule, e_rule, e_modele, matchingPropertiesList)) {
+      if (checkEdgeState(debug, modele, rule, e_rule, e_modele, matchingPropertiesList)) {
         if (edge_map != nullptr)
           (*edge_map)[rule->edgePos(e_rule)] = e_modele;
         match = true;
