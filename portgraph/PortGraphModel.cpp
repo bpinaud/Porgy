@@ -316,7 +316,7 @@ bool PartialMap::verifyAntiEdge(Graph *left_anti) const {
       node img_src((*current)[g_left->nodePos(ends.first)]);
       node img_tgt((*current)[g_left->nodePos(ends.second)]);
       std::vector<tlp::edge> model_edges = g_model->getEdges(img_src, img_tgt, _edgeOrientation);
-      if (PorgyTlpGraphStructure::checkEdgeState(g_model, g_left, v, model_edges, false,
+      if (PorgyTlpGraphStructure::checkEdgeState(_debug, g_model, g_left, v, model_edges, false,
                                                  matchingPropertiesList))
         return false;
     }
@@ -378,7 +378,7 @@ bool PartialMap::verifyIso() const {
     vector<edge> e_model =
         g_model->getEdges((*current)[g_left->nodePos(ends.first)],
                           (*current)[g_left->nodePos(ends.second)], _edgeOrientation);
-    if (!PorgyTlpGraphStructure::checkEdgeState(g_model, g_left, e_rule, e_model, _exact,
+    if (!PorgyTlpGraphStructure::checkEdgeState(_debug, g_model, g_left, e_rule, e_model, _exact,
                                                 matchingPropertiesList, current_edge)) {
             if(_debug)
                 tlp::debug() << "Problem when matching edges (pass 2)" << endl;
@@ -454,9 +454,11 @@ bool PartialMap::refine() {
       for(auto rule_vois:g_left->getInOutNodes(left_node)) {
         bool voisin_ok = false;
         for (auto model_vois : (*M)[g_left->nodePos(rule_vois)]) {
+            if(_debug)
+                tlp::debug()<<"Checking if rule node " << rule_vois << " can me mapped to model node " << model_vois << endl;
           vector<edge> edges_rule = g_left->getEdges(left_node, rule_vois, _edgeOrientation);
           vector<edge> edges_model = g_model->getEdges(model_node, model_vois, _edgeOrientation);
-          if (PorgyTlpGraphStructure::checkEdgeState(g_model, g_left, edges_rule, edges_model,
+          if (PorgyTlpGraphStructure::checkEdgeState(_debug, g_model, g_left, edges_rule, edges_model,
                                                      _exact, matchingPropertiesList)) {
             // If there is an edge, with the same state as in the rule
             voisin_ok = true;

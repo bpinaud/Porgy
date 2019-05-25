@@ -108,10 +108,10 @@ struct PORTGRAPH_SCOPE PorgyTlpGraphStructure {
                      tlp::PropertyInterface *, tlp::PropertyInterface *>
       matchproptuple;
   typedef std::vector<matchproptuple> matchpropvector;
-  static bool checkEdgeState(tlp::Graph *modele, tlp::Graph *rule, const tlp::edge rule_e,
+  static bool checkEdgeState(const bool debug, tlp::Graph *modele, tlp::Graph *rule, const tlp::edge rule_e,
                              const tlp::edge graph_e,
                              const matchpropvector &matchingPropertiesList);
-  static bool checkEdgeState(tlp::Graph *modele, tlp::Graph *rule,
+  static bool checkEdgeState(const bool debug, tlp::Graph *modele, tlp::Graph *rule,
                              const std::vector<tlp::edge> &rule_e,
                              const std::vector<tlp::edge> &graph_e, bool exact,
                              const matchpropvector &matchingPropertiesList,
