@@ -41,7 +41,7 @@ CreatePort::CreatePort(QWidget *parent, const PortQt &port)
   init(port.getColor());
   ui->lineEditName->setText(port.getName());
   ui->comboBoxGlyph->setCurrentIndex(ui->comboBoxGlyph->findText(
-      tlpStringToQString(GlyphManager::getInst().glyphName(port.getShape()))));
+      tlpStringToQString(GlyphManager::glyphName(port.getShape()))));
 }
 
 CreatePort::~CreatePort() {
@@ -68,7 +68,7 @@ QString CreatePort::getName() const {
 
 NodeShape::NodeShapes CreatePort::getGlyph() const {
   return static_cast<NodeShape::NodeShapes>(
-      GlyphManager::getInst().glyphId(QStringToTlpString(ui->comboBoxGlyph->currentText())));
+      GlyphManager::glyphId(QStringToTlpString(ui->comboBoxGlyph->currentText())));
 }
 
 QColor CreatePort::getColor() const {

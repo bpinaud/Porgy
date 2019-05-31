@@ -210,9 +210,8 @@ void PorgySMView::updateSmallMultiples(SmallMultipleUpdateTypeFlags updateType) 
   StringProperty *label = _smallMultipleGraph->getProperty<StringProperty>("viewLabel");
   StringProperty *texture = _smallMultipleGraph->getProperty<StringProperty>("viewTexture");
   LayoutProperty *layout = _smallMultipleGraph->getProperty<LayoutProperty>("viewLayout");
-  GlTextureManager &textureManager = GlTextureManager::getInst();
 
-  textureManager.changeContext(reinterpret_cast<uintptr_t>(getGlMainWidget()->getFirstQGLWidget()));
+  GlTextureManager::changeContext(reinterpret_cast<uintptr_t>(getGlMainWidget()->getFirstQGLWidget()));
   Observable::holdObservers();
   for (node n : _smallMultipleGraph->nodes()) {
     if (updateType.testFlag(Reset)) {
@@ -228,7 +227,7 @@ void PorgySMView::updateSmallMultiples(SmallMultipleUpdateTypeFlags updateType) 
     }
     if (updateType.testFlag(Update_texture)) {
       // Element texture
-      textureManager.deleteTexture(_textures[currentIndex]);
+      GlTextureManager::deleteTexture(_textures[currentIndex]);
       texture->setNodeValue(n, generateTexture(currentIndex));
     }
 
@@ -282,11 +281,10 @@ void PorgySMView::treatEvent(const Event &ev) {
 string PorgySMView::generateTexture(unsigned int stateId) {
   assert(stateId < _states.stateNumber());
   assert(stateId < _textures.size());
-  GlTextureManager &textureManager = GlTextureManager::getInst();
-  textureManager.changeContext(reinterpret_cast<uintptr_t>(getGlMainWidget()->getFirstQGLWidget()));
+  GlTextureManager::changeContext(reinterpret_cast<uintptr_t>(getGlMainWidget()->getFirstQGLWidget()));
   // Destruct old texture.
   string textureName = getTextureNameForId(stateId);
-  textureManager.deleteTexture(textureName);
+  GlTextureManager::deleteTexture(textureName);
   // Create graph preview texture
   GlOffscreenRenderer *renderer = GlOffscreenRenderer::getInstance();
   renderer->setSceneBackgroundColor(Color(255, 255, 255));
@@ -312,7 +310,7 @@ string PorgySMView::generateTexture(unsigned int stateId) {
 #endif
   GLuint textureId = renderer->getGLTexture();
   // Register texture.
-  textureManager.registerExternalTexture(textureName, textureId);
+  GlTextureManager::registerExternalTexture(textureName, textureId);
   _textures[stateId] = textureName;
   renderer->clearScene();
   return textureName;
@@ -323,10 +321,9 @@ string PorgySMView::getTextureNameForId(int stateId) {
 }
 
 void PorgySMView::clearTextures() {
-  GlTextureManager &textureManager = GlTextureManager::getInst();
-  textureManager.changeContext(reinterpret_cast<uintptr_t>(getGlMainWidget()->getFirstQGLWidget()));
+  GlTextureManager::changeContext(reinterpret_cast<uintptr_t>(getGlMainWidget()->getFirstQGLWidget()));
   for (const auto &str : _textures) {
-    textureManager.deleteTexture(str);
+    GlTextureManager::deleteTexture(str);
   }
 }
 

@@ -195,7 +195,7 @@ void AbstractPorgyGraphView::initScene(Graph *graph, const DataSet dataSet) {
   initGlParameters(renderingParameters);
   composite->setRenderingParameters(renderingParameters);
   composite->getInputData()->setMetaNodeRenderer(new GlMetaNodeRenderer(composite->getInputData()));
-  OpenGlConfigManager::getInst().setAntiAliasing(true);
+  OpenGlConfigManager::setAntiAliasing(true);
   getGlMainWidget()->emitGraphChanged();
 }
 
