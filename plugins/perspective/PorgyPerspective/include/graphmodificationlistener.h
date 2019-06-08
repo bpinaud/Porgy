@@ -21,7 +21,7 @@
 #ifndef GRAPHPROPERTIESRECORDER_H_
 #define GRAPHPROPERTIESRECORDER_H_
 
-#include <tulip/Observable.h>
+#include <tulip/Graph.h>
 
 #include <set>
 #include <vector>

@@ -877,8 +877,8 @@ void PorgyPerspective::exportRule(tlp::Graph *rule) {
   delete os;
 
   if (!result) {
-    QMessageBox::critical(_mainWindow, trUtf8("Export error"),
-                          trUtf8("Failed to export to ") + filename);
+    QMessageBox::critical(_mainWindow, "Export error",
+                          "Failed to export to " + filename);
   }
   delete prg;
 }
