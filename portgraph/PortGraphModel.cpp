@@ -32,6 +32,7 @@
 #include <tulip/StaticProperty.h>
 
 #include <unordered_set>
+#include <algorithm>
 
 using namespace tlp;
 using namespace std;
@@ -436,11 +437,11 @@ Graph *PartialMap::addSub(int num_solutions, BooleanProperty *position,
 
 bool PartialMap::refine() {
 
-  if (_debug)
-    display();
-#ifdef PORGY_RULE_DEBUG_MESSAGES
-  cerr << __PRETTY_FUNCTION__ << ": Begin refine" << endl;
-#endif
+  if (_debug) {
+      tlp::debug() << __PRETTY_FUNCTION__ << ":" << __LINE__ << endl;
+      display();
+      tlp::debug() << __PRETTY_FUNCTION__ << ": Begin refine" << endl;
+  }
 
   bool modified = false;
   const vector<node> &left_nodes = g_left->nodes();
@@ -466,7 +467,7 @@ bool PartialMap::refine() {
           }
           else {
               if(_debug)
-                  tlp::debug() << "Problem when matching edges (pass 1)" << endl;
+                  tlp::debug() << "Cannot mapped rule node " << rule_vois << " and model node " << model_vois << ": Problem when matching edges (pass 1)" << endl;
           }
         }
         if (!voisin_ok) {
@@ -477,10 +478,9 @@ bool PartialMap::refine() {
         }
       }
       if (found) {
-#ifdef PORGY_RULE_DEBUG_MESSAGES
-        cerr << __PRETTY_FUNCTION__ << " : Found that node " << left_node
-             << " could not be mapped to node " << model_node << endl;
-#endif
+          if(_debug)
+              tlp::debug() << " : Found that rule node " << left_node << " could not be mapped to model node " << model_node << endl;
+
         modified = true;
         // We suppress the node from the possibilities
         to_delete.push_back(model_node);
@@ -493,13 +493,12 @@ bool PartialMap::refine() {
 
   // We verify that all nodes of the rule have at least one possible mapping
   for (unsigned nb = 0; nb < nb_node; ++nb) {
-    possiblemap &p = (*M)[nb];
-    if (p.empty()) {
-#ifdef PORGY_RULE_DEBUG_MESSAGES
-      cerr << __PRETTY_FUNCTION__ << " : Found no mapping from here" << endl;
-#endif
-      return false; // One node has no possible image, we stop
-    }
+      possiblemap &p = (*M)[nb];
+      if (p.empty()) {
+          if(_debug)
+              tlp::debug() << __PRETTY_FUNCTION__ << " : Found no mapping from here" << endl;
+          return false; // One node has no possible image, we stop
+      }
   }
 
   if (_exact) {
@@ -532,13 +531,11 @@ void PartialMap::backtrack(int numtofind, int &nbr_found, BooleanProperty *pos,
   int nb_possibilities = set_v.size();
   const vector<node> &nodes = g_left->nodes();
 
-  if (_debug)
-    display();
-#ifdef PORGY_RULE_DEBUG_MESSAGES
-
-  cerr << __PRETTY_FUNCTION__ << " : Looking for images of node " << nodes[v] << endl;
-  cerr << __PRETTY_FUNCTION__ << " : Number of possibilities : " << nb_possibilities << endl;
-#endif
+  if (_debug) {
+      display();
+      cerr << __PRETTY_FUNCTION__ << " : Looking for images of node " << nodes[v] << endl;
+      cerr << __PRETTY_FUNCTION__ << " : Number of possibilities : " << nb_possibilities << endl;
+  }
 
   progress_step /= nb_possibilities;
 

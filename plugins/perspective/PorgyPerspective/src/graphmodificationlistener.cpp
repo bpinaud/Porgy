@@ -22,6 +22,8 @@
 #include <tulip/AbstractProperty.h>
 #include <tulip/Graph.h>
 
+#include <algorithm>
+
 using namespace tlp;
 using namespace std;
 

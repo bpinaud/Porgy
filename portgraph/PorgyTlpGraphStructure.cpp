@@ -252,7 +252,7 @@ bool PorgyTlpGraphStructure::checkEdgeState( const bool debug,Graph *modele, Gra
                                             const edge graph_e,
                                             const matchpropvector &matchingPropertiesList) {
     if(debug)
-        tlp::debug() << "Checking rule edge " << rule_e << " agains model edge " << graph_e << endl;
+        tlp::debug() << "Checking rule edge " << rule_e << " against model edge " << graph_e << endl;
   for (const matchproptuple &pName : matchingPropertiesList) {
     const string &propertyName = get<0>(pName);
     BooleanProperty *testCurrentProperty = get<1>(pName);
@@ -336,7 +336,9 @@ bool PorgyTlpGraphStructure::checkEdgeState(const bool debug, Graph *modele, Gra
     bool match = false;
     for (edge e_modele : modele_e) {
       if (checkEdgeState(debug, modele, rule, e_rule, e_modele, matchingPropertiesList)) {
-        if (edge_map != nullptr)
+        if(debug)
+            tlp::debug() << "matching verified between rule edge " << e_rule << " and model edge " << e_modele << endl;
+          if (edge_map != nullptr)
           (*edge_map)[rule->edgePos(e_rule)] = e_modele;
         match = true;
       }

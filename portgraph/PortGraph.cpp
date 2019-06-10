@@ -32,6 +32,8 @@
 #include <portgraph/PortGraph.h>
 #include <portgraph/PortNode.h>
 
+#include <algorithm>
+
 using namespace std;
 using namespace tlp;
 
