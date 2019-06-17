@@ -227,7 +227,7 @@ void TracesWidget::exportCSV() {
   QString filesave(QFileDialog::getSaveFileName(this, "CSV filename to save", "", "csv (*.csv)"));
   if (!filesave.isEmpty()) {
     DataSet dataSet;
-    ParameterDescriptionList params = PluginLister::instance()->getPluginParameters("CSV Export");
+    ParameterDescriptionList params = PluginLister::getPluginParameters("CSV Export");
     params.buildDefaultDataSet(dataSet, selectedGraph);
     bool ok = true;
     dataSet = PluginParametersConfigurationDialog::getParameters(

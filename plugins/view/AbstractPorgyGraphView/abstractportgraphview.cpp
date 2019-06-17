@@ -59,7 +59,7 @@ void AbstractPortGraphView::redrawGraph(Graph *g) {
       pluginName = plugins.front();
       parameters = PluginParametersConfigurationDialog::getParameters(
           graphicsView()->window(), "Configure draw plugin",
-          tlp::PluginLister::instance()->getPluginParameters(pluginName), ok, nullptr, g);
+          tlp::PluginLister::getPluginParameters(pluginName), ok, nullptr, g);
     } else {
       assert(false);
     }
