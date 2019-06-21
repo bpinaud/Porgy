@@ -50,7 +50,7 @@ void TraceInformationMetanodeRenderer::copyOriginalInputDataPropertiesToMetaNode
 }
 
 void TraceInformationMetanodeRenderer::clearStoredInputData() {
-  for (TLP_HASH_MAP<tlp::Graph *, GraphVisualProperties>::const_iterator it = _inputData.begin();
+  for (unordered_map<tlp::Graph *, GraphVisualProperties>::const_iterator it = _inputData.begin();
        it != _inputData.end(); ++it) {
     GlScene *scene = getSceneForMetaGraph(it->first);
     if (scene != nullptr) // if the metanode is hidden, the scene is not
