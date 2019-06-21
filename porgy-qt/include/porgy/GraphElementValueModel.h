@@ -23,6 +23,8 @@
 
 #include <tulip/Graph.h>
 
+#include <unordered_set>
+
 class PropertyValueToQVariantManager;
 /**
  * @brief The GraphElementValueModel class Displays properties for given element
