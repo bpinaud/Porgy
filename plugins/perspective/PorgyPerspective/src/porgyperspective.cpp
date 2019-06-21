@@ -297,9 +297,9 @@ void PorgyPerspective::initMenus() {
   QMenu *importMenu = _ui->menuFile->addMenu(tlp::tlpStringToQString(tlp::IMPORT_CATEGORY));
   _ui->menuFile->insertMenu(_ui->actionSaveMenu, importMenu);
   //Use Plugin as the type of plugins to have both Algorithm and Import plugin
-  auto list_plugins(PluginLister::instance()->availablePlugins<Plugin>());
+  auto list_plugins(PluginLister::availablePlugins<Plugin>());
   for (auto pName : list_plugins) {
-    tlp::Plugin *plugin = PluginLister::instance()->getPluginObject(pName, nullptr);
+    tlp::Plugin *plugin = PluginLister::getPluginObject(pName, nullptr);
     string className = plugin->category();
     QString name(tlpStringToQString(pName));
     if (plugin->group() == PorgyConstants::CATEGORY_NAME) {
@@ -854,7 +854,7 @@ void PorgyPerspective::exportRule(tlp::Graph *rule) {
     return;
 
   ParameterDescriptionList params =
-      PluginLister::instance()->getPluginParameters(tlp::QStringToTlpString(algorithm));
+      PluginLister::getPluginParameters(tlp::QStringToTlpString(algorithm));
   if (!params.empty()) {
     params.buildDefaultDataSet(dataSet, rule);
     bool ok = true;
@@ -1638,7 +1638,7 @@ void PorgyPerspective::applyRuleOnModel(Graph *model, Graph *rule, Graph *trace)
   QApplication::setOverrideCursor(QCursor(Qt::ArrowCursor));
   DataSet dataSet;
   ParameterDescriptionList params =
-      PluginLister::instance()->getPluginParameters(PorgyConstants::SIMPLECHECKAPPLY);
+      PluginLister::getPluginParameters(PorgyConstants::SIMPLECHECKAPPLY);
   params.buildDefaultDataSet(dataSet, model);
   dataSet.set<std::string>(PorgyConstants::RuleName, rule->getName());
   QString title = QString("Apply rule ") + tlp::tlpStringToQString(rule->getName()) +
@@ -1685,7 +1685,7 @@ bool PorgyPerspective::changeProperty(const QString &name, tlp::Graph *graph, st
   DataSet parameters;
   // plugin parameters dialog
   ParameterDescriptionList params =
-      PluginLister::instance()->getPluginParameters(tlp::QStringToTlpString(name));
+      PluginLister::getPluginParameters(tlp::QStringToTlpString(name));
   DataSet dataSet;
   params.buildDefaultDataSet(dataSet, graph);
   QString title = QString("Lauching ") + name + " on " + tlp::tlpStringToQString(graph->getName());
@@ -1731,7 +1731,7 @@ void PorgyPerspective::ImportGraph() {
   QString algorithm = action->data().toString();
   DataSet dataSet;
   ParameterDescriptionList params =
-      PluginLister::instance()->getPluginParameters(tlp::QStringToTlpString(algorithm));
+      PluginLister::getPluginParameters(tlp::QStringToTlpString(algorithm));
   if (!params.empty()) {
     params.buildDefaultDataSet(dataSet, graph);
     bool ok = true;
@@ -1779,7 +1779,7 @@ bool PorgyPerspective::applyAlgorithm() {
   std::string errorMsg;
   DataSet dataSet;
   ParameterDescriptionList params =
-      PluginLister::instance()->getPluginParameters(tlp::QStringToTlpString(algorithm));
+      PluginLister::getPluginParameters(tlp::QStringToTlpString(algorithm));
   if (!params.empty()) {
     params.buildDefaultDataSet(dataSet, graph);
     bool ok = true;

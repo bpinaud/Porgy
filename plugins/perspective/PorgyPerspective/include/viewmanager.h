@@ -45,7 +45,7 @@ class ViewManagerImplementation : public QObject {
 public:
   ViewManagerImplementation(QObject *parent = nullptr) : QObject(parent) {}
 
-  ~ViewManagerImplementation() override {}
+  virtual ~ViewManagerImplementation() override {}
   virtual void setupUi(QWidget *parent) = 0;
   virtual void showView(tlp::View *view) = 0;
   virtual void drawAllViews() = 0;

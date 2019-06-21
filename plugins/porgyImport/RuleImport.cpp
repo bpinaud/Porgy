@@ -29,8 +29,8 @@ static bool endsWith(std::string const &value, std::string const &ending) {
 
 class PorgyRuleImport : public ImportModule {
 private:
-  TLP_HASH_MAP<node, node> nodeMap;
-  TLP_HASH_MAP<edge, edge> edgeMap;
+  unordered_map<node, node> nodeMap;
+  unordered_map<edge, edge> edgeMap;
 
   void copyNodes(Graph *sourceGraph, Graph *targetGraph) {
     targetGraph->reserveNodes(sourceGraph->numberOfNodes());

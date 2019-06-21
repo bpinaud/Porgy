@@ -25,6 +25,8 @@
 #include <tulip/Graph.h>
 #include <tulip/Observable.h>
 
+#include <unordered_set>
+
 class AbstractGraphHierachyItemModel : public QAbstractItemModel, public tlp::Observable {
 
   Q_OBJECT

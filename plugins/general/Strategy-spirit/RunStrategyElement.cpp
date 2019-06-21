@@ -440,7 +440,7 @@ bool runStrategyElement::operator()(const StrategyElement::update_ds &fd) {
   DataSet parameters;
   Graph *new_model = PorgyTlpGraphStructure::clone(_g, _P, _Ban);
   // plugin parameters
-  ParameterDescriptionList params = PluginLister::instance()->getPluginParameters(name);
+  ParameterDescriptionList params = PluginLister::getPluginParameters(name);
   params.buildDefaultDataSet(parameters, new_model);
   if (get<1>(fd)) {
     for (auto p : *get<1>(fd)) {

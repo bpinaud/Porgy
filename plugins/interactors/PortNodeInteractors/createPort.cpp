@@ -50,7 +50,7 @@ CreatePort::~CreatePort() {
 
 void CreatePort::init(const QColor &color) {
   ui->setupUi(this);
-  std::list<std::string> glyphs = tlp::PluginLister::instance()->availablePlugins<tlp::Glyph>();
+  std::list<std::string> glyphs = tlp::PluginLister::availablePlugins<tlp::Glyph>();
   glyphs.remove("2D - Billboard"); // remove Billboard. It causes to much troubles
   glyphs.remove("2D - Square");    // 2D - Square will be inserted at the beginning
                                    // of the list

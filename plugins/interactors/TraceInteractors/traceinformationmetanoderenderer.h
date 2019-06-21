@@ -20,8 +20,10 @@
 #ifndef TRACEINFORMATIONMETANODERENDERER_H
 #define TRACEINFORMATIONMETANODERENDERER_H
 #include <porgy/GraphVisualProperties.h>
+
 #include <tulip/GlMetaNodeRenderer.h>
-#include <tulip/tuliphash.h>
+
+#include <unordered_map>
 
 namespace tlp {
 class GlGraphInputData;
@@ -42,7 +44,7 @@ private:
                                                                     tlp::GlGraphInputData *dest);
   VisualPropertiesFlags originalPropertiesToUse;
 
-  TLP_HASH_MAP<tlp::Graph *, GraphVisualProperties> _inputData;
+  std::unordered_map<tlp::Graph *, GraphVisualProperties> _inputData;
 };
 
 #endif // TRACEINFORMATIONMETANODERENDERER_H

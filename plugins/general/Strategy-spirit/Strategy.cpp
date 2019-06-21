@@ -115,7 +115,7 @@ public:
         vector<string> porgy_plugins;
         vector<StrategyElement::PluginName> porgyplugins;
         std::list<std::string> plugins =
-                PluginLister::instance()->availablePlugins<PropertyAlgorithm>();
+                PluginLister::availablePlugins<PropertyAlgorithm>();
         for (auto name : plugins) {
             Plugin *pl(PluginLister::getPluginObject(name, nullptr));
             if (pl->group() == PorgyConstants::CATEGORY_NAME) {

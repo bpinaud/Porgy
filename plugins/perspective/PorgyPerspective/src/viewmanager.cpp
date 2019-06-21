@@ -65,7 +65,7 @@ void ViewManager::setImplementation(ViewManagerImplementation *implementation) {
 tlp::View *ViewManager::createView(const std::string &viewName, tlp::Graph *graph,
                                    const tlp::DataSet &parameters) {
 
-  tlp::View *view = tlp::PluginLister::instance()->getPluginObject<tlp::View>(viewName, nullptr);
+  tlp::View *view = tlp::PluginLister::getPluginObject<tlp::View>(viewName, nullptr);
   if (view != nullptr) {
     view->setupUi();
     view->setGraph(graph);

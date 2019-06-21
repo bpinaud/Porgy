@@ -98,7 +98,7 @@ void PorgyTraceGraphView::applyColorMapping() {
   ColorProperty *color = g->getProperty<ColorProperty>("viewColor");
   DataSet parameters;
   // plugin parameters dialog
-  ParameterDescriptionList params = PluginLister::instance()->getPluginParameters("Color Mapping");
+  ParameterDescriptionList params = PluginLister::getPluginParameters("Color Mapping");
   DataSet dataSet;
   params.buildDefaultDataSet(dataSet, g);
   QString title = QString("Lauching Color Mapping on ") + tlp::tlpStringToQString(g->getName());
