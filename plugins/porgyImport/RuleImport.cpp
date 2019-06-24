@@ -118,7 +118,7 @@ private:
   }
 
   void copyRuleAttributes(Graph *sourceGraph, Graph *targetGraph) {
-    TLP_HASH_SET<std::string> allowed_property(PorgyConstants::RULE_IMPORT_ALLOWED,
+    unordered_set<std::string> allowed_property(PorgyConstants::RULE_IMPORT_ALLOWED,
                                                PorgyConstants::RULE_IMPORT_ALLOWED +
                                                    PorgyConstants::RULE_IMPORT_ALLOWED_SIZE);
     for (const std::pair<std::string, tlp::DataType *> &currentData :
