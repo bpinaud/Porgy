@@ -25,7 +25,8 @@ SET(LIB_SRCS
     SelectPortNodeInteractorComponent.cpp
     Strategy.cpp
     TraceElementValueModel.cpp
-    porgyitemdelegate.cpp)
+    porgyitemdelegate.cpp
+    Animation.cpp)
 
 SET(LIB_UI
     designer/pluginparametersconfigurationdialog.ui
@@ -36,7 +37,8 @@ SET(LIB_MOC
     include/porgy/pluginparametersconfigurationdialog.h
     include/porgy/pluginselectionwizard.h
     include/porgy/porgypersistentsettings.h
-    include/porgy/porgysettings.h)
+    include/porgy/porgysettings.h
+    include/porgy/Animation.h)
 
 #FILE(GLOB LIB_RCC "designer/*.qrc")
 

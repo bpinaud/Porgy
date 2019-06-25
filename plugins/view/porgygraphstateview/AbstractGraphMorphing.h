@@ -20,8 +20,7 @@
 #ifndef ABSTRACTGRAPHMORPHING_H
 #define ABSTRACTGRAPHMORPHING_H
 
-#include <tulip/Animation.h>
-
+#include <porgy/Animation.h>
 #include <porgy/GraphVisualProperties.h>
 
 namespace tlp {
@@ -32,9 +31,9 @@ class VisualPropertiesMorphing;
 
 /**
   * @brief Abstract class to help to perform graph morphing. Implements
-  *displayedGraph and switchDisplayedGraph to make it work.
+  *displayedGraph and switchDisplayedGraph to make it works.
   **/
-class AbstractGraphMorphing : public tlp::Animation {
+class AbstractGraphMorphing : public Animation {
 public:
   AbstractGraphMorphing(tlp::Graph *fromGraph, const GraphVisualProperties &fromVisualProperties,
                         GraphVisualProperties &fromOutVisualProperties, tlp::Graph *toGraph,
