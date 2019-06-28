@@ -3,7 +3,9 @@
 
 #include <QPropertyAnimation>
 
-class Animation : public QPropertyAnimation {
+#include <portgraph/porgyconf.h>
+
+class PORGY_SCOPE Animation : public QPropertyAnimation {
   Q_OBJECT
   Q_PROPERTY(int frame READ currentFrame WRITE frameChanged)
   Q_PROPERTY(int frameCount READ frameCount WRITE setFrameCount)
