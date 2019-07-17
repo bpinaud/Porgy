@@ -20,7 +20,8 @@
 #ifndef SIMPLECAMERAMORPHING_H
 #define SIMPLECAMERAMORPHING_H
 
-#include <tulip/Animation.h>
+#include <porgy/Animation.h>
+
 #include <tulip/Coord.h>
 
 namespace tlp {
@@ -31,7 +32,7 @@ struct BoundingBox;
 /**
   * @brief Simple camera animation class..
   **/
-class SimpleCameraMorphing : public tlp::Animation {
+class SimpleCameraMorphing : public Animation {
 public:
   SimpleCameraMorphing(tlp::Camera &camera, const tlp::BoundingBox &to, int frameCount,
                        QObject *parent = nullptr);

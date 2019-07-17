@@ -19,11 +19,9 @@
  */
 #include "VisualPropertiesMorphing.h"
 
-#include <tulip/ColorPropertyAnimation.h>
-#include <tulip/DoublePropertyAnimation.h>
+#include "propertiesanimation.h"
+
 #include <tulip/LayoutProperty.h>
-#include <tulip/LayoutPropertyAnimation.h>
-#include <tulip/SizePropertyAnimation.h>
 
 using namespace tlp;
 using namespace std;
@@ -82,26 +80,23 @@ VisualPropertiesMorphing::VisualPropertiesMorphing(
   }
 }
 VisualPropertiesMorphing::~VisualPropertiesMorphing() {
-  for (vector<Animation *>::iterator it = propertiesAnimations.begin();
-       it != propertiesAnimations.end(); ++it) {
-    delete (*it);
+  for (auto v: propertiesAnimations) {
+    delete v;
   }
   propertiesAnimations.clear();
 }
 
 void VisualPropertiesMorphing::setFrameCount(int frameCount) {
   Animation::setFrameCount(frameCount);
-  for (vector<Animation *>::iterator it = propertiesAnimations.begin();
-       it != propertiesAnimations.end(); ++it) {
-    (*it)->setFrameCount(frameCount);
+  for (auto v: propertiesAnimations) {
+    v->setFrameCount(frameCount);
   }
 }
 
 void VisualPropertiesMorphing::frameChanged(int frame) {
   Observable::holdObservers();
-  for (vector<Animation *>::iterator it = propertiesAnimations.begin();
-       it != propertiesAnimations.end(); ++it) {
-    (*it)->frameChanged(frame);
+  for (auto v: propertiesAnimations) {
+    v->frameChanged(frame);
   }
   Observable::unholdObservers();
 }

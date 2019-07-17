@@ -41,7 +41,7 @@ class PORTGRAPH_SCOPE PortNode : public PortNodeBase {
   void mySortPorts(std::vector<Port *> &, const bool, const bool,
                    tlp::LayoutProperty *layout) const;
   void placePorts(tlp::LayoutProperty *layout, std::vector<Port *> &, std::vector<Port *> &,
-                  std::vector<Port *> &, std::vector<Port *> &, const double, const double) const;
+                  std::vector<Port *> &, std::vector<Port *> &, const float, const float) const;
   std::pair<unsigned, unsigned> drawPosition_aux(const bool, tlp::LayoutProperty *layout,
                                                  const bool specifyWidths = false,
                                                  const int xWidth = 0, const int yWidth = 0) const;
@@ -68,12 +68,12 @@ public:
     return ports;
   }
 
-  inline unsigned nbPorts() const {
+  inline size_t nbPorts() const {
     return ports.size();
   }
 
   void resizeCenter(tlp::SizeProperty *nodeSize, tlp::LayoutProperty *layout) const override;
-  void resizeCenter(const double, const double, tlp::SizeProperty *nodeSize) const;
+  void resizeCenter(const float, const float, tlp::SizeProperty *nodeSize) const;
   virtual void setPositions(tlp::LayoutProperty *layout) const;
   void setPositions(const int, const int, tlp::LayoutProperty *layout) const;
   std::pair<unsigned, unsigned> getOptimalSize(tlp::LayoutProperty *layout)

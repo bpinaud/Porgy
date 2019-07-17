@@ -233,7 +233,7 @@ void PartialMap::display() {
   tlp::debug() << "Display of the current partialmap" << endl;
   tlp::debug() << "Number of nodes mapped for now: " << nb_mapped << endl;
   const vector<node> &nodes = g_left->nodes();
-  unsigned nb_nodes(nodes.size());
+  size_t nb_nodes(nodes.size());
   if (nb_mapped != 0) {
     tlp::debug() << "Current mapping: " << endl;
     for (unsigned i = 0; i < nb_nodes; ++i) {
@@ -252,10 +252,10 @@ void PartialMap::display() {
 }
 
 unsigned PartialMap::chooseNode() const {
-  unsigned int k = UINT_MAX;
+  size_t k = UINT_MAX;
   unsigned n = UINT_MAX;
   const vector<node> &nodes = g_left->nodes();
-  unsigned nb_node(nodes.size());
+  size_t nb_node(nodes.size());
   for (unsigned pos = 0; pos < nb_node; ++pos) {
     possiblemap &ma = (*M)[pos];
     assert(!ma.empty());
@@ -288,14 +288,14 @@ bool PartialMap::verifyPos(BooleanProperty *pos) const {
   BooleanProperty *W = g_left->getProperty<BooleanProperty>(PorgyConstants::W);
   for(auto n:W->getNodesEqualTo(true, g_left)) {
     assert(g_left->isElement(n));
-    int posn = g_left->nodePos(n);
+    unsigned posn = g_left->nodePos(n);
     if (!pos->getNodeValue((*current)[posn]))
       return false;
   }
 
   // Position defined without W. We checked if the intersection between the LHS
   // morphism and pos is not empty
-  unsigned cursize(current->size());
+  size_t cursize(current->size());
   for (unsigned i = 0; i < cursize; ++i) {
     if (pos->getNodeValue((*current)[i])) {
       return true;
@@ -310,7 +310,7 @@ bool PartialMap::verifyAntiEdge(Graph *left_anti) const {
   if (left_anti != nullptr) {
     if (_debug)
       tlp::debug() << ": Checking anti-edges..." << endl;
-    for (const edge e : left_anti->edges()) {
+    for (auto e : left_anti->edges()) {
       const pair<node, node> &ends = left_anti->ends(e);
       vector<edge> v;
       v.push_back(e);
@@ -415,7 +415,7 @@ Graph *PartialMap::addSub(int num_solutions, BooleanProperty *position,
   cerr << __PRETTY_FUNCTION__ << ": New subgraph found: " << sub->getName() << endl;
 #endif
   const vector<node> &nodes = g_left->nodes();
-  unsigned nbNodes = nodes.size();
+  size_t nbNodes = nodes.size();
   for (unsigned i = 0; i < nbNodes; ++i) {
     node img((*current)[i]);
     assert(!sub->isElement(img));
@@ -424,7 +424,7 @@ Graph *PartialMap::addSub(int num_solutions, BooleanProperty *position,
     tag->setNodeValue(img, nodes[i]);
   }
   const vector<edge> &edges = g_left->edges();
-  unsigned nbEdges = edges.size();
+  size_t nbEdges = edges.size();
   for (unsigned i = 0; i < nbEdges; ++i) {
     edge img_e((*current_edge)[i]);
     assert(!sub->isElement(img_e));
@@ -445,12 +445,12 @@ bool PartialMap::refine() {
 
   bool modified = false;
   const vector<node> &left_nodes = g_left->nodes();
-  unsigned nb_node(M->size());
+  size_t nb_node(M->size());
   for (unsigned nb = 0; nb < nb_node; ++nb) {
     possiblemap &pmap = (*M)[nb];
     node left_node = left_nodes[nb];
     vector<node> to_delete;
-    for (const node model_node : pmap) {
+    for (auto model_node : pmap) {
       bool found = false;
       for(auto rule_vois:g_left->getInOutNodes(left_node)) {
         bool voisin_ok = false;
@@ -528,13 +528,13 @@ void PartialMap::backtrack(int numtofind, int &nbr_found, BooleanProperty *pos,
   if (set_v.empty())
     return;
 
-  int nb_possibilities = set_v.size();
+  size_t nb_possibilities = set_v.size();
   const vector<node> &nodes = g_left->nodes();
 
   if (_debug) {
       display();
-      cerr << __PRETTY_FUNCTION__ << " : Looking for images of node " << nodes[v] << endl;
-      cerr << __PRETTY_FUNCTION__ << " : Number of possibilities : " << nb_possibilities << endl;
+      tlp::debug() << __PRETTY_FUNCTION__ << " : Looking for images of node " << nodes[v] << endl;
+      tlp::debug() << __PRETTY_FUNCTION__ << " : Number of possibilities : " << nb_possibilities << endl;
   }
 
   progress_step /= nb_possibilities;
@@ -546,7 +546,7 @@ void PartialMap::backtrack(int numtofind, int &nbr_found, BooleanProperty *pos,
 #endif
 
     nb_mapped++;
-    for (const node w : set_v) {
+    for (auto w : set_v) {
       progress += progress_step;
       pp->progress(progress, max_progress);
       (*current)[v] = w;
@@ -593,7 +593,7 @@ void PartialMap::backtrack(int numtofind, int &nbr_found, BooleanProperty *pos,
   }
 
   // General case
-  for (const node w : set_v) {
+  for (auto w : set_v) {
 #ifdef PORGY_RULE_DEBUG_MESSAGES
     cerr << __PRETTY_FUNCTION__ << " : Trying to send node " << v << " to node " << w << endl;
 #endif
@@ -606,7 +606,7 @@ void PartialMap::backtrack(int numtofind, int &nbr_found, BooleanProperty *pos,
     (*partmap.M)[v].insert(w);
 
     // We suppress to other node the possibility to map to w
-    unsigned nb_node(partmap.M->size());
+    size_t nb_node(partmap.M->size());
     for (unsigned nb = 0; nb < nb_node; ++nb) {
       if (nb != v) {
         possiblemap &m = (*partmap.M)[nb];
@@ -754,7 +754,7 @@ unsigned PortGraphModelDecorator::numberOfEdges() const {
   if (nb_tulip != graph_component->numberOfEdges()) {
     vector<edge> v;
     build_edges_vector(graph_component, v);
-    nb = v.size();
+    nb = static_cast<unsigned>(v.size());
     graph_component->setAttribute<unsigned>("number_of_edges", nb);
     graph_component->setAttribute<unsigned>("number_of_edges_tulip",
                                             graph_component->numberOfEdges());

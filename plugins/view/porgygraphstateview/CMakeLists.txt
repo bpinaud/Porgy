@@ -12,6 +12,7 @@ SET(LIB_SRCS
     VisualPropertiesMorphing.cpp
     AnimationViewQuickAccessBar.cpp
     rulepreviewwidget.cpp
+    propertiesanimation.cpp
     )
 
 SET(LIB_UI

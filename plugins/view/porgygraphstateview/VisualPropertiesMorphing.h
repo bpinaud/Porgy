@@ -20,13 +20,12 @@
 #ifndef VISUALPROPERTIESMORPHING_H
 #define VISUALPROPERTIESMORPHING_H
 
-#include <tulip/Animation.h>
-
+#include <porgy/Animation.h>
 #include <porgy/GraphVisualProperties.h>
 
 #include <vector>
 
-class VisualPropertiesMorphing : public tlp::Animation {
+class VisualPropertiesMorphing : public Animation {
 public:
   VisualPropertiesMorphing(tlp::Graph *graph, const GraphVisualProperties &fromVisualProperties,
                            const GraphVisualProperties &toVisualProperties,

@@ -20,14 +20,15 @@
 #ifndef GLMAINWIDGETZOOMANDPANANIMATION_H
 #define GLMAINWIDGETZOOMANDPANANIMATION_H
 
-#include <tulip/Animation.h>
 #include <tulip/GlSceneZoomAndPan.h>
+
+#include <porgy/Animation.h>
 
 namespace tlp {
 class GlMainWidget;
 }
 
-class GlSceneZoomAndPanAnimation : public tlp::Animation {
+class GlSceneZoomAndPanAnimation : public Animation {
 public:
   GlSceneZoomAndPanAnimation(tlp::GlScene *glScene, const tlp::BoundingBox &newViewPort,
                              int frameCount = 1, bool optimalPath = true, double p = sqrt(1.6),
