@@ -201,9 +201,9 @@ pair<unsigned, unsigned> PortNode::drawPosition_aux(const bool draw, LayoutPrope
     if (neighbour.isValid()) {
       Coord myPos = layout->getNodeValue(centerNode);
       Coord neighbourPos = layout->getNodeValue(neighbour);
-      double deltaX = neighbourPos[0] - myPos[0];
-      double deltaY = neighbourPos[1] - myPos[1];
-      double ratio = 0;
+      float deltaX = neighbourPos[0] - myPos[0];
+      float deltaY = neighbourPos[1] - myPos[1];
+      float ratio = 0;
 
       if (deltaX == 0)
         ratio = HUGE_VAL; // +INF
@@ -239,11 +239,11 @@ pair<unsigned, unsigned> PortNode::drawPosition_aux(const bool draw, LayoutPrope
   // add the free ports with attempting to equilibriate nr of ports per
   // dimension
   for (unsigned i = 0; i < freePorts.size(); ++i) {
-    unsigned sumX = northPorts.size() + southPorts.size();
-    unsigned sumY = westPorts.size() + eastPorts.size();
+    size_t sumX = northPorts.size() + southPorts.size();
+    size_t sumY = westPorts.size() + eastPorts.size();
 
-    unsigned minX = min(northPorts.size(), southPorts.size());
-    unsigned minY = min(westPorts.size(), eastPorts.size());
+    size_t minX = min(northPorts.size(), southPorts.size());
+    size_t minY = min(westPorts.size(), eastPorts.size());
 
     // put free ports into west or east
     if (minX < minY || (minX == minY && sumX < sumY)) {
@@ -349,10 +349,10 @@ void PortNode::resizeCenter(SizeProperty *nodeSize, LayoutProperty *layout) cons
   nodeSize->setNodeValue(centerNode, centersize);
 }
 
-void PortNode::resizeCenter(const double xWidth, const double yWidth,
+void PortNode::resizeCenter(const float xWidth, const float yWidth,
                             SizeProperty *nodeSize) const { // Bound to size max of placePorts
-  nodeSize->setNodeValue(centerNode, Size(max(xWidth, .5) * PorgyConstants::SPACE + 2,
-                                          max(yWidth, .5) * PorgyConstants::SPACE + 2, 1));
+  nodeSize->setNodeValue(centerNode, Size(max(xWidth, .5f) * PorgyConstants::SPACE + 2.0f,
+                                          max(yWidth, .5f) * PorgyConstants::SPACE + 2.0f, 1));
   // 2 <=> 1 for decalage (offset) + 1 for PortSize
 }
 
@@ -360,30 +360,30 @@ void PortNode::resizeCenter(const double xWidth, const double yWidth,
 void PortNode::placePorts(LayoutProperty *layout, vector<Port *> &northPorts,
                           vector<Port *> &westPorts, vector<Port *> &southPorts,
                           vector<Port *> &eastPorts) const {
-  unsigned nbX = max(northPorts.size(), southPorts.size());
-  unsigned nbY = max(westPorts.size(), eastPorts.size());
+  size_t nbX = max(northPorts.size(), southPorts.size());
+  size_t nbY = max(westPorts.size(), eastPorts.size());
   placePorts(layout, northPorts, westPorts, southPorts, eastPorts, nbX, nbY);
 }
 
 void PortNode::placePorts(LayoutProperty *layout, std::vector<Port *> &northPorts,
                           std::vector<Port *> &westPorts, std::vector<Port *> &southPorts,
-                          std::vector<Port *> &eastPorts, const double Xwidth,
-                          const double Ywidth) const {
-  double width = max(Xwidth, .5);
-  double height = max(Ywidth, .5);
+                          std::vector<Port *> &eastPorts, const float Xwidth,
+                          const float Ywidth) const {
+  float width = max(Xwidth, .5f);
+  float height = max(Ywidth, .5f);
   // Think to modify recizeCenter in the same time
   assert(width >= 0 && height >= 0);
   width *= PorgyConstants::SPACE;
   height *= PorgyConstants::SPACE;
 
   // distance between first(last) port and corner
-  double decalage = 0.5; // +PortNode::space -SizePort
+  float decalage = 0.5; // +PortNode::space -SizePort
   // CALCULATE DESIRED WIDTHS
 
   // coords of central node
   Coord center = layout->getNodeValue(centerNode);
   // PLACE PORTS
-  double ratio = 0;
+  float ratio = 0;
   node n;
   Coord newC;
   newC.setZ(0);
@@ -391,8 +391,8 @@ void PortNode::placePorts(LayoutProperty *layout, std::vector<Port *> &northPort
   // NORTH
   if (northPorts.size() != 0) {
     ratio = width / northPorts.size();
-    newC.setY(center.getY() + height / 2.0 + decalage);
-    double X = center.getX() - width / 2.0 + ratio / 2.0;
+    newC.setY(center.getY() + height / 2.0f + decalage);
+    float X = center.getX() - width / 2.0f + ratio / 2.0f;
     for (unsigned i = 0; i < northPorts.size(); ++i) {
       n = northPorts[i]->getNode();
       newC.setX(X + i * ratio);
@@ -402,8 +402,8 @@ void PortNode::placePorts(LayoutProperty *layout, std::vector<Port *> &northPort
   // EAST
   if (eastPorts.size() != 0) {
     ratio = height / eastPorts.size();
-    newC.setX(center.getX() + width / 2.0 + decalage);
-    double Y = center.getY() + height / 2.0 - ratio / 2.0;
+    newC.setX(center.getX() + width / 2.0f + decalage);
+    float Y = center.getY() + height / 2.0f - ratio / 2.0f;
     for (unsigned i = 0; i < eastPorts.size(); ++i) {
       n = eastPorts[i]->getNode();
       newC.setY(Y - i * ratio);
@@ -413,8 +413,8 @@ void PortNode::placePorts(LayoutProperty *layout, std::vector<Port *> &northPort
   // SOUTH
   if (southPorts.size() != 0) {
     ratio = width / southPorts.size();
-    double X = center.getX() + width / 2.0 - ratio / 2.0;
-    newC.setY(center.getY() - height / 2.0 - decalage);
+    float X = center.getX() + width / 2.0f - ratio / 2.0f;
+    newC.setY(center.getY() - height / 2.0f - decalage);
     for (unsigned i = 0; i < southPorts.size(); ++i) {
       n = southPorts[i]->getNode();
       newC.setX(X - i * ratio);
@@ -424,8 +424,8 @@ void PortNode::placePorts(LayoutProperty *layout, std::vector<Port *> &northPort
   // WEST
   if (westPorts.size() != 0) {
     ratio = height / westPorts.size();
-    newC.setX(center.getX() - width / 2.0 - decalage);
-    double Y = center.getY() - height / 2.0 + ratio / 2.0;
+    newC.setX(center.getX() - width / 2.0f - decalage);
+    float Y = center.getY() - height / 2.0f + ratio / 2.0f;
     for (unsigned i = 0; i < westPorts.size(); ++i) {
       n = westPorts[i]->getNode();
       newC.setY(Y + i * ratio);

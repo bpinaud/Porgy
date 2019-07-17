@@ -43,7 +43,7 @@ PortGraph::PortGraph(Graph *g)
 
   // get central nodes
   const vector<node> &nodes = g->nodes();
-  unsigned nbNodes = nodes.size();
+  size_t nbNodes = nodes.size();
   container_port->setAll(nullptr);
   container->setAll(nullptr);
   NodeStaticProperty<int> type(g);
