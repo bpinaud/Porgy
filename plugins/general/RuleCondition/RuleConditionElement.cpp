@@ -451,7 +451,8 @@ bool mini_syntax_ast_printer::operator()(logical_unary_op const& log_un) const {
 }
 
 bool mini_syntax_ast_printer::operator()(not_node_op const& notnode) const {
-    tlp::debug() << "NotNode() found." << endl;
+    if (_debug)
+      tlp::debug() << "NotNode() found." << endl;
     /*
     This function evaluates NotNode() conditions.
     It will return TRUE if on every node the condition evaluates to FALSE. (There isn't a node.)

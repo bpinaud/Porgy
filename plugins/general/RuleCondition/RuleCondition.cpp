@@ -63,6 +63,7 @@ class RuleCondition : public tlp::Algorithm {
     
 public:
     PLUGININFORMATION(PorgyConstants::APPLY_RULE_CONDITION, "Janos Varga", "11/09/17", "Comments", "1.0", PorgyConstants::CATEGORY_NAME_INTERNAL)
+
     RuleCondition(const PluginContext *context):Algorithm(context) {
         // The working graph must contain the entire original graph
         addInParameter<string>("Conditions", "Set of instructions to evaluate", ";", true);
