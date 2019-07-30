@@ -196,50 +196,50 @@ namespace ConditionParser
             using namespace phx;
 
             node_id =
-                    sym_lhs_nodes 				[_val = _1]
+                    sym_lhs_nodes               [_val = _1]
                 ;
 
             edge_id =
-                    sym_lhs_edges				[_val = _1]
+                    sym_lhs_edges               [_val = _1]
                 ;
 
             prop_id =
-                    sym_properties 				[_val = _1]
+                    sym_properties              [_val = _1]
                 ;
 
             quoted_text =
                     '"'
-                >> 	lexeme[+(char_ - '"') 		[_val += _1]]
-                >> 	'"'
+                >>     lexeme[+(char_ - '"')    [_val += _1]]
+                >>     '"'
                 ;
 
             quoted_text_str =
-                    quoted_text 				[at_c<0>(_val) = _1];
+                    quoted_text                 [at_c<0>(_val) = _1];
 
             node =
                     (lit("node") | lit("n"))
                 >>  '('
-                >> 	node_id						[_val = set_node(_1)]
+                >>     node_id                  [_val = set_node(_1)]
                 >>  ')'
                 ;
 
             edge =
                     (lit("edge") | lit("e"))
                 >>  '('
-                >> 	edge_id 					[_val = set_edge(_1)]
+                >>     edge_id                  [_val = set_edge(_1)]
                 >>  ')'
                 ;
 
             property =
                 '"'
-                >> 	prop_id						[_val = set_prop(_1)]
+                >>     prop_id                  [_val = set_prop(_1)]
                 >>  '"'
                 ;
 
             element_property =
-                    (node | edge) 				[_val = _1]
-                >>	'.'
-                >> 	property 					[_val = _val % _1]
+                    (node | edge)               [_val = _1]
+                >>    '.'
+                >>     property                 [_val = _val % _1]
                 ;
            
             expression =
@@ -260,11 +260,11 @@ namespace ConditionParser
             factor =
                     int_                        [_val = _1]
                 |   double_                     [_val = _1]
-                |   ('(' >> expression	        [_val = _1] >> ')')
+                |   ('(' >> expression          [_val = _1] >> ')')
                 |   ('!' >> factor              [_val = neg(_1)])
                 |   ('+' >> factor              [_val = _1])
-                |   (element_property 			[_val = _1])
-                |   (quoted_text_str			[_val = _1])
+                |   (element_property           [_val = _1])
+                |   (quoted_text_str            [_val = _1])
                 |   ((lit("max(") >> expression >> ',' >> expression >> ')')    [_val = set_max(_1, _2)])
                 |   ((lit("min(") >> expression >> ',' >> expression >> ')')    [_val = set_min(_1, _2)])
                 |   (lit("random(") >> factor   [_val = set_random(_1)] >> ')')
@@ -291,7 +291,8 @@ namespace ConditionParser
                 ))
                 ;
                 
-            // implement this as logical parsing: https://cs.stackexchange.com/questions/10558/grammar-for-describing-boolean-expressions-with-and-or-and-not
+            // TODO: implement this as logical parsing: 
+            // https://cs.stackexchange.com/questions/10558/grammar-for-describing-boolean-expressions-with-and-or-and-not
             //condition =
             //        ('!' >> condition)          [ _val = log_op_not(_1) ] 
             //    |   comparison                  [ _a = _1] 
