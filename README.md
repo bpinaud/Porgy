@@ -16,7 +16,7 @@ The desired tool will ultimately be used to model, visualise and simulate biolog
 
 List of dependencies
 ====================
-- Tulip 5.3-dev with Python support enabled (https://github.com/Tulip-Dev/tulip)
+- Tulip 5.3-dev with Python support enabled (https://github.com/janos-varga/Tulip)
 - Boost 1.60 (see http://www.boost.org/)
 - All dependencies from Tulip especially: 
   - C++11 compiler
