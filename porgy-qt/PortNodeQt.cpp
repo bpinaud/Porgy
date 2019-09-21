@@ -25,7 +25,6 @@
 #include <portgraph/PortNode.h>
 
 #include <porgy/PortNodeQt.h>
-#include <porgy/PortQt.h>
 
 #include <tulip/BooleanProperty.h>
 #include <tulip/ColorProperty.h>
