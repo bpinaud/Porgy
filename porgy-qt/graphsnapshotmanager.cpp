@@ -26,8 +26,8 @@
 #include <tulip/PropertyInterface.h>
 #include <tulip/TlpQtTools.h>
 
-using namespace tlp;
 using namespace std;
+using namespace tlp;
 
 GraphSnapshotManager::GraphSnapshotManager(QObject *parent)
     : QObject(parent), _snapshotSize(QSize(128, 128)), _backgroundColor(Color(255, 255, 255)) {}
@@ -92,8 +92,8 @@ void GraphSnapshotManager::stopObserving(Graph *graph) {
       }
     }
   }
-  for (set<PropertyInterface *>::iterator it = toErase.begin(); it != toErase.end(); ++it) {
-    _oberverList.erase(*it);
+  for (auto it : toErase) {
+    _oberverList.erase(it);
   }
 }
 

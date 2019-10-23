@@ -32,7 +32,7 @@ public:
 
   void operator()(const StrategyElement::ngbprop_ds_vect &p_ex) {
     out << ", ";
-    for (StrategyElement::ngbprop_ds_vect::const_iterator p_it = p_ex.begin();
+    for (auto p_it = p_ex.begin();
          p_it != p_ex.end();) {
       StrategyElement::ngbprop_ds p_element = *p_it;
       StrategyElement::TulipProp prop(get<0>(p_element));

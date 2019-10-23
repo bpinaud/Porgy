@@ -7,6 +7,7 @@
 #include <portgraph/Bridge.h>
 #include <portgraph/PortBase.h>
 #include <portgraph/PortGraphRule.h>
+#include <portgraph/PorgyTlpGraphStructure.h>
 
 #include <boost/lexical_cast.hpp>
 
@@ -87,7 +88,7 @@ static std::string build_parallel_rule(const StrategyElement::parallel_datastruc
   Observable::holdObservers();
   tlp::copyToGraph(parallel_rule, g1);
   // for all other rules, only LHS, RHS and bridge ports have to be copied
-  for (auto &r : rulesg) {
+  for (auto r : rulesg) {
     PortGraphRuleDecorator dec(r);
     BooleanProperty sel(r);
     sel.setAllNodeValue(false);

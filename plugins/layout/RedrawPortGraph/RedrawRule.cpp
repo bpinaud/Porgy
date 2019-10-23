@@ -66,7 +66,7 @@ class RedrawRule : public LayoutAlgorithm {
     // add an edge if centers are connected via their respective ports
     // copy required because edges may be added
     vector<edge> v(graph->edges());
-    for (edge e : v) {
+    for (auto e : v) {
       const pair<node, node> &ends = graph->ends(e);
       if ((_dec->getSide(e) != PorgyConstants::SIDE_BRIDGE_OPP) &&
           (!PortNodeBase::isCenter(ends.second, graph)) &&

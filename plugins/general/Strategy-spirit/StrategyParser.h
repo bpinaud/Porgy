@@ -37,6 +37,7 @@
 #include <tulip/DoubleProperty.h>
 #include <tulip/IntegerProperty.h>
 #include <tulip/TlpQtTools.h>
+#include <tulip/PluginLister.h>
 
 #include <fstream>
 
@@ -271,7 +272,7 @@ struct checkproba {
     if (strat.size() != v.size())
       return false;
     double sum = 0;
-    for (const double elt : v) {
+    for (auto elt : v) {
       sum += elt;
     }
     return (sum == 1.0);
