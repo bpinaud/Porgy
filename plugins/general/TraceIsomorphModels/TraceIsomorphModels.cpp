@@ -78,7 +78,7 @@ public:
     g->getProperty<ColorProperty>("viewColor")->setMetaValueCalculator(&vViewColorPropertyCalc);
     string errMsg;
     pluginProgress->progress(cpt, graph->numberOfNodes());
-    for (node n : t.getModelsMetaNodes()) {
+    for (auto n : t.getModelsMetaNodes()) {
       cpt++;
       pluginProgress->progress(cpt, graph->numberOfNodes());
       if (pluginProgress->state() == TLP_STOP) {
@@ -99,10 +99,8 @@ public:
       string errorMsg;
       g->applyPropertyAlgorithm(PorgyConstants::FIND_ISOMORPHIC_GRAPHS, &isomorph, errorMsg,&ds,
                                 pluginProgress);
-      auto *it = isomorph.getNonDefaultValuatedNodes(g);
-      it->next(); // il y a toujours au moins une rponse
 
-      if (it->hasNext()) { // il y a au moins deux mtasommets isomorphes
+      if (isomorph.numberOfNonDefaultValuatedNodes()>1) { // il y a au moins deux mtasommets isomorphes
         Graph *grp = traceRoot->addSubGraph(&isomorph);
         grp->setAttribute("PORGY, do not display", true); // UGLY HACK!!!
         grp->applyPropertyAlgorithm("Circular", grp->getProperty<LayoutProperty>("viewLayout"),
@@ -112,7 +110,7 @@ public:
         IntegerProperty *shape_grp = grp->getProperty<IntegerProperty>("viewShape");
         IntegerProperty *label_position = grp->getProperty<IntegerProperty>("viewLabelPosition");
         stringstream sstr;
-        for (node n : grp->nodes()) {
+        for (auto n : grp->nodes()) {
           shape_grp->setNodeValue(n, NodeShape::Square);
           label_position->setNodeValue(n, LabelPosition::Right);
           sstr << grp->getNodeMetaInfo(n)->getName() << " ";
@@ -121,14 +119,13 @@ public:
         grp->setName(sstr.str());
         g->createMetaNode(grp, true, false);
       }
-      delete it;
     }
     IntegerProperty *shapeArrow = g->getProperty<IntegerProperty>("viewTgtAnchorShape");
     SizeProperty *sizeArrow = g->getProperty<SizeProperty>("viewTgtAnchorSize");
 
-    for (edge e : g->edges()) {
+    for (auto e : g->edges()) {
       shapeArrow->setEdgeValue(e, EdgeExtremityShape::Arrow);
-      sizeArrow->setEdgeValue(e, Size(0.4, 0.4, 0.25));
+      sizeArrow->setEdgeValue(e, Size(0.4f, 0.4f, 0.25));
     }
 
     t.redraw(errMsg, pluginProgress);

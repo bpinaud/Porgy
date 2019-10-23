@@ -109,7 +109,7 @@ void AddPortNodeConfigurationWidget::editPortNode(const QModelIndex &index) {
 }
 
 void AddPortNodeConfigurationWidget::treatEvents(const std::vector<tlp::Event> &events) {
-  for (auto &it : events) {
+  for (auto it : events) {
     if (it.type() == tlp::Event::TLP_DELETE) {
       // A graph is destructed
       tlp::Graph *rootGraph = dynamic_cast<tlp::Graph *>(it.sender());

@@ -35,6 +35,7 @@
 #include <tulip/GlGraphRenderingParameters.h>
 #include <tulip/StringProperty.h>
 #include <tulip/TlpQtTools.h>
+#include <tulip/PluginLister.h>
 
 #include <portgraph/PorgyTlpGraphStructure.h>
 #include <portgraph/Trace.h>

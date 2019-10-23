@@ -45,7 +45,7 @@ CreatePortNode::CreatePortNode(QWidget *parent, const PortNodeQt &pN)
     : QDialog(parent), ui(new Ui::DialogPortNode) {
   init(pN.getColor());
   ui->lineEditName->setText(pN.getName());
-  for (const PortQt &p : pN.getPorts()) {
+  for (auto p : pN.getPorts()) {
     QTableWidgetItem *nameItem = new QTableWidgetItem();
     int n = ui->PortList->rowCount();
     ui->PortList->insertRow(n);

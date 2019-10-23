@@ -31,6 +31,7 @@
 #include <tulip/LayoutProperty.h>
 #include <tulip/SizeProperty.h>
 #include <tulip/StringProperty.h>
+#include <tulip/PluginLister.h>
 
 #include <portgraph/PorgyTlpGraphStructure.h>
 #include <portgraph/Trace.h>

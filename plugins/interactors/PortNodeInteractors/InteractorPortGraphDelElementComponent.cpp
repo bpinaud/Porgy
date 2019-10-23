@@ -137,10 +137,10 @@ void PortGraphDelElementComponent::treatEvents(const std::vector<tlp::Event> &) 
   started = false;
   if (!nodetodelete.empty()) {
     Graph *g = view()->graph();
-    for (auto it2 = nodetodelete.cbegin(); it2 != nodetodelete.cend(); ++it2) {
-      if ((g->isElement(*it2)) && (PortBase::isPort(*it2, g))) {
+    for (auto n :  nodetodelete) {
+      if ((g->isElement(n)) && (PortBase::isPort(n, g))) {
         // nodes and edges have to be deleted inside the whole hierarchy
-        view()->graph()->delNode(*it2, true);
+        view()->graph()->delNode(n, true);
       }
     }
     nodetodelete.clear();

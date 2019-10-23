@@ -25,6 +25,7 @@
 
 #include <tulip/GlyphManager.h>
 #include <tulip/TlpQtTools.h>
+#include <tulip/PluginLister.h>
 
 #include "ui_DialogPort.h"
 
@@ -55,7 +56,7 @@ void CreatePort::init(const QColor &color) {
   glyphs.remove("2D - Square");    // 2D - Square will be inserted at the beginning
                                    // of the list
   ui->comboBoxGlyph->addItem("2D - Square");
-  for (const auto &s : glyphs) {
+  for (auto s : glyphs) {
     ui->comboBoxGlyph->addItem(tlp::tlpStringToQString(s));
   }
   ui->ColorPortButton->setDialogParent(this);

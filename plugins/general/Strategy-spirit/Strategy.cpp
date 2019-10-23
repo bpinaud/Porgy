@@ -23,6 +23,7 @@
 #include <tulip/Algorithm.h>
 #include <tulip/BooleanProperty.h>
 #include <tulip/PythonInterpreter.h>
+#include <tulip/PluginLister.h>
 
 #include <chrono>
 

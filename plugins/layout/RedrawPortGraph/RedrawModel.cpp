@@ -86,8 +86,8 @@ class RedrawModel : public LayoutAlgorithm {
     }
     // ajout d'une arte si les centres sont connects par l'intermdiaire des
     // ports
-    for (edge e : p.getEdges()) {
-      const pair<const PortNode *, const PortNode *> ends = p.ends(e);
+    for (auto e : p.getEdges()) {
+      auto ends = p.ends(e);
       sub->addEdge(ends.first->getCenter(), ends.second->getCenter());
     }
 
