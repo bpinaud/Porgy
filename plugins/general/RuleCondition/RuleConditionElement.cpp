@@ -548,6 +548,7 @@ bool mini_syntax_ast_printer::operator()(not_node_op const& notnode) const {
 }
 
 bool mini_syntax_ast_printer::operator()(nil const& n) const {
+    (void)n;
     tlp::debug() << "nil found." << endl;
     return false;
 }
