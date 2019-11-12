@@ -37,6 +37,10 @@ GraphVisualProperties::GraphVisualProperties(Graph *graph, VisualPropertiesFlags
   initFromGraph(graph, propertiesToGet);
 }
 
+GraphVisualProperties::~GraphVisualProperties() {
+    deleteProperties();
+}
+
 void GraphVisualProperties::deleteProperties() {
   for(auto i:_properties)
       delete i.second;

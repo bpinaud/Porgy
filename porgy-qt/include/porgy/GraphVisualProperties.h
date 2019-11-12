@@ -73,7 +73,7 @@ public:
     * @brief Build an object from a graph.
     **/
   GraphVisualProperties(tlp::Graph *graph, VisualPropertiesFlags propertiesToGet);
-  virtual ~GraphVisualProperties() = default;
+  virtual ~GraphVisualProperties();
 
   void initFromInputData(tlp::GlGraphInputData *inputData, VisualPropertiesFlags propertiesToGet);
   void initFromGraph(tlp::Graph *graph, VisualPropertiesFlags propertiesToGet);
