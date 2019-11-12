@@ -26,9 +26,8 @@
 using namespace tlp;
 using namespace std;
 
-GraphVisualProperties::GraphVisualProperties() {}
-GraphVisualProperties::GraphVisualProperties(const GraphVisualProperties &toCopy)
-    : _properties(toCopy._properties) {}
+//GraphVisualProperties::GraphVisualProperties(const GraphVisualProperties &toCopy)
+//    : _properties(toCopy._properties) {}
 GraphVisualProperties::GraphVisualProperties(GlGraphInputData *inputData,
                                              VisualPropertiesFlags propertiesToGet) {
   initFromInputData(inputData, propertiesToGet);
@@ -38,10 +37,9 @@ GraphVisualProperties::GraphVisualProperties(Graph *graph, VisualPropertiesFlags
   initFromGraph(graph, propertiesToGet);
 }
 
-GraphVisualProperties::~GraphVisualProperties() {}
-
 void GraphVisualProperties::deleteProperties() {
-  qDeleteAll(_properties);
+  for(auto i:_properties)
+      delete i.second;
   _properties.clear();
 }
 
@@ -130,44 +128,44 @@ LayoutProperty *GraphVisualProperties::getElementLayout() const {
 
 void GraphVisualProperties::copyToInputData(GlGraphInputData *inputData) const {
 
-  for (auto it = _properties.begin(); it != _properties.end(); ++it) {
-    switch (it.key()) {
+  for (auto k: _properties) {
+    switch (k.first) {
     case ElementColor:
-      inputData->setElementColor(static_cast<ColorProperty *>(it.value()));
+      inputData->setElementColor(static_cast<ColorProperty *>(k.second));
       break;
 
     case ElementBorderColor:
-      inputData->setElementBorderColor(static_cast<ColorProperty *>(it.value()));
+      inputData->setElementBorderColor(static_cast<ColorProperty *>(k.second));
       break;
 
     case ElementLabelColor:
-      inputData->setElementLabelColor(static_cast<ColorProperty *>(it.value()));
+      inputData->setElementLabelColor(static_cast<ColorProperty *>(k.second));
       break;
 
     case ElementLayout:
-      inputData->setElementLayout(static_cast<LayoutProperty *>(it.value()));
+      inputData->setElementLayout(static_cast<LayoutProperty *>(k.second));
       break;
 
     case ElementSize:
-      inputData->setElementSize(static_cast<SizeProperty *>(it.value()));
+      inputData->setElementSize(static_cast<SizeProperty *>(k.second));
       break;
 
     case ElementBorderWidth:
-      inputData->setElementBorderWidth(static_cast<DoubleProperty *>(it.value()));
+      inputData->setElementBorderWidth(static_cast<DoubleProperty *>(k.second));
       break;
 
     case ElementLabelBorderColor:
-      inputData->setElementLabelBorderColor(static_cast<ColorProperty *>(it.value()));
+      inputData->setElementLabelBorderColor(static_cast<ColorProperty *>(k.second));
       break;
 
     case NoVisualProperties:
     case AllVisualProperties:
       break;
     case AllColorProperties:
-      inputData->setElementLabelBorderColor(static_cast<ColorProperty *>(it.value()));
-      inputData->setElementLabelColor(static_cast<ColorProperty *>(it.value()));
-      inputData->setElementBorderColor(static_cast<ColorProperty *>(it.value()));
-      inputData->setElementColor(static_cast<ColorProperty *>(it.value()));
+      inputData->setElementLabelBorderColor(static_cast<ColorProperty *>(k.second));
+      inputData->setElementLabelColor(static_cast<ColorProperty *>(k.second));
+      inputData->setElementBorderColor(static_cast<ColorProperty *>(k.second));
+      inputData->setElementColor(static_cast<ColorProperty *>(k.second));
       break;
     }
   }

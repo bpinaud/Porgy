@@ -105,8 +105,8 @@ void AbstractGraphMorphing::initInternalAnimations(const GraphVisualProperties &
   GraphVisualProperties secondAnimationOverloadedVisualProperties;
 
   // Generate new out properties.
-  firstAnimationOverloadedVisualProperties = GraphVisualProperties();
-  secondAnimationOverloadedVisualProperties = GraphVisualProperties();
+  //firstAnimationOverloadedVisualProperties = GraphVisualProperties();
+  //secondAnimationOverloadedVisualProperties = GraphVisualProperties();
   if (animationProperties.testFlag(ElementColor)) {
     // Create abstract properties to overload GlMainWidget default properties.
     ColorProperty *colorFromResult = new ColorProperty(fromGraph);
