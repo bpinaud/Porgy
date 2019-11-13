@@ -84,7 +84,7 @@ public:
    * @param property
    * @return
    */
-  tlp::PropertyInterface *property(const VisualProperties property) const {
+  tlp::PropertyInterface *property(VisualProperties property) const {
     return (_properties.find(property)!=_properties.end()) ? _properties.at(property) : nullptr;
   }
 
