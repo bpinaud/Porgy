@@ -49,6 +49,15 @@ enum VisualProperties {
   AllVisualProperties = 0xffffffff
 };
 
+struct EnumClassHash
+{
+    template <typename T>
+    std::size_t operator()(T t) const
+    {
+        return static_cast<std::size_t>(t);
+    }
+};
+
 Q_DECLARE_FLAGS(VisualPropertiesFlags, VisualProperties)
 
 class PORGY_SCOPE GraphVisualProperties {
@@ -132,7 +141,8 @@ public:
   void setElementLabelBorderColor(tlp::ColorProperty *property);
 
 private:
-  std::unordered_map<VisualProperties, tlp::PropertyInterface *> _properties;
+//the third argument is needed for old compilers gcc<6.1 and clang<8
+  std::unordered_map<VisualProperties, tlp::PropertyInterface *, std::hash<int>> _properties;
 };
 
 #endif // GRAPHVISUALPROPERTIES_H
