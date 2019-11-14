@@ -20,9 +20,11 @@
 #ifndef GRAPHVISUALPROPERTIES_H
 #define GRAPHVISUALPROPERTIES_H
 
-#include <QMap>
+#include <unordered_map>
 
 #include <portgraph/porgyconf.h>
+
+#include <QObject>
 
 namespace tlp {
 class Graph;
@@ -54,7 +56,7 @@ public:
   /**
     * @brief Build an object with no visual properties.
     **/
-  GraphVisualProperties();
+  GraphVisualProperties() = default;
   /**
     * @brief Delete all the initialized properties.
     **/
@@ -62,7 +64,7 @@ public:
   /**
     * @brief Copy contructor.
     **/
-  GraphVisualProperties(const GraphVisualProperties &toCopy);
+  GraphVisualProperties(const GraphVisualProperties &toCopy) = default;
   /**
     * @brief Build an object from a GlGraphInputData visual properties.
     **/
@@ -83,7 +85,7 @@ public:
    * @return
    */
   tlp::PropertyInterface *property(VisualProperties property) const {
-    return _properties.contains(property) ? _properties[property] : nullptr;
+    return (_properties.find(property)!=_properties.end()) ? _properties.at(property) : nullptr;
   }
 
   void setProperty(VisualProperties type, tlp::PropertyInterface *property) {
@@ -130,7 +132,8 @@ public:
   void setElementLabelBorderColor(tlp::ColorProperty *property);
 
 private:
-  QMap<VisualProperties, tlp::PropertyInterface *> _properties;
+//the third argument is needed for old compilers gcc<6.1 and clang<8
+  std::unordered_map<VisualProperties, tlp::PropertyInterface *, std::hash<int>> _properties;
 };
 
 #endif // GRAPHVISUALPROPERTIES_H
