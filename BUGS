@@ -1,0 +1,6 @@
+KNOWN BUGS
+- Copy/paste of a node in a rule
+- check rule algorithm (from Algorithm-->Debug menu) seems to work but no results shown
+
+FEATURE REQUESTS
+- add a regexp based match when checking port properties 
