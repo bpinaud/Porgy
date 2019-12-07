@@ -1,0 +1,7 @@
+KNOWN BUGS
+- Copy/paste of a node in a rule
+- check rule algorithm (from Algorithm-->Debug menu) seems to work but no results shown
+- website functionnality not properly done. It is only possible to choose the URL property but the menu with "Open link" is not shown.
+
+FEATURE REQUESTS
+- add a regexp based match when checking port properties 
