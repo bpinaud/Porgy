@@ -88,7 +88,7 @@ struct mini_syntax_printer {
 
 struct mini_syntax_ast_printer : boost::static_visitor<> {
   tlp::Graph *_g;
-  mini_syntax_ast_printer(tlp::Graph *g);
+  explicit mini_syntax_ast_printer(tlp::Graph *g);
   void operator()(mini_syntax_instruction const &inst) const;
   void operator()(binary_op const &bin) const;
   void operator()(unary_op const &un) const;

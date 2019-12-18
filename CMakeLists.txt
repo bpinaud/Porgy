@@ -45,7 +45,7 @@ IF(NOT MSVC) #visual studio does not recognize these options
    IF(NOT APPLE)
      SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pedantic")
    ENDIF(NOT APPLE)
- ENDIF(NOT MSVC)
+ENDIF(NOT MSVC)
 IF(UNIX)
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
 ENDIF(UNIX)

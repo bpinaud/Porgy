@@ -5,13 +5,9 @@
 #include <boost/variant/recursive_variant.hpp>
 #include <boost/variant/recursive_wrapper.hpp>
 
-#include <tulip/tulipconf.h>
-
-#include <portgraph/PortGraph.h>
-
 #include <map>
-#include <vector>
 #include <string>
+#include <vector>
 
 namespace tlp {
   class Graph;
@@ -143,7 +139,7 @@ namespace ConditionParser {
     struct mini_syntax_ast_printer : boost::static_visitor<bool> {
         tlp::Graph *_g;
         
-        mini_syntax_ast_printer(tlp::Graph *g);
+        explicit mini_syntax_ast_printer(tlp::Graph *g);
         
         bool operator()(mini_syntax_condition const&) const;
         bool operator()(binary_op const&) const;

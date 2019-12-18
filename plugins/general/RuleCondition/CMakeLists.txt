@@ -7,6 +7,11 @@ SET(LIB_SRCS
     RuleCondition.cpp
     RuleConditionElement.cpp)
 
+IF(NOT MSVC AND WIN32 AND "${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
+    # Fix build on Windows with MinGW/MSYS2, see: https://stackoverflow.com/a/29479701/1826326
+    set_source_files_properties(RuleCondition.cpp PROPERTIES COMPILE_FLAGS -Og)
+ENDIF(NOT MSVC AND WIN32 AND "${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
+
 ADD_LIBRARY(${PLUGIN_NAME}-${TULIP_VERSION} SHARED ${LIB_SRCS} ${LIB_MOC_SRCS})
 TARGET_LINK_LIBRARIES(${PLUGIN_NAME}-${TULIP_VERSION} ${PORTGRAPH_LIBS} ${TULIP_LIBRARIES})
 

@@ -23,11 +23,6 @@
 #include "abstractgraphhierachyitemmodel.h"
 #include <porgy/graphsnapshotmanager.h>
 
-#include <QSet>
-#include <QVector>
-
-using namespace std;
-
 class SubgraphsHierachyTreeModel : public AbstractGraphHierachyItemModel {
   Q_OBJECT
 public:
@@ -88,7 +83,7 @@ protected:
   Q_PROPERTY(int iconColumn READ iconColumn WRITE setIconColumn)
 
   tlp::Graph *_rootGraph;
-  unordered_set<tlp::Graph *> _toUpdate, _rootToAdd;
+  std::unordered_set<tlp::Graph *> _toUpdate, _rootToAdd;
   Columns _columnsFlags;
   std::vector<Column> _visibleColumns;
   mutable GraphSnapshotManager _snapshotManager;

@@ -10,17 +10,16 @@
 #include <portgraph/PorgyTlpGraphStructure.h>
 
 using namespace AlgoParser;
-using namespace std;
 
 namespace {
-string global_tmp_id;
-string global_tmp_prop;
-string global_tmp_element_type; // ndef, node, edge
-string global_type;             // ndef, int, double, string
-string global_tmp_str_result;
-int global_tmp_int_result;
-double global_tmp_double_result;
-map<std::string, std::string> global_lhsNodeMap, global_lhsEdgeMap, global_rhsNodeMap,
+  std::string global_tmp_id;
+  std::string global_tmp_prop;
+  std::string global_tmp_element_type; // ndef, node, edge
+  std::string global_type;             // ndef, int, double, string
+  std::string global_tmp_str_result;
+  int global_tmp_int_result;
+  double global_tmp_double_result;
+  std::map<std::string, std::string> global_lhsNodeMap, global_lhsEdgeMap, global_rhsNodeMap,
     global_rhsEdgeMap;
 }
 
@@ -295,7 +294,7 @@ void mini_syntax_ast_printer::operator()(unary_op const &un) const {
     break;
   }
   case 'r': { // case "random"
-    uniform_real_distribution<double> choose(0, global_tmp_double_result);
+    std::uniform_real_distribution<double> choose(0, global_tmp_double_result);
     global_tmp_double_result = choose(PorgyTlpGraphStructure::gen);
     global_type = tlp::DoubleProperty::propertyTypename;
     break;

@@ -30,16 +30,12 @@
 
 #include <string>
 
-using namespace std;
-using namespace tlp;
-using namespace boost;
-
 namespace ConditionParser {
-    bool parse(const string &cond,
-                     string &errMsg,
-                     std::vector<std::string> propertynames,
-                     std::vector<std::string> lhsNodesId,
-                     std::vector<std::string> lhsEdgesId,
+    bool parse(const std::string &cond,
+                     std::string &errMsg,
+                     const std::vector<std::string>& propertynames,
+                     const std::vector<std::string>& lhsNodesId,
+                     const std::vector<std::string>& lhsEdgesId,
                      ConditionParser::mini_syntax &ast) 
     {
         typedef std::string::const_iterator iterator_type;
@@ -53,7 +49,7 @@ namespace ConditionParser {
         if (!r || iter != end)
         {
             std::string rest(iter, end);
-            tlp::debug() << "Parsing failed. Stopped at: " << rest << endl;
+            tlp::debug() << "Parsing failed. Stopped at: " << rest << std::endl;
         }
         return (r && iter == end);
     }
@@ -64,19 +60,19 @@ class RuleCondition : public tlp::Algorithm {
 public:
     PLUGININFORMATION(PorgyConstants::APPLY_RULE_CONDITION, "Janos Varga", "11/09/17", "Comments", "1.0", PorgyConstants::CATEGORY_NAME_INTERNAL)
 
-    RuleCondition(const PluginContext *context):Algorithm(context) {
+    explicit RuleCondition(const tlp::PluginContext *context) : tlp::Algorithm(context) {
         // The working graph must contain the entire original graph
-        addInParameter<string>("Conditions", "Set of instructions to evaluate", ";", true);
-        addInParameter<string>("Mode", "The operation performed: parse, evaluate or execute", "parse", true);
+        addInParameter<std::string>("Conditions", "Set of instructions to evaluate", ";", true);
+        addInParameter<std::string>("Mode", "The operation performed: parse, evaluate or execute", "parse", true);
         addInParameter<tlp::Graph*>("Model", "The entire graph the matching runs on.", "");
         addInParameter<std::string>("LhsMappingProperty", "The mapping between the graph being rewritten and the rule.", "");
-        addOutParameter<string>("Error Message", "", "none");
+        addOutParameter<std::string>("Error Message", "", "none");
     }
 
-    bool check(string &errorMsg) {
-        std::string cond_text("");
-        std::string _mode("");
-        std::string lhsMappingProperty("");
+    bool check(std::string &errorMsg) override {
+        std::string cond_text;
+        std::string _mode;
+        std::string lhsMappingProperty;
         tlp::Graph* pg_model;
         pluginProgress->showPreview(false);
 
@@ -109,14 +105,14 @@ public:
             propertynames.push_back(property);
         }
         
-        tlp::IntegerProperty *mappingProperty = graph->getProperty<tlp::IntegerProperty>(lhsMappingProperty);
+        auto *mappingProperty = graph->getProperty<tlp::IntegerProperty>(lhsMappingProperty);
         
-        for(const node& n: graph->nodes()) {
-            lhsNodeMap[mappingProperty->getNodeStringValue(n)] = to_string(n.id);
+        for(const tlp::node& n: graph->nodes()) {
+            lhsNodeMap[mappingProperty->getNodeStringValue(n)] = std::to_string(n.id);
             lhsNodesId.push_back(mappingProperty->getNodeStringValue(n));
         }
-        for(const edge& e: graph->edges()) {
-            lhsEdgeMap[mappingProperty->getEdgeStringValue(e)] = to_string(e.id);
+        for(const tlp::edge& e: graph->edges()) {
+            lhsEdgeMap[mappingProperty->getEdgeStringValue(e)] = std::to_string(e.id);
             lhsEdgesId.push_back(mappingProperty->getEdgeStringValue(e));
         }
 
@@ -140,7 +136,7 @@ public:
         return false;
     }
 
-    bool run() {        
+    bool run() override {
         return true;
     }
 

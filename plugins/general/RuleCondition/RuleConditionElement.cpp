@@ -13,20 +13,18 @@
 #include <portgraph/PortGraphModel.h>
 
 using namespace ConditionParser;
-using namespace std;
-using namespace tlp;
 
 namespace {
-    string global_tmp_id;
-    string global_tmp_prop;
-    string global_tmp_element_type; // ndef, node, edge
-    string global_type; // ndef, int, double, string
-    string global_tmp_str_result;
-    int global_tmp_int_result;
-    double global_tmp_double_result;
-    bool global_tmp_bool_result;
-    map<std::string,std::string> global_lhsNodeMap, global_lhsEdgeMap;
-    tlp::Graph *global_g_model;
+  std::string global_tmp_id;
+  std::string global_tmp_prop;
+  std::string global_tmp_element_type; // ndef, node, edge
+  std::string global_type; // ndef, int, double, string
+  std::string global_tmp_str_result;
+  int global_tmp_int_result;
+  double global_tmp_double_result;
+  bool global_tmp_bool_result;
+  std::map<std::string,std::string> global_lhsNodeMap, global_lhsEdgeMap;
+  tlp::Graph *global_g_model;
 }
 
 mini_syntax_condition& mini_syntax_condition::operator+(mini_syntax_condition const& rhs) {
@@ -287,10 +285,10 @@ bool mini_syntax_ast_printer::operator()(unary_op const& un) const {
         }
         case 'r':
         {   // case "random"
-            uniform_real_distribution<double> choose(0, global_tmp_double_result);
-            global_tmp_double_result = choose(PorgyTlpGraphStructure::gen);
-            global_type = tlp::DoubleProperty::propertyTypename;
-            break;
+          std::uniform_real_distribution<double> choose(0, global_tmp_double_result);
+          global_tmp_double_result = choose(PorgyTlpGraphStructure::gen);
+          global_type = tlp::DoubleProperty::propertyTypename;
+          break;
         }
     }
     
@@ -451,14 +449,14 @@ bool mini_syntax_ast_printer::operator()(logical_unary_op const& log_un) const {
 }
 
 bool mini_syntax_ast_printer::operator()(not_node_op const& notnode) const {
-    tlp::debug() << "NotNode() found." << endl;
+    tlp::debug() << "NotNode() found." << std::endl;
     /*
     This function evaluates NotNode() conditions.
     It will return TRUE if on every node the condition evaluates to FALSE. (There isn't a node.)
     It will return FALSE if it finds at least one node on which the condition expression evaluates to TRUE.
     */
     mini_syntax_ast_printer prop_name_eval(_g);
-    boost:apply_visitor(prop_name_eval, notnode.prop_name.expr);
+    boost::apply_visitor(prop_name_eval, notnode.prop_name.expr);
     std::string prop_name = global_tmp_str_result;
     
     mini_syntax_ast_printer expr_eval(_g);
@@ -485,8 +483,8 @@ bool mini_syntax_ast_printer::operator()(not_node_op const& notnode) const {
     
     if (prop_type == tlp::IntegerProperty::propertyTypename || prop_type == tlp::DoubleProperty::propertyTypename) {
         for (PortNode *pn : pg.getPortNodes()) {
-            node c(pn->getCenter());
-            double node_val = static_cast<NumericProperty*>(propI)->getNodeDoubleValue(c);
+            tlp::node c(pn->getCenter());
+            double node_val = static_cast<tlp::NumericProperty*>(propI)->getNodeDoubleValue(c);
             if (notnode.op == "==") {
                 if (node_val == expr_double_int_result)
                     return false;
@@ -515,32 +513,32 @@ bool mini_syntax_ast_printer::operator()(not_node_op const& notnode) const {
     }
     else if (prop_type == tlp::StringProperty::propertyTypename) {
         for (PortNode *pn : pg.getPortNodes()) {
-            node c(pn->getCenter());
-            string node_str_val = propI->getNodeStringValue(c);
-            if (notnode.op == "==") {
-                if (node_str_val == expr_str_result)
-                    return false;
-            }
-            else if (notnode.op == "!=") {
-                if (node_str_val != expr_str_result)
-                    return false;
-            }
-            else if (notnode.op == ">=") {
-                if (node_str_val >= expr_str_result)
-                    return false;
-            }
-            else if (notnode.op == ">") {
-                if (node_str_val > expr_str_result)
-                    return false;
-            }
-            else if (notnode.op == "<=") {
-                if (node_str_val <= expr_str_result)
-                    return false;
-            }
-            else if (notnode.op == "<") {
-                if (node_str_val < expr_str_result)
-                    return false;
-            }
+          tlp::node c(pn->getCenter());
+          std::string node_str_val = propI->getNodeStringValue(c);
+          if (notnode.op == "==") {
+              if (node_str_val == expr_str_result)
+                  return false;
+          }
+          else if (notnode.op == "!=") {
+              if (node_str_val != expr_str_result)
+                  return false;
+          }
+          else if (notnode.op == ">=") {
+              if (node_str_val >= expr_str_result)
+                  return false;
+          }
+          else if (notnode.op == ">") {
+              if (node_str_val > expr_str_result)
+                  return false;
+          }
+          else if (notnode.op == "<=") {
+              if (node_str_val <= expr_str_result)
+                  return false;
+          }
+          else if (notnode.op == "<") {
+              if (node_str_val < expr_str_result)
+                  return false;
+          }
         }
     }
             
@@ -548,7 +546,7 @@ bool mini_syntax_ast_printer::operator()(not_node_op const& notnode) const {
 }
 
 bool mini_syntax_ast_printer::operator()(nil const& n) const {
-    (void)n;
-    tlp::debug() << "nil found." << endl;
-    return false;
+  (void)n;
+  tlp::debug() << "nil found." << std::endl;
+  return false;
 }
