@@ -68,7 +68,7 @@ CodeEditorPlainTextView::CodeEditorPlainTextView(QWidget *parent)
   highlightCurrentLine();
 
   QFontMetrics fMetrics(font());
-  setTabStopWidth(4 * fMetrics.width(' '));
+  setTabStopWidth(4 * fMetrics.horizontalAdvance(' '));
 }
 
 void CodeEditorPlainTextView::setSyntaxFile(const QString &syntaxFile) {
@@ -158,7 +158,7 @@ int CodeEditorPlainTextView::lineNumberAreaWidth() {
     ++digits;
   }
 
-  int space = 3 + this->fontMetrics().width(QLatin1Char('9')) * digits;
+  int space = 3 + this->fontMetrics().horizontalAdvance(QLatin1Char('9')) * digits;
 
   return space;
 }

@@ -252,7 +252,7 @@ public:
                 src.push_front(findNode(s, oldId, new_graph));
             }
           } else {
-            tlp::error() << "Cannot restore edge" << e_to_restore << endl;
+            tlp::error() << "Cannot restore edge " << e_to_restore << endl;
             continue;
           }
           for (auto s : src)
@@ -287,7 +287,7 @@ public:
               dst.push_front(findNode(d, oldId, new_graph));
           }
         } else {
-          tlp::error() << "Cannot restore edge" << e_to_restore << endl;
+          tlp::error() << "Cannot restore edge " << e_to_restore << endl;
           continue;
         }
         for (const node ds : dst)
