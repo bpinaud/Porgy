@@ -179,8 +179,17 @@ void PorgyRuleGraphView::fillContextMenu(QMenu *contextMenu, const QPointF &curs
 
 QuickAccessBar *PorgyRuleGraphView::getQuickAccessBarImpl() {
   _bar = new PorgyQuickAccessBar(graph());
-  connect(_bar, SIGNAL(new_graph_to_display(tlp::Graph *)), this, SLOT(setGraph(tlp::Graph *)));
+  connect(_bar, SIGNAL(new_graph_to_display(tlp::BooleanProperty*)), this, SLOT(filterGraphLayout(tlp::BooleanProperty*)));
   return _bar;
+}
+
+void PorgyRuleGraphView::filterGraphLayout(tlp::BooleanProperty* b) {
+    getGlMainWidget()
+         ->getScene()
+         ->getGlGraphComposite()
+         ->getRenderingParametersPointer()
+         ->setDisplayFilteringProperty(b);
+    emit(drawNeeded());
 }
 
 void PorgyRuleGraphView::invertSelection() {

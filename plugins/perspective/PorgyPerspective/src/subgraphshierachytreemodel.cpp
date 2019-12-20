@@ -242,8 +242,6 @@ void SubgraphsHierachyTreeModel::treatEvents(const vector<Event> &events) {
   }
   _toUpdate.clear();            // Clear list
   for (Graph *g : _rootToAdd) { // Treat addition list
-    // ugly hack!!!!
-    if (!PorgyTlpGraphStructure::isHidden(g))
       addRootGraph(g);
   }
   _rootToAdd.clear(); // Clear list

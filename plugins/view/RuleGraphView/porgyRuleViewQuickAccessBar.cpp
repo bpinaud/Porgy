@@ -4,7 +4,6 @@
 #include <QMessageBox>
 
 #include <tulip/BooleanProperty.h>
-#include <tulip/StableIterator.h>
 
 #include <portgraph/Bridge.h>
 #include <portgraph/PorgyTlpGraphStructure.h>
@@ -21,7 +20,7 @@ PorgyQuickAccessBar::PorgyQuickAccessBar(Graph *rule, QWidget *parent)
                        QuickAccessBarImpl::LABELSSCALED | QuickAccessBarImpl::SHOWEDGES),
           parent),
       rule_graph(rule), checkRHS(new QCheckBox("RHS", this)), checkLHS(new QCheckBox("LHS", this)),
-      checkArrowNodeEdges(new QCheckBox("Arrow node edges", this)) {
+      checkArrowNodeEdges(new QCheckBox("Arrow node edges", this)), sidep(new BooleanProperty(rule)) {
 
   checkRHS->setChecked(true);
   checkLHS->setChecked(true);
@@ -35,7 +34,9 @@ PorgyQuickAccessBar::PorgyQuickAccessBar(Graph *rule, QWidget *parent)
   connect(checkArrowNodeEdges, SIGNAL(toggled(bool)), this, SLOT(arrowNodeEdges(bool)));
 }
 
-PorgyQuickAccessBar::~PorgyQuickAccessBar() {}
+PorgyQuickAccessBar::~PorgyQuickAccessBar() {
+    delete sidep;
+}
 
 void PorgyQuickAccessBar::setGraph(Graph *g) {
   rule_graph = g;
@@ -55,11 +56,8 @@ bool PorgyQuickAccessBar::allVisible() const {
 
 void PorgyQuickAccessBar::reset() {
   QuickAccessBarImpl::reset();
-  // remove old subgraphs
-  auto v(rule_graph->subGraphs());
-  for(Graph* gr:v) {
-    rule_graph->delAllSubGraphs(gr);
-  }
+  sidep->setAllNodeValue(true);
+  sidep->setAllEdgeValue(true);
   checkLHS->setChecked(true);
   checkRHS->setChecked(true);
   checkArrowNodeEdges->setChecked(true);
@@ -69,49 +67,42 @@ void PorgyQuickAccessBar::reset() {
 void PorgyQuickAccessBar::computeGraphToDisplay() {
   PortGraphRuleDecorator rule(rule_graph);
   IntegerProperty *sideprop = rule.getSideProperty();
-  // remove old subgraphs
-  auto v(rule_graph->subGraphs());
-  for(Graph* gr:v) {
-      rule_graph->delAllSubGraphs(gr);
-  }
   // all flags. Display the rule
   if (flags == SideToDisplayFlags(LHSFLAG | RHSFLAG | ARROW_EDGES_FLAG)) {
-    emit new_graph_to_display(rule_graph);
+    emit new_graph_to_display(nullptr);
     return;
   }
-  BooleanProperty sidep(rule_graph);
+  sidep->setAllNodeValue(true);
+  sidep->setAllEdgeValue(true);
   // Bridge always visible
   PortGraphRule pgr(rule_graph);
   Bridge *br = pgr.getBridge();
-  sidep.setNodeValue(br->getCenter(), true);
+  sidep->setNodeValue(br->getCenter(), false);
   for (node n : rule.nodes()) {
     int side = sideprop->getNodeValue(n);
     if (flags.testFlag(LHSFLAG) && (side == PorgyConstants::RuleSide::SIDE_LEFT)) {
-      sidep.setNodeValue(n, true);
+      sidep->setNodeValue(n, false);
     }
     if (flags.testFlag(RHSFLAG) && (side == PorgyConstants::RuleSide::SIDE_RIGHT)) {
-      sidep.setNodeValue(n, true);
+      sidep->setNodeValue(n, false);
     }
   }
   for (edge e : rule.edges()) {
     int side = sideprop->getEdgeValue(e);
     if (flags.testFlag(LHSFLAG) && (side == PorgyConstants::RuleSide::SIDE_LEFT)) {
-      sidep.setEdgeValue(e, true);
+      sidep->setEdgeValue(e, false);
     }
     if (flags.testFlag(RHSFLAG) && (side == PorgyConstants::RuleSide::SIDE_RIGHT)) {
-      sidep.setEdgeValue(e, true);
+      sidep->setEdgeValue(e, false);
     }
     if (flags.testFlag(ARROW_EDGES_FLAG) && ((side == PorgyConstants::RuleSide::SIDE_BRIDGE) ||
                                              (side == PorgyConstants::RuleSide::SIDE_BRIDGE_PORT) ||
                                              (side == PorgyConstants::RuleSide::SIDE_BRIDGE_OPP))) {
-      sidep.setEdgeValue(e, true);
+      sidep->setEdgeValue(e, false);
     }
   }
-  Observable::holdObservers();
-  Graph *r = rule.addSubGraph(&sidep, rule_graph->getName());
-  PorgyTlpGraphStructure::setHidden(r);
-  Observable::unholdObservers();
-  emit new_graph_to_display(r);
+
+  emit new_graph_to_display(sidep);
 }
 
 void PorgyQuickAccessBar::LHS(bool state) {

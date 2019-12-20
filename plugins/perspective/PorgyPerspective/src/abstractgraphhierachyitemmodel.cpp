@@ -221,7 +221,6 @@ void AbstractGraphHierachyItemModel::addRootGraph(Graph *graph) {
 void AbstractGraphHierachyItemModel::addSubgraphs(Graph *graph) {
   assert(graph != nullptr);
   for(Graph* sg:graph->subGraphs()) {
-    if (!PorgyTlpGraphStructure::isHidden(sg))
       addRootGraph(sg);
   }
 }

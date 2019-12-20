@@ -37,16 +37,6 @@
 using namespace std;
 using namespace tlp;
 
-bool PorgyTlpGraphStructure::isHidden(Graph *g) {
-  bool hide = false;
-  g->getAttribute("PORGY, do not display", hide);
-  return hide;
-}
-
-void PorgyTlpGraphStructure::setHidden(Graph *g) {
-  g->setAttribute("PORGY, do not display", true);
-}
-
 mt19937
     PorgyTlpGraphStructure::gen(chrono::high_resolution_clock::now().time_since_epoch().count());
 
