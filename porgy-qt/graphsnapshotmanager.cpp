@@ -26,14 +26,23 @@
 #include <tulip/PropertyInterface.h>
 #include <tulip/TlpQtTools.h>
 
+#include <QBuffer>
+
 using namespace std;
 using namespace tlp;
 
 GraphSnapshotManager::GraphSnapshotManager(QObject *parent)
     : QObject(parent), _snapshotSize(QSize(128, 128)), _backgroundColor(Color(255, 255, 255)) {}
 
-QPixmap
-GraphSnapshotManager::takeSingleSnapshot(Graph *graph, const QSize &size,
+QString GraphSnapshotManager::snapshot2base64html(Graph* graph, const GlGraphRenderingParameters& parameters){
+    QImage img = takeSingleSnapshot(graph, QSize(512, 512), Color(255, 255, 255), parameters);
+    QByteArray data;
+    QBuffer buffer(&data);
+    img.save(&buffer, "PNG", 100);
+    return QString("<img src='data:image/png;base64, %0'>").arg(QString(data.toBase64()));
+}
+
+QImage GraphSnapshotManager::takeSingleSnapshot(Graph *graph, const QSize &size,
                                          const tlp::Color &backgroundColor,
                                          const tlp::GlGraphRenderingParameters &parameters) {
 
@@ -56,7 +65,8 @@ GraphSnapshotManager::takeSingleSnapshot(Graph *graph, const QSize &size,
   QImage img(offscreenRenderer->getImage());
   offscreenRenderer->clearScene();
   delete composite;
-  return QPixmap::fromImage(img);
+  return img;
+  //return QPixmap::fromImage(img);
 }
 
 void GraphSnapshotManager::observe(Graph *graph) {
@@ -103,7 +113,7 @@ QPixmap GraphSnapshotManager::takeSnapshot(Graph *graph) {
   if (it == _previews.end()) {
     observe(graph);
     // Generate preview
-    QPixmap img = takeSingleSnapshot(graph, _snapshotSize, _backgroundColor, _renderingParameters);
+    QPixmap img = QPixmap::fromImage(takeSingleSnapshot(graph, _snapshotSize, _backgroundColor, _renderingParameters));
     _previews[graph] = img;
     return img;
 

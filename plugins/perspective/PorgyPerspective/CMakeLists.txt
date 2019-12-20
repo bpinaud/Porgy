@@ -14,7 +14,6 @@ SET(LIB_SRCS
     src/GlMainWidgetZoomAndPanAnimation.cpp
     src/PorgyPerspectiveLogger.cpp
     src/GraphWidget.cpp
-    src/qtimagetooltip.cpp
     src/sortfilterproxymodel.cpp
     src/strategymanagementwidget.cpp
     src/tracesitemmodel.cpp
@@ -57,7 +56,6 @@ SET(LIB_MOC
     include/subgraphshierachytreemodel.h
     include/viewmanager.h
     include/GraphWidget.h
-    include/qtimagetooltip.h
     include/strategymanagementwidget.h
     include/PorgyPerspectiveLogger.h
     include/NewTrace.h

@@ -21,6 +21,7 @@
 #define GRAPHSNAPSHOTMANAGER_H
 
 #include <QObject>
+#include <QImage>
 #include <QPixmap>
 
 #include <tulip/Color.h>
@@ -55,10 +56,11 @@ public:
   /**
     * @brief Take a snapshot of a graph.
     **/
-  static QPixmap
-  takeSingleSnapshot(tlp::Graph *graph, const QSize &size,
+  static QImage takeSingleSnapshot(tlp::Graph *graph, const QSize &size,
                      const tlp::Color &backgroundColor = tlp::Color(255, 255, 255),
                      const tlp::GlGraphRenderingParameters & = tlp::GlGraphRenderingParameters());
+
+  static QString snapshot2base64html(tlp::Graph* graph, const tlp::GlGraphRenderingParameters& parameters);
 
   /**
     * @brief Return the snapshot of a graph. If the snapshot was already

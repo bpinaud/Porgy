@@ -19,15 +19,16 @@
  */
 #include "GraphWidget.h"
 #include "modelgraphtreemodel.h"
-#include "qtimagetooltip.h"
 #include "sortfilterproxymodel.h"
 #include "ui_GraphWidget.h"
 
 #include <tulip/Graph.h>
 #include <tulip/LayoutProperty.h>
+#include <tulip/TlpQtTools.h>
 
 #include <QHelpEvent>
 #include <QMenu>
+#include <QToolTip>
 
 using namespace tlp;
 using namespace std;
@@ -130,10 +131,8 @@ void GraphWidget::indexDoubleClicked(const QModelIndex &index) {
 }
 
 bool GraphWidget::eventFilter(QObject *obj, QEvent *evt) {
-  switch (evt->type()) {
-  case QEvent::ToolTip: {
-
-    if (obj == _ui->modelsTreeView) {
+  if (evt->type() == QEvent::ToolTip) {
+      if (obj == _ui->modelsTreeView) {
       // Need to use viewport widget to compute correct coordinate
       // tranformation.
       // Return wrong QModelIndex if we use he->Pos();
@@ -144,19 +143,16 @@ bool GraphWidget::eventFilter(QObject *obj, QEvent *evt) {
         GlGraphRenderingParameters parameters;
         parameters.setEdgeColorInterpolate(false);
         parameters.setLabelsDensity(0);
-        parameters.setLabelScaled(true);
+        QString name("Graph: "+tlp::tlpStringToQString(graph->getName()));
 
-        QtImageToolTip::showGraph(he->globalPos(), graph, QSize(512, 512), Color(255, 255, 255),
-                                  parameters, this, QRect());
+        QToolTip::showText(he->globalPos(),  name+"<br/>"+GraphSnapshotManager::snapshot2base64html(graph, parameters), this, QRect(), 5000);
+
         return true;
       }
     }
-  } break;
-  default:
-    break;
   }
 
-  return QWidget::eventFilter(obj, evt);
+  return false;
 }
 
 void GraphWidget::filterModels(const QString &pattern) {

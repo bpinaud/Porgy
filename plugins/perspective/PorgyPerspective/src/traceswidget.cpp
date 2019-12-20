@@ -19,7 +19,6 @@
  */
 #include "traceswidget.h"
 #include "NewTrace.h"
-#include "qtimagetooltip.h"
 #include "sortfilterproxymodel.h"
 #include "statusbarpluginprogress.h"
 #include "ui_traceswidget.h"
@@ -29,6 +28,7 @@
 #include <QHelpEvent>
 #include <QMenu>
 #include <QMessageBox>
+#include <QToolTip>
 
 #include <tulip/BooleanProperty.h>
 #include <tulip/ConnectedTest.h>
@@ -263,8 +263,7 @@ void TracesWidget::showTrace() {
 }
 
 bool TracesWidget::eventFilter(QObject *obj, QEvent *evt) {
-  switch (evt->type()) {
-  case QEvent::ToolTip: {
+  if (evt->type() == QEvent::ToolTip) {
     QHelpEvent *he = static_cast<QHelpEvent *>(evt);
     if (obj == ui->traceTreeView) {
       // Need to use viewport widget to compute correct coordinate
@@ -281,17 +280,17 @@ bool TracesWidget::eventFilter(QObject *obj, QEvent *evt) {
           Trace trace(graph);
           trace.redraw(errMsg, nullptr);
         }
-        QtImageToolTip::showGraph(he->globalPos(), graph, QSize(512, 512), Color(255, 255, 255),
-                                  _model->snapshotManager().renderingParameters(), this, QRect());
+
+        QString name("Trace: "+tlp::tlpStringToQString(graph->getName()));
+
+        QToolTip::showText(he->globalPos(),  name+"<br/>"+GraphSnapshotManager::snapshot2base64html(graph, _model->snapshotManager().renderingParameters()), this, QRect(), 5000);
+
         return true;
       }
     }
-  } break;
-  default:
-    break;
   }
 
-  return QWidget::eventFilter(obj, evt);
+  return false;
 }
 
 void TracesWidget::indexDoubleClicked(const QModelIndex &index) {
