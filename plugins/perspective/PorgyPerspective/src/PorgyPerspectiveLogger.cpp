@@ -43,9 +43,7 @@ static QIcon iconForType(QtMsgType type) {
 
   switch (type) {
   case QtDebugMsg:
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 5, 0))
   case QtInfoMsg:
-#endif
     px = TulipFontIconEngine::icon("fa-info-circle");
     break;
 

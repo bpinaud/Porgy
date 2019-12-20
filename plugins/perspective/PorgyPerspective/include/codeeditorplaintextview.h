@@ -65,7 +65,7 @@ class StrategyManager;
 class CodeEditorPlainTextView : public QPlainTextEdit {
   Q_OBJECT
 
-  StrategyManager *_stratModel;
+  StrategyManager* _stratModel;
 
   /*!
    * \class LineNumberArea
