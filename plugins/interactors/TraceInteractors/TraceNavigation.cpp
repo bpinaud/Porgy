@@ -59,8 +59,9 @@ public:
   }
 
   void construct() override {
-    push_front(new MetaNodeZoomInteractorComponent);
-    push_front(new MouseNKeysNavigator);
+      push_back(new MouseNKeysNavigator(false));
+      push_back(new MetaNodeZoomInteractorComponent);
+
   }
 
   bool isCompatible(const std::string &viewName) const override {

@@ -53,9 +53,11 @@ QCursor AddPortNode::cursor() const {
 
 void AddPortNode::construct() {
   _configurationWidget = new AddPortNodeConfigurationWidget();
-  push_front(new MousePanNZoomNavigator);
-  push_front(new PortGraphAddEdgeComponent);
-  push_front(new MouseAddPortNode(this));
+  push_back(new MouseNKeysNavigator(false));
+  push_back(new MouseAddPortNode(this));
+  push_back(new PortGraphAddEdgeComponent);
+
+
   if ((view() != nullptr) && (_configurationWidget->isEnabled())) {
     _configurationWidget->loadPortNodesFromGraph(view()->graph());
   }

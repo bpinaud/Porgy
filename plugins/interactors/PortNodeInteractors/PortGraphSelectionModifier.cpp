@@ -64,9 +64,9 @@ public:
    * Construct chain of responsibility
    */
   void construct() override {
-    push_front(new MouseSelectionEditor);
-    push_front(new SelectPortNodeInteractorComponent);
-    push_front(new MousePanNZoomNavigator);
+    push_back(new MouseNKeysNavigator(false));
+    push_back(new SelectPortNodeInteractorComponent);
+    push_back(new MouseSelectionEditor);
   }
 
   bool isCompatible(const std::string &viewName) const override {

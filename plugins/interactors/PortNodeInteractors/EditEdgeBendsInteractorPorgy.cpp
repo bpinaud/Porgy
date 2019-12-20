@@ -66,9 +66,9 @@ public:
    */
 
   void construct() override {
-    push_front(new EditEdgeBendsPorgyComponent);
-    push_front(new MousePanNZoomNavigator);
-    push_front(new SelectPortNodeInteractorComponent);
+    push_back(new MouseNKeysNavigator(false));
+    push_back(new SelectPortNodeInteractorComponent);
+    push_back(new EditEdgeBendsPorgyComponent);
   }
 
   bool isCompatible(const std::string &viewName) const override {
