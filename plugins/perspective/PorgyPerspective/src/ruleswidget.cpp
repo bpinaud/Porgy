@@ -26,12 +26,12 @@
 #include <QItemSelectionModel>
 #include <QMenu>
 #include <QPushButton>
+#include <QToolTip>
 
 #include <tulip/BooleanProperty.h>
 #include <tulip/Graph.h>
 #include <tulip/TlpQtTools.h>
 
-#include "qtimagetooltip.h"
 #include "rulesgraphitemmodel.h"
 #include "sortfilterproxymodel.h"
 
@@ -243,7 +243,7 @@ bool RulesWidget::eventFilter(QObject *obj, QEvent *evt) {
     QHelpEvent *he = static_cast<QHelpEvent *>(evt);
     Graph *graph = nullptr;
     if (obj == _ui->ruleTreeView) {
-      // Need to use viewport <idget to compute correct coordinate
+      // Need to use viewport widget to compute correct coordinate
       // tranformation.
       // Return wrong QModelIndex if we use he->Pos();
       graph = _model->indexGraph(_proxyModel->mapToSource(_ui->ruleTreeView->indexAt(
@@ -260,8 +260,9 @@ bool RulesWidget::eventFilter(QObject *obj, QEvent *evt) {
       bool orientation = false;
       graph->getAttribute(PorgyConstants::EDGE_ORIENTATION_ENABLED, orientation);
       parameters.setViewArrow(orientation);
-      QtImageToolTip::showGraph(he->globalPos(), graph, QSize(512, 512), Color(255, 255, 255),
-                                parameters, this);
+      QString name("Rule: "+tlp::tlpStringToQString(graph->getName()));
+
+      QToolTip::showText(he->globalPos(),  name+"<br/>"+GraphSnapshotManager::snapshot2base64html(graph, parameters), this, QRect(), 5000);
       return true;
     }
   }

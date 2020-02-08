@@ -29,7 +29,7 @@ class PORGY_SCOPE SelectPortNodeInteractorComponent : public tlp::MouseSelector 
 
 public:
   SelectPortNodeInteractorComponent();
-  ~SelectPortNodeInteractorComponent() override;
+  virtual ~SelectPortNodeInteractorComponent() override;
 
   bool eventFilter(QObject *, QEvent *) override;
 };

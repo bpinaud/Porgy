@@ -53,10 +53,11 @@ QWidget *TraceInformationInteractor::configurationWidget() const {
 void TraceInformationInteractor::construct() {
   configWidget = new TraceInformationConfigWidget();
   traceInformation = new TraceInformationGraphComponent(this);
-  push_front(traceInformation);
-  push_front(new MousePanNZoomNavigator());
-  push_front(new ElementInformationInteractorComponent());
-  push_front(new MetaNodeZoomInteractorComponent);
+  push_back(new MouseNKeysNavigator(false));
+  push_back(new MetaNodeZoomInteractorComponent);
+  push_back(new ElementInformationInteractorComponent());
+  push_back(traceInformation);
+
 }
 
 void TraceInformationInteractor::install(QObject *target) {

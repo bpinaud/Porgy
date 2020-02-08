@@ -106,8 +106,8 @@ void CodeEditorListView::dropEvent(QDropEvent *event) {
     QList<QUrl> urls = event->mimeData()->urls();
     QStringList list;
 
-    for (int i = 0; i < urls.size(); ++i) {
-      list << urls.at(i).toString().mid(7);
+    for (auto &u:urls) {
+      list << u.toString().mid(7);
     }
 
     emit requestDropLoadSourceFiles(list);

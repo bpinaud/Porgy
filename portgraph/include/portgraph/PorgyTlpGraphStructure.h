@@ -38,9 +38,6 @@ struct PORTGRAPH_SCOPE PorgyTlpGraphStructure {
 
   static tlp::Graph *setPorgyStructure(tlp::Graph *root = nullptr);
 
-  static bool isHidden(tlp::Graph *g);
-  static void setHidden(tlp::Graph *g);
-
   static std::mt19937 gen;
 
   /**

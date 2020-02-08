@@ -39,8 +39,19 @@ public:
   PortGraphDelElement(const PluginContext *)
       : NodeLinkDiagramComponentInteractor(":/tulip/gui/icons/i_del.png",
                                            "Delete portnodes or edges between portnodes",StandardInteractorPriority::DeleteElement) {
-    setConfigurationWidgetText(QString("<h3>Delete interactor</h3>") +
-                               "<b>Mouse left</b> click on an element to delete it");
+      setConfigurationWidgetText(QString("<h3>Delete nodes or edges</h3>") +
+                                 "<b>Mouse left</b> click on an element to delete it.<br/>No "
+                                 "deletion confirmation will be asked.<br/><br/>" +
+                     "<u>Navigation in the graph</u><br/><br/>" +
+                     "Translation: <ul><li><b>Arrow</b> keys</li></ul>" +
+  #if !defined(__APPLE__)
+                     "Zoom/Unzoom: <ul><li><b>Mouse wheel</b> up/down</li><li> or <b>Pg up/Pg "
+                     "down</b> keys</li></ul>"
+  #else
+                     "Zoom/Unzoom: <ul><li><b>Mouse wheel</b> down/up</li><li> or <b>Pg up/Pg "
+                     "down</b> keys</li></ul>"
+  #endif
+                     );
   }
 
   bool isCompatible(const std::string &viewName) const override {
@@ -49,8 +60,8 @@ public:
   }
 
   void construct() override {
-    push_front(new MousePanNZoomNavigator);
-    push_front(new PortGraphDelElementComponent);
+    push_back(new MouseNKeysNavigator(false));
+    push_back(new PortGraphDelElementComponent);
   }
 };
 

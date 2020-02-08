@@ -40,7 +40,7 @@ std::list<std::string> PluginSelectionWizard::pluginList() const {
 }
 void PluginSelectionWizard::setPluginList(const std::list<std::string> &plugins) {
   SimplePluginListModel *oldModel = _model;
-  _model = new SimplePluginListModel(QList<std::string>::fromStdList(plugins), this);
+  _model = new SimplePluginListModel(plugins, this);
   ui->treeView->setModel(_model);
   delete oldModel;
 }

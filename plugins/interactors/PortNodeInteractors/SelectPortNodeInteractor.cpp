@@ -53,7 +53,7 @@ public:
   }
 
   void construct() override {
-    push_back(new MousePanNZoomNavigator);
+    push_back(new MouseNKeysNavigator(false));
     push_back(new SelectPortNodeInteractorComponent);
   }
 

@@ -115,8 +115,8 @@ StatusBarPluginProgress *PorgyPerspective::_PluginProgress = new StatusBarPlugin
 bool PorgyPerspective::terminated() {
   if (savingObserver != nullptr && savingObserver->needsSaving()) {
     QMessageBox::StandardButton answer = QMessageBox::question(
-        _mainWindow, trUtf8("Save"),
-        trUtf8("The project has been modified. Do you want to save your changes?"),
+        _mainWindow, "Save",
+        "The project has been modified. Do you want to save your changes?",
         QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel | QMessageBox::Escape);
     if ((answer == QMessageBox::Yes && !fileSave()) || (answer == QMessageBox::Cancel)) {
       return false;
@@ -605,8 +605,7 @@ bool PorgyPerspective::closeProject() {
     if (savingObserver->needsSaving()) { // do we need to save the previous
                                          // graph
       QMessageBox::StandardButton answer = QMessageBox::question(
-          _mainWindow, trUtf8("Save"), trUtf8("The project has been modified. Do you "
-                                              "want to save your changes?"),
+          _mainWindow, "Save", "The project has been modified. Do you want to save your changes?",
           QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel | QMessageBox::Escape);
       if (answer == QMessageBox::Yes)
         fileSave();
@@ -655,8 +654,7 @@ bool PorgyPerspective::setData(Graph *graph, DataSet dataSet) {
     if (savingObserver->needsSaving()) { // do we need to save the previous
                                          // graph
       QMessageBox::StandardButton answer = QMessageBox::question(
-          _mainWindow, trUtf8("Save"), trUtf8("The project has been modified. Do you "
-                                              "want to save your changes?"),
+          _mainWindow, "Save", "The project has been modified. Do you want to save your changes?",
           QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel | QMessageBox::Escape);
       if (answer == QMessageBox::Yes)
         fileSave();
@@ -824,9 +822,9 @@ void PorgyPerspective::importRule() {
     Graph *temp_ruleGraph =
         tlp::importGraph(tlp::QStringToTlpString(algorithm), dataSet, prg, rulesGraph);
     if (temp_ruleGraph == nullptr) {
-      QMessageBox::critical(_mainWindow, trUtf8("Import error"), trUtf8("Failed to import ") +
+      QMessageBox::critical(_mainWindow, "Import error", "Failed to import " +
                                                                      importFiles.at(index) +
-                                                                     trUtf8("\nEmpty graph"));
+                                                                     "\nEmpty graph");
     }
     delete prg;
   }
@@ -865,8 +863,7 @@ void PorgyPerspective::exportRule(tlp::Graph *rule) {
   std::ostream *os = new std::ofstream(QStringToTlpString(filename));
 
   if (os->fail()) {
-    QMessageBox::critical(_mainWindow, trUtf8("File error"),
-                          trUtf8("Cannot open output file for writing: ") + filename);
+    QMessageBox::critical(_mainWindow, "File error", "Cannot open output file for writing: " + filename);
     delete os;
     return;
   }

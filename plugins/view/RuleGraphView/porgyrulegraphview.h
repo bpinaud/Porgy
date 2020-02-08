@@ -76,6 +76,7 @@ private slots:
   void invertSelection();
   void ViewArrows(bool state);
   void redrawRuleGraph();
+  void filterGraphLayout(tlp::BooleanProperty*);
 
 private:
   void selectSide(PorgyConstants::RuleSide);

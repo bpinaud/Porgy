@@ -74,8 +74,8 @@ bool elementDeleter::isCompatible(const string &viewName) const {
 }
 
 void elementDeleter::construct() {
-  push_front(new MousePanNZoomNavigator);
-  push_front(new DeleteElementTraceComponent);
+  push_back(new MouseNKeysNavigator(false));
+  push_back(new DeleteElementTraceComponent);
 }
 
 PLUGIN(elementDeleter)

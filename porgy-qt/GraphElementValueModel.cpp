@@ -33,18 +33,13 @@ using namespace tlp;
 
 namespace {
 bool lessThan(PropertyInterface *p1, PropertyInterface *p2) {
-  string p1l = p1->getName(), p2l = p2->getName();
+  string p1l = p1->getName();
+  string p2l = p2->getName();
   std::transform(p1l.begin(), p1l.end(), p1l.begin(), ::tolower);
   std::transform(p2l.begin(), p2l.end(), p2l.begin(), ::tolower);
   return p1l < p2l;
 }
 
-bool greaterThan(PropertyInterface *p1, PropertyInterface *p2) {
-  string p1l = p1->getName(), p2l = p2->getName();
-  std::transform(p1l.begin(), p1l.end(), p1l.begin(), ::tolower);
-  std::transform(p2l.begin(), p2l.end(), p2l.begin(), ::tolower);
-  return p1l > p2l;
-}
 }
 
 GraphElementValueModel::GraphElementValueModel(
@@ -141,8 +136,13 @@ QVariant GraphElementValueModel::headerData(int section, Qt::Orientation orienta
 }
 
 void GraphElementValueModel::sort(int, Qt::SortOrder order) {
-  emit layoutAboutToBeChanged();
-  qStableSort(_propertyTable.begin(), _propertyTable.end(),
-              order == Qt::AscendingOrder ? lessThan : greaterThan);
-  emit layoutChanged();
+    emit layoutAboutToBeChanged();
+    if(order == Qt::AscendingOrder)
+        std::stable_sort(_propertyTable.begin(), _propertyTable.end(), lessThan);
+    else {
+        std::stable_sort(_propertyTable.rbegin(), _propertyTable.rend(), lessThan);
+    }
+//    if(order == Qt::AscendingOrder)
+//        std::reverse(_propertyTable.begin(), _propertyTable.end());
+    emit layoutChanged();
 }

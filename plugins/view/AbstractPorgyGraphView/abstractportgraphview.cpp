@@ -75,7 +75,7 @@ void AbstractPortGraphView::redrawGraph(Graph *g) {
         centerView();
       } else {
         QMessageBox::critical(this->getGlMainWidget()->parentWidget(), "Cannot redraw graph",
-                              trUtf8("Error when drawing graph ") +
+                              "Error when drawing graph " +
                                   tlp::tlpStringToQString(graph()->getName()) + " : " +
                                   tlp::tlpStringToQString(errMsg));
         dec->popIfNoUpdates();

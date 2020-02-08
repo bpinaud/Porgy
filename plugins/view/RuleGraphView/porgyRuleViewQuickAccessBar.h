@@ -5,6 +5,10 @@
 
 class QCheckBox;
 
+namespace tlp{
+class BooleanProperty;
+}
+
 class PorgyQuickAccessBar : public tlp::QuickAccessBarImpl {
   Q_OBJECT
 
@@ -12,6 +16,7 @@ class PorgyQuickAccessBar : public tlp::QuickAccessBarImpl {
   QCheckBox *checkRHS;
   QCheckBox *checkLHS;
   QCheckBox *checkArrowNodeEdges;
+  tlp::BooleanProperty* sidep;
 
 public:
   PorgyQuickAccessBar(tlp::Graph *rule, QWidget *parent = nullptr);
@@ -28,7 +33,7 @@ public:
   Q_DECLARE_FLAGS(SideToDisplayFlags, SideToDisplay)
 
 signals:
-  void new_graph_to_display(tlp::Graph *);
+  void new_graph_to_display(tlp::BooleanProperty *);
 
 private:
   void computeGraphToDisplay();

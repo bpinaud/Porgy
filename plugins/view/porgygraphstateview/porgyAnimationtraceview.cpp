@@ -61,13 +61,6 @@ void PorgyAnimationTraceView::setAnimationData(tlp::Graph *graph,
   addRedrawTriggers(scene);
 }
 
-// void PorgyAnimationTraceView::fillContextMenu(QMenu* menu,const QPointF &) {
-//    menu->addAction(trUtf8("View"))->setEnabled(false);
-//    menu->addSeparator();
-//    menu->addAction(_forceRedrawAction);
-//    menu->addAction(trUtf8("Take snapshot"),this,SLOT(openSnapshotDialog()));
-//}
-
 void PorgyAnimationTraceView::addRedrawTriggers(tlp::GlScene *scene) {
   GlGraphComposite *composite = scene->getGlGraphComposite();
   addRedrawTrigger(composite->getGraph());

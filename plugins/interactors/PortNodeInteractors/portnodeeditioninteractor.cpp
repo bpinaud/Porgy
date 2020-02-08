@@ -33,8 +33,30 @@ public:
   PortNodeEditionInteractor(const tlp::PluginContext *)
       : NodeLinkDiagramComponentInteractor(":/tulip/gui/icons/i_select.png",
                                            "Get information on nodes/edges",StandardInteractorPriority::GetInformation) {
-    setConfigurationWidgetText(QString("<h3>Get information interactor</h3>") +
-                               "<b>Mouse left</b> click on an element to display its properties");
+      setConfigurationWidgetText(
+          QString("<h3>Display node or edge properties</h3>") +
+          "<b>Mouse left click</b> on an element (the mouse cursor must be as <img "
+          "src=\":/tulip/gui/icons/i_select.png\">),<br/>"
+          "to display a panel showing its properties.<br/>"
+          "As the panel is displayed, <b>Mouse left click</b> in a property row to edit the "
+          "corresponding value.<br/>"
+          "<u>3D Navigation in the graph</u><br/><br/>" +
+          "Translation: <ul><li><b>Mouse left</b> down + moves</li><li>or <b>Arrow</b> keys </li></ul>" +
+          "X or Y rotation: <ul><li><b>Shift + Mouse left</b> down + up/down or left/right "
+          "moves</li></ul>" +
+  #if !defined(__APPLE__)
+          "Z rotation: <ul><li><b>Ctrl + Mouse left</b> down + left/right moves</li><li> or "
+          "<b>Insert</b> key</li></ul>" +
+          "Zoom/Unzoom: <ul><li><b>Mouse wheel</b> up/down</li><li> or <b>Ctrl + Mouse left</b> down + up/down moves</li><li> or <b>Pg "
+          "up/Pg down</b> keys</li></ul>"
+  #else
+          "Z rotation: <ul><li><b>Alt + Mouse left</b> down + left/right moves</li><li> or "
+          "<b>Insert</b> key</li></ul>" +
+          "Translation: <ul><li><b>Arrow</b> keys</li></ul>" +
+          "Zoom/Unzoom: <ul><li><b>Mouse wheel</b> down/up</li><li> or <b>Alt + Mouse left</b> down + up/down moves</li><li> or <b>Pg up/Pg "
+          "down</b> keys</li></ul>"
+  #endif
+);
   }
 
   bool isCompatible(const std::string &viewName) const override {
@@ -42,8 +64,8 @@ public:
   }
 
   void construct() override {
-    push_front(new ElementInformationInteractorComponent());
-    push_front(new MouseNKeysNavigator());
+      push_back(new MouseNKeysNavigator(false));
+      push_back(new ElementInformationInteractorComponent());
   }
 
   PLUGININFORMATION("PortNodeEditionInteractor", "Jonathan Dubois", "02/10/2012",
@@ -66,8 +88,9 @@ public:
   }
 
   void construct() override {
-    push_front(new ElementInformationRuleInteractorComponent());
-    push_front(new MouseNKeysNavigator());
+    push_back(new MouseNKeysNavigator(false));
+    push_back(new ElementInformationRuleInteractorComponent());
+
   }
 
   PLUGININFORMATION("PortNodeRuleEditionInteractor", "Jonathan Dubois", "02/10/2012",
