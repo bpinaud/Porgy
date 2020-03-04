@@ -211,7 +211,6 @@ void PorgySMView::updateSmallMultiples(SmallMultipleUpdateTypeFlags updateType) 
   StringProperty *texture = _smallMultipleGraph->getProperty<StringProperty>("viewTexture");
   LayoutProperty *layout = _smallMultipleGraph->getProperty<LayoutProperty>("viewLayout");
 
-  GlTextureManager::changeContext(reinterpret_cast<uintptr_t>(getGlMainWidget()->getFirstQGLWidget()));
   Observable::holdObservers();
   for (node n : _smallMultipleGraph->nodes()) {
     if (updateType.testFlag(Reset)) {
@@ -281,7 +280,6 @@ void PorgySMView::treatEvent(const Event &ev) {
 string PorgySMView::generateTexture(unsigned int stateId) {
   assert(stateId < _states.stateNumber());
   assert(stateId < _textures.size());
-  GlTextureManager::changeContext(reinterpret_cast<uintptr_t>(getGlMainWidget()->getFirstQGLWidget()));
   // Destruct old texture.
   string textureName = getTextureNameForId(stateId);
   GlTextureManager::deleteTexture(textureName);
@@ -321,7 +319,6 @@ string PorgySMView::getTextureNameForId(int stateId) {
 }
 
 void PorgySMView::clearTextures() {
-  GlTextureManager::changeContext(reinterpret_cast<uintptr_t>(getGlMainWidget()->getFirstQGLWidget()));
   for (const auto &str : _textures) {
     GlTextureManager::deleteTexture(str);
   }

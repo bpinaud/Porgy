@@ -38,7 +38,7 @@ GraphVisualProperties::GraphVisualProperties(Graph *graph, VisualPropertiesFlags
 }
 
 GraphVisualProperties::~GraphVisualProperties() {
-    deleteProperties();
+   // deleteProperties();
 }
 
 void GraphVisualProperties::deleteProperties() {
