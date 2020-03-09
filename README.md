@@ -17,11 +17,7 @@ Using as a starting point the Tulip system (https://tulip.labri.fr), PORGY allow
 
 List of dependencies
 ====================
-<<<<<<< HEAD
-- Tulip 5.4.0 with Python support enabled (https://github.com/Tulip-Dev/tulip)
-=======
 - >=Tulip 5.4 with Python support enabled (https://github.com/Tulip-Dev/tulip)
->>>>>>> Sync with latest Tulip improvmentx
 - Boost 1.60 (see http://www.boost.org/)
 - All dependencies from Tulip especially: 
   - C++11 compiler
