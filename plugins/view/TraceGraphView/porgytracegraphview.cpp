@@ -176,9 +176,9 @@ void PorgyTraceGraphView::invertSelection() {
   Observable::unholdObservers();
 }
 
-void PorgyTraceGraphView::resetGraphicsScene() {
-  graphicsView()->scene()->installEventFilter(this);
-}
+//void PorgyTraceGraphView::resetGraphicsScene() {
+//  graphicsView()->scene()->installEventFilter(this);
+//}
 
 bool PorgyTraceGraphView::eventFilter(QObject *object, QEvent *event) {
   if (event->type() == QEvent::GraphicsSceneDragMove) {

@@ -114,9 +114,9 @@ void PorgyRuleGraphView::setupWidget() {
   connect(_RuleAttributes, SIGNAL(SignalViewArrows(bool)), this, SLOT(ViewArrows(bool)));
 }
 
-void PorgyRuleGraphView::resetGraphicsScene() {
-  graphicsView()->scene()->installEventFilter(this);
-}
+//void PorgyRuleGraphView::resetGraphicsScene() {
+//  graphicsView()->scene()->installEventFilter(this);
+//}
 
 PortGraph *PorgyRuleGraphView::buildPortGraph(tlp::Graph *graph) const {
   if (!graph->existAttribute(PorgyConstants::EDGE_ORIENTATION_ENABLED))
