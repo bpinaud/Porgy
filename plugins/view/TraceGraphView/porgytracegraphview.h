@@ -78,7 +78,10 @@ protected slots:
 
 protected:
   void setupWidget() override;
-  void resetGraphicsScene() override;
+//  void resetGraphicsScene() override;
+//  bool rebuildSceneOnShowEvent() override {
+//      return true;
+//  }
   void initGlParameters(tlp::GlGraphRenderingParameters &parameters) const override;
   void graphChanged(tlp::Graph *) override;
 };

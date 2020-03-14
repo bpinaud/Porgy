@@ -96,9 +96,9 @@ PortGraphDecorator *PorgyGraphView::buildPortGraphDecorator(tlp::Graph *graph) c
   return new PortGraphModelDecorator(graph);
 }
 
-void PorgyGraphView::resetGraphicsScene() {
-  graphicsView()->scene()->installEventFilter(this);
-}
+//void PorgyGraphView::resetGraphicsScene() {
+//  graphicsView()->scene()->installEventFilter(this);
+//}
 
 void PorgyGraphView::setupWidget() {
   AbstractPortGraphView::setupWidget();

@@ -72,7 +72,10 @@ private slots:
   void copyPropertyToSelection();
 
 protected:
-  void resetGraphicsScene() override;
+//  void resetGraphicsScene() override;
+//  bool rebuildSceneOnShowEvent() override {
+//      return true;
+//  }
   void setupWidget() override;
   tlp::QuickAccessBar *getQuickAccessBarImpl() override;
   void fillContextMenu(QMenu *contextMenu, const QPointF &position) override;

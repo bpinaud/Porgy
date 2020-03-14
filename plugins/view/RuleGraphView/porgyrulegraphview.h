@@ -56,7 +56,10 @@ public:
   bool eventFilter(QObject *object, QEvent *event) override;
   void graphChanged(tlp::Graph *) override;
   bool _stateEdgeOrientation;
-  void resetGraphicsScene() override;
+//  void resetGraphicsScene() override;
+//  bool rebuildSceneOnShowEvent() override {
+//      return true;
+//  }
 
 protected:
   void setupWidget() override;

@@ -207,10 +207,11 @@ QString StrategyManager::expandStrategyCode(QString strategy, StrategyErrors &er
     while (m.hasMatch()) {
         count++;
         //too many nested levels of macro expansion. Probably a circular call.
-        if(count==10) {
-            error = StrategyErrors::STRATEGY_CIRCULAR_CALL;
-            return "";
-        }
+        //FIXME: this test is not correct. It should be possible to use more than 10 macro calls.
+//        if(count==10) {
+//            error = StrategyErrors::STRATEGY_CIRCULAR_CALL;
+//            return "";
+//        }
         QString strat = m.captured(1);
         unsigned strategyIndex = indexOfStrategy(strat);
         if (strategyIndex != UINT_MAX) {
