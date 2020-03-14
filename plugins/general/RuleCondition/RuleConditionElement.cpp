@@ -276,12 +276,10 @@ bool mini_syntax_ast_printer::operator()(unary_op const& un) const {
         case 't':
         {
             return true;
-            break;
         }
         case 'f':
         {
             return false;
-            break;
         }
         case 'r':
         {   // case "random"
@@ -407,7 +405,7 @@ bool mini_syntax_ast_printer::operator()(logical_binary_op const& log_bin) const
     bool res_left = boost::apply_visitor(lhs, log_bin.left.expr);
     std::string lhs_type = global_type;
     
-    bool res_right = boost::apply_visitor(lhs, log_bin.right.expr);
+    bool res_right = boost::apply_visitor(rhs, log_bin.right.expr);
     std::string rhs_type = global_type;
     
     if (lhs_type != "ndef" && lhs_type != rhs_type) {
@@ -484,7 +482,7 @@ bool mini_syntax_ast_printer::operator()(not_node_op const& notnode) const {
     if (prop_type == tlp::IntegerProperty::propertyTypename || prop_type == tlp::DoubleProperty::propertyTypename) {
         for (PortNode *pn : pg.getPortNodes()) {
             tlp::node c(pn->getCenter());
-            double node_val = static_cast<tlp::NumericProperty*>(propI)->getNodeDoubleValue(c);
+            double node_val = dynamic_cast<tlp::NumericProperty *>(propI)->getNodeDoubleValue(c);
             if (notnode.op == "==") {
                 if (node_val == expr_double_int_result)
                     return false;
