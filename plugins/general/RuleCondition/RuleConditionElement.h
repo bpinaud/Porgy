@@ -7,10 +7,11 @@
 
 #include <map>
 #include <string>
+#include <utility>
 #include <vector>
 
 namespace tlp {
-  class Graph;
+    class Graph;
 }
 
 namespace ConditionParser {
@@ -25,8 +26,7 @@ namespace ConditionParser {
     struct logical_binary_op;
     struct not_node_op;
 
-    typedef
-    boost::variant<
+    using type = boost::variant<
             nil,
             boost::recursive_wrapper<mini_syntax>,
             boost::recursive_wrapper<mini_syntax_condition>,
@@ -40,8 +40,7 @@ namespace ConditionParser {
             double,
             bool,
             std::string
-    >
-            type;
+    >;
 
     struct mini_syntax_condition {
         type expr;
@@ -71,14 +70,16 @@ namespace ConditionParser {
         mini_syntax_condition left;
         mini_syntax_condition right;
 
-        binary_op(std::string op, mini_syntax_condition const &left, mini_syntax_condition const &right) : op(op), left(left), right(right) {}
+        binary_op(std::string op, mini_syntax_condition left, mini_syntax_condition right)
+                : op(std::move(op)), left(std::move(left)), right(std::move(right)) {}
     };
 
     struct unary_op {
         char op;
         mini_syntax_condition subject;
 
-        unary_op(char op, mini_syntax_condition const &subject) : op(op), subject(subject) {}
+        unary_op(char op, mini_syntax_condition subject)
+                : op(op), subject(std::move(subject)) {}
     };
 
     struct comp_op {
@@ -86,14 +87,16 @@ namespace ConditionParser {
         mini_syntax_condition left;
         mini_syntax_condition right;
 
-        comp_op(std::string op, mini_syntax_condition const &left, mini_syntax_condition const &right) : op(op), left(left), right(right) {}
+        comp_op(std::string op, mini_syntax_condition left, mini_syntax_condition right)
+                : op(std::move(op)), left(std::move(left)), right(std::move(right)) {}
     };
 
     struct logical_unary_op {
         char op;
         mini_syntax_condition subject;
 
-        logical_unary_op(char op, mini_syntax_condition const &subject) : op(op), subject(subject) {}
+        logical_unary_op(char op, mini_syntax_condition subject)
+                : op(op), subject(std::move(subject)) {}
     };
 
     struct logical_binary_op {
@@ -101,7 +104,8 @@ namespace ConditionParser {
         mini_syntax_condition left;
         mini_syntax_condition right;
 
-        logical_binary_op(std::string op, mini_syntax_condition const &left, mini_syntax_condition const &right) : op(op), left(left), right(right) {}
+        logical_binary_op(std::string op, mini_syntax_condition left, mini_syntax_condition right)
+                : op(std::move(op)), left(std::move(left)), right(std::move(right)) {}
     };
 
     struct not_node_op {
@@ -109,7 +113,8 @@ namespace ConditionParser {
         mini_syntax_condition prop_name;
         mini_syntax_condition value_exp;
 
-        not_node_op(std::string op, mini_syntax_condition const &pn, mini_syntax_condition const &e) : op(op), prop_name(pn), value_exp(e) {}
+        not_node_op(std::string op, mini_syntax_condition pn, mini_syntax_condition e)
+                : op(std::move(op)), prop_name(std::move(pn)), value_exp(std::move(e)) {}
     };
 
 }
@@ -173,6 +178,6 @@ namespace ConditionParser {
         bool operator()(nil const &) const;
     };
 
-}
+} // namespace ConditionParser
 
 #endif // RULECONDITIONELEMENT_H
