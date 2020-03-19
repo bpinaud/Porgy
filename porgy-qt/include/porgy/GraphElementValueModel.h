@@ -75,8 +75,6 @@ protected:
   tlp::ElementType _displayType;
   unsigned int _eltId;
   void initPropertiesList(const std::unordered_set<std::string> &propertiesToDisplay);
-  //    void addWithoutDuplicate(std::vector<std::string>& propertiesToDisplay,
-  //    const std::string value);
 };
 
 #endif // GRAPHELEMENTVALUEMODEL_H

@@ -64,8 +64,9 @@ public:
   }
 
   void construct() override {
-      push_back(new MouseNKeysNavigator(false));
+      push_back(new MouseNKeysNavigator);
       push_back(new ElementInformationInteractorComponent());
+
   }
 
   PLUGININFORMATION("PortNodeEditionInteractor", "Jonathan Dubois", "02/10/2012",
