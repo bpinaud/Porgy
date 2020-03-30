@@ -247,7 +247,7 @@ void NewTrace::fillPropertyCombobox() {
   }
 
   ui->propertySelectionComboBox->clear();
-  QStringList nodesNames = QStringList::fromSet(propertySet);
+  QStringList nodesNames(propertySet.begin(), propertySet.end());
   nodesNames.sort();
   ui->propertySelectionComboBox->addItems(nodesNames);
 }
@@ -267,7 +267,7 @@ void NewTrace::fillPropertyRatioCombobox() {
 
   ui->ratioPropertyCurrentComboBox->clear();
   ui->ratioPropertyAntecedentComboBox->clear();
-  QStringList nodesNames = QStringList::fromSet(propertySet);
+  QStringList nodesNames(propertySet.begin(), propertySet.end());
   nodesNames.sort();
   ui->ratioPropertyCurrentComboBox->addItems(nodesNames);
   ui->ratioPropertyAntecedentComboBox->addItems(nodesNames);
