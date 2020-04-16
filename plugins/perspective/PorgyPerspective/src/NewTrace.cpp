@@ -231,7 +231,7 @@ void NewTrace::fillPortNodesForGraph(tlp::Graph *g, QStringList &list) {
 }
 
 void NewTrace::fillPropertyCombobox() {
-  QSet<QString> propertySet;
+  QStringList nodesNames;
   tlp::Graph *g = PorgyTlpGraphStructure::getRulesRoot(graph);
 
   // Use the rules default properties to avoid P, N, M, New...
@@ -241,33 +241,29 @@ void NewTrace::fillPropertyCombobox() {
         property->getTypename() == DoubleProperty::propertyTypename ||
         property->getTypename() == StringProperty::propertyTypename) {
       // Only available for double, integer and string properties
-      QString name_p = tlp::tlpStringToQString(propertyName);
-      propertySet.insert(name_p);
+      nodesNames << tlp::tlpStringToQString(propertyName);
     }
   }
 
   ui->propertySelectionComboBox->clear();
-  QStringList nodesNames(propertySet.begin(), propertySet.end());
   nodesNames.sort();
   ui->propertySelectionComboBox->addItems(nodesNames);
 }
 
 void NewTrace::fillPropertyRatioCombobox() {
-  QSet<QString> propertySet;
+  QStringList nodesNames;
   // Use the rules default properties to avoid P, N, M, New...
   for(auto propertyName:graph->getProperties()) {
     tlp::PropertyInterface *property = graph->getProperty(propertyName);
     if (property->getTypename() == IntegerProperty::propertyTypename ||
         property->getTypename() == DoubleProperty::propertyTypename) {
       // Only available for double and integer properties
-      QString name_p = tlp::tlpStringToQString(propertyName);
-      propertySet.insert(name_p);
+      nodesNames << tlp::tlpStringToQString(propertyName);
     }
   }
 
   ui->ratioPropertyCurrentComboBox->clear();
   ui->ratioPropertyAntecedentComboBox->clear();
-  QStringList nodesNames(propertySet.begin(), propertySet.end());
   nodesNames.sort();
   ui->ratioPropertyCurrentComboBox->addItems(nodesNames);
   ui->ratioPropertyAntecedentComboBox->addItems(nodesNames);
