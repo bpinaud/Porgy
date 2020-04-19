@@ -35,9 +35,6 @@ PluginSelectionWizard::~PluginSelectionWizard() {
   delete ui;
 }
 
-std::list<std::string> PluginSelectionWizard::pluginList() const {
-  return _model->plugins().toStdList();
-}
 void PluginSelectionWizard::setPluginList(const std::list<std::string> &plugins) {
   SimplePluginListModel *oldModel = _model;
   _model = new SimplePluginListModel(plugins, this);
