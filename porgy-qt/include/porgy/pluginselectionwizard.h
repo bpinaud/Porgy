@@ -48,7 +48,6 @@ public:
   ~PluginSelectionWizard() override;
 
   void setPluginList(const std::list<std::string> &plugins);
-  std::list<std::string> pluginList() const;
 
   std::string selectedPlugin() const;
 
