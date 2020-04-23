@@ -25,7 +25,13 @@
      <item>
       <widget class="QLabel" name="label_2">
        <property name="text">
-        <string>Instructions:</string>
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Instructions (see &lt;a href=&quot;https://hal.inria.fr/hal-01566525&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#2980b9;&quot;&gt;documentation&lt;/span&gt;&lt;/a&gt;):&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="openExternalLinks">
+        <bool>true</bool>
+       </property>
+       <property name="textInteractionFlags">
+        <set>Qt::LinksAccessibleByKeyboard|Qt::LinksAccessibleByMouse</set>
        </property>
       </widget>
      </item>

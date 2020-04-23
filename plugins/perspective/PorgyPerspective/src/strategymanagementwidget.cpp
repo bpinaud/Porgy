@@ -45,6 +45,7 @@
 #include <QMenu>
 #include <QMessageBox>
 #include <QToolBar>
+#include <QDesktopServices>
 
 using namespace tlp;
 using namespace std;
@@ -369,7 +370,7 @@ StrategyToolbar::StrategyToolbar(QWidget *parent)
       _actionRedo(new QAction(this)), _toolButtonCopy(new QAction(this)),
       _toolButtonCut(new QAction(this)), _toolButtonPaste(new QAction(this)),
       _toolButtonZoomIn(new QAction(this)), _toolButtonZoomOut(new QAction(this)),
-      _toolButtonClear(new QAction(this)), _toolButtonDelete(new QAction(this)),
+      _toolButtonClear(new QAction(this)), _toolButtonDelete(new QAction(this)), _toolButtonHelp(new QAction(this)),
       _menuNew(new QMenu(this)), _menuOpen(new QMenu(this)), _menuSave(new QMenu(this)) {
 
   initQAction(_actionNew, "New Strategy...", "fa-file-o");
@@ -391,6 +392,8 @@ StrategyToolbar::StrategyToolbar(QWidget *parent)
   addSeparator();
   initQAction(_toolButtonClear, "Clear the code of the current strategy","fa-eraser", false);
   initQAction(_toolButtonDelete, "Delete current strategy", "fa-times-circle-o",
+              false);
+  initQAction(_toolButtonHelp, "Strategy language documentation", "md-help-circle-outline",
               false);
 }
 
@@ -478,6 +481,7 @@ void StrategyManagementWidget::_initConnections() {
                                                       SLOT(duplicateSourceCode()),
                                                       QKeySequence(Qt::CTRL + Qt::Key_D));
   _actionDuplicate->setEnabled(false);
+  ui->toolbar->_toolButtonHelp->setEnabled(true);
   ui->toolbar->_menuNew->addAction("New strategy from derivation tree", this,
                                    SLOT(addStrategyFromSelectedElementsInTraceRoot()),
                                    QKeySequence(Qt::CTRL + Qt::ALT + Qt::Key_T));
@@ -495,6 +499,7 @@ void StrategyManagementWidget::_initConnections() {
   if (ui->listView->selectionModel()) {
     connect(ui->toolbar->_toolButtonClear, SIGNAL(triggered()), this, SLOT(clear()));
     connect(ui->toolbar->_toolButtonDelete, SIGNAL(triggered()), this, SLOT(deleteSourceCode()));
+    connect(ui->toolbar->_toolButtonHelp, SIGNAL(triggered()), this, SLOT(showStratDocumentation()));
     connect(ui->listView, SIGNAL(requestDropLoadSourceFiles(const QStringList &)), this,
             SLOT(openDrop(const QStringList &)));
     connect(ui->listView->selectionModel(),
@@ -506,6 +511,10 @@ void StrategyManagementWidget::_initConnections() {
             SLOT(deleteStrat(QModelIndexList)));
     connect(ui->listView, SIGNAL(exportStrat()), this, SLOT(save()));
   }
+}
+
+void StrategyManagementWidget::showStratDocumentation() {
+  QDesktopServices::openUrl(QUrl("https://hal.inria.fr/hal-01566525"));
 }
 
 void StrategyManagementWidget::deleteStrat(QModelIndexList m) {

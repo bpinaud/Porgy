@@ -100,6 +100,8 @@ public:
   QAction *_toolButtonZoomOut;
   QAction *_toolButtonClear;
   QAction *_toolButtonDelete;
+  QAction *_toolButtonHelp;
+
 
   QMenu *_menuNew;  /*!< New menu. */
   QMenu *_menuOpen; /*!< Open menu. */
@@ -159,6 +161,7 @@ private slots:
    * \param code : Source code.
    */
   void addNewStrategy(const QString &name = "New strategy", const QString &code = "");
+  void showStratDocumentation();
 
   /**
     * @brief Try to create a strategy from the elements selected in the root
