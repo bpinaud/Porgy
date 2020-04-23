@@ -20,6 +20,7 @@
 #include "porgyrulegraphview.h"
 #include "../../StandardInteractorPriority.h"
 #include "RuleAlgorithmWidget.h"
+#include "RuleConditionWidget.h"
 #include "RuleAttributesWidget.h"
 #include "porgyRuleViewQuickAccessBar.h"
 
@@ -56,23 +57,25 @@ using namespace tlp;
 using namespace std;
 
 PorgyRuleGraphView::PorgyRuleGraphView(const tlp::PluginContext *)
-    : AbstractPortGraphView(), _RuleAttributes(nullptr), _RuleAlgorithm(nullptr), _bar(nullptr) {
+    : AbstractPortGraphView(), _RuleAttributes(nullptr), _RuleAlgorithm(nullptr), _RuleCondition(nullptr), _bar(nullptr) {
   addDependency(PorgyConstants::REDRAW_RULE, "1.0");
 }
 
 PorgyRuleGraphView::~PorgyRuleGraphView() {
   delete _RuleAttributes;
   delete _RuleAlgorithm;
+  delete _RuleCondition;
 }
 
 QList<QWidget *> PorgyRuleGraphView::configurationWidgets() const {
-  return AbstractPortGraphView::configurationWidgets() << _RuleAttributes << _RuleAlgorithm;
+  return AbstractPortGraphView::configurationWidgets() << _RuleAttributes << _RuleAlgorithm << _RuleCondition;
 }
 
 void PorgyRuleGraphView::graphChanged(tlp::Graph *g) {
   AbstractPortGraphView::graphChanged(g);
   _RuleAttributes->setRuleAttributes(g);
   _RuleAlgorithm->setRuleAlgorithm(g);
+  _RuleCondition->setRuleCondition(g);
   bool state = false;
   if (g->existAttribute(PorgyConstants::EDGE_ORIENTATION_ENABLED))
     g->getAttribute(PorgyConstants::EDGE_ORIENTATION_ENABLED, state);
@@ -106,6 +109,8 @@ void PorgyRuleGraphView::setupWidget() {
     _RuleAttributes = new RuleAttributesWidget();
   if (_RuleAlgorithm == nullptr)
     _RuleAlgorithm = new RuleAlgorithmWidget();
+  if (_RuleCondition == nullptr)
+    _RuleCondition = new RuleConditionWidget();
   graphicsView()->setAcceptDrops(true);
   getGlMainWidget()->setAcceptDrops(false);
   graphicsView()->scene()->installEventFilter(this);

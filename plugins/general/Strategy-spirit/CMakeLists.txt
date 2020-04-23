@@ -10,6 +10,11 @@ SET(LIB_SRCS
     StrategyElement.cpp
     UtreeWalk.cpp)
 
+IF(NOT MSVC AND WIN32 AND "${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
+    # Fix build on Windows with MinGW/MSYS2, see: https://stackoverflow.com/a/29479701/1826326
+    set_source_files_properties(Strategy.cpp PROPERTIES COMPILE_FLAGS -Og)
+ENDIF(NOT MSVC AND WIN32 AND "${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
+
 IF(PORGY_STRATEGY_DEBUG_MESSAGES)
     ADD_DEFINITIONS(-DPORGY_STRATEGY_DEBUG_MESSAGES)
     SET(LIB_SRCS

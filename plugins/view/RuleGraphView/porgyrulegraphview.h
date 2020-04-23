@@ -31,6 +31,7 @@ class RuleViewConfigWidget;
 class PortNodeQt;
 class RuleAttributesWidget;
 class RuleAlgorithmWidget;
+class RuleConditionWidget;
 class PorgyQuickAccessBar;
 
 class QGraphicsSceneDragDropEvent;
@@ -42,6 +43,7 @@ class PorgyRuleGraphView : public AbstractPortGraphView {
   tlp::SelectedEntity selectedEntity;
   RuleAttributesWidget *_RuleAttributes;
   RuleAlgorithmWidget *_RuleAlgorithm;
+  RuleConditionWidget *_RuleCondition;
   PorgyQuickAccessBar *_bar;
 
 public:

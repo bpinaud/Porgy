@@ -30,10 +30,6 @@
 #include "RunStrategyElement.h"
 #include "StrategyParser.h"
 
-using namespace std;
-using namespace tlp;
-using namespace boost;
-
 class StrategySpirit : public tlp::Algorithm {
 
     std::string strategy;
@@ -41,9 +37,9 @@ class StrategySpirit : public tlp::Algorithm {
     bool _debug;
 
     // find a local property in the whole hierarchy
-    bool findP(const string &property_name) const {
-        Graph *models_root = PorgyTlpGraphStructure::getModelsRoot(graph);
-        for (Graph *g : models_root->subGraphs()) {
+    bool findP(const std::string &property_name) const {
+        tlp::Graph *models_root = PorgyTlpGraphStructure::getModelsRoot(graph);
+        for (tlp::Graph *g : models_root->subGraphs()) {
             if (g->existLocalProperty(property_name))
                 return true;
         }
@@ -53,20 +49,20 @@ class StrategySpirit : public tlp::Algorithm {
 public:
     PLUGININFORMATION(PorgyConstants::APPLY_STRATEGY_ALGORITHM, "Bruno Pinaud", "19/07/10",
                       "Comments", "1.0", PorgyConstants::CATEGORY_NAME)
-    StrategySpirit(const PluginContext *context) : Algorithm(context), _debug(false) {
+    StrategySpirit(const tlp::PluginContext *context) : Algorithm(context), _debug(false) {
         addDependency(PorgyConstants::CHECK_APPLY_RULE, "1.0");
 
-        addInParameter<string>(PorgyConstants::STRATEGY, "",
+        addInParameter<std::string>(PorgyConstants::STRATEGY, "",
                                "ppick(rule_1;rule_1,0.5,rule_1||rule_1,0.5);rule_2");
-        addInParameter<BooleanProperty>(PorgyConstants::POSITION, "", "", false);
-        addInParameter<BooleanProperty>(PorgyConstants::BAN, "", "", false);
+        addInParameter<tlp::BooleanProperty>(PorgyConstants::POSITION, "", "", false);
+        addInParameter<tlp::BooleanProperty>(PorgyConstants::BAN, "", "", false);
         addInParameter<bool>(PorgyConstants::DEBUG, "", "false");
     }
 
-    bool check(string &errorMsg) override {
+    bool check(std::string &errorMsg) override {
         // new seed for each call to the plugin
         PorgyTlpGraphStructure::gen.seed(
-                    chrono::high_resolution_clock::now().time_since_epoch().count());
+                std::chrono::high_resolution_clock::now().time_since_epoch().count());
 
         if (!PorgyTlpGraphStructure::isModelGraph(graph)) {
             errorMsg = "A strategy must be applied on a model";
@@ -86,11 +82,11 @@ public:
         }
 
         // parse the strategy
-        vector<StrategyElement::TulipProp> properties;
-        vector<std::string> property_names;
+        std::vector<StrategyElement::TulipProp> properties;
+        std::vector<std::string> property_names;
         // built a vector with all properties and another one with only Boolean
         // properties
-        for (const string &pname : graph->getProperties()) {
+        for (const std::string &pname : graph->getProperties()) {
             StrategyElement::TulipProp p;
             p.name = pname;
             properties.push_back(p);
@@ -106,19 +102,19 @@ public:
             property_names.push_back(s);
         }
         // built a vector with all rulenames
-        vector<string> rules;
+        std::vector<std::string> rules;
         rules.reserve(PorgyTlpGraphStructure::getRulesRoot(graph)->numberOfSubGraphs());
-        for(Graph* rule:PorgyTlpGraphStructure::getRulesRoot(graph)->subGraphs()) {
+        for(tlp::Graph* rule:PorgyTlpGraphStructure::getRulesRoot(graph)->subGraphs()) {
             rules.push_back(rule->getName());
         }
 
         // built a vector with all porgy plugins
-        vector<string> porgy_plugins;
-        vector<StrategyElement::PluginName> porgyplugins;
+        std::vector<std::string> porgy_plugins;
+        std::vector<StrategyElement::PluginName> porgyplugins;
         std::list<std::string> plugins =
-                PluginLister::availablePlugins<PropertyAlgorithm>();
+                tlp::PluginLister::availablePlugins<tlp::PropertyAlgorithm>();
         for (auto name : plugins) {
-            Plugin *pl(PluginLister::getPluginObject(name, nullptr));
+            Plugin *pl(tlp::PluginLister::getPluginObject(name, nullptr));
             if (pl->group() == PorgyConstants::CATEGORY_NAME) {
                 porgy_plugins.push_back(name);
                 StrategyElement::PluginName p;
@@ -130,36 +126,36 @@ public:
 
         strategy_grammar strat_parser(errorMsg, rules, properties, property_names, graph, porgy_plugins,
                                       porgyplugins); // le parser du langage de stratégie
-        string::const_iterator begin = strategy.begin();
-        string::const_iterator end = strategy.end();
+        std::string::const_iterator begin = strategy.begin();
+        std::string::const_iterator end = strategy.end();
         comments comments_; // le parser pour les commentaires
-        bool r = spirit::qi::phrase_parse(begin, end, strat_parser, comments_, strategy_elements);
+        bool r = boost::spirit::qi::phrase_parse(begin, end, strat_parser, comments_, strategy_elements);
 
         // parsing ok ?
         if (r && begin == end)
             return true;
         else if (errorMsg.empty()) {
-            errorMsg = " problem around " + string(begin, end);
+            errorMsg = " problem around " + std::string(begin, end);
         }
         return false;
     }
 
     bool run() override {
         pluginProgress->showPreview(false);
-        string Pname;
-        BooleanProperty *Pprop = nullptr, *Ban = nullptr;
+        std::string Pname;
+        tlp::BooleanProperty *Pprop = nullptr, *Ban = nullptr;
         // position handling
-        auto rest = graph->getProperty<BooleanProperty>("viewSelection");
-        dataSet->get<BooleanProperty *>(PorgyConstants::POSITION, rest);
-        dataSet->get<BooleanProperty *>(PorgyConstants::BAN, Ban);
+        auto rest = graph->getProperty<tlp::BooleanProperty>("viewSelection");
+        dataSet->get<tlp::BooleanProperty *>(PorgyConstants::POSITION, rest);
+        dataSet->get<tlp::BooleanProperty *>(PorgyConstants::BAN, Ban);
         //Find an available P Property
         if (rest->getName() == "viewSelection") {
             int indice = 0;
             //looking for an available P property
             while (1) {
-                string property_name(PorgyConstants::P_PREFIX + to_string(indice));
+                std::string property_name(PorgyConstants::P_PREFIX + std::to_string(indice));
                 if ((!graph->existLocalProperty(property_name)) && (!findP(property_name))) {
-                    Pprop = graph->getLocalProperty<BooleanProperty>(property_name);
+                    Pprop = graph->getLocalProperty<tlp::BooleanProperty>(property_name);
                     break;
                 }
                 ++indice;
@@ -175,17 +171,17 @@ public:
             Pname = rest->getName();
 
         Trace traceobj(PorgyTlpGraphStructure::getMainTrace(graph));
-        Observable::holdObservers();
+        tlp::Observable::holdObservers();
         // runs strategy
         unsigned oldnumberofNodes(traceobj.numberOfNodes());
         StrategyElement::stackStrat s;
 
-        string BanName;
+        std::string BanName;
         //Find an available Ban Property
         if (Ban == nullptr) {
             int indice = 0;
             while (1) {
-                string property_name(PorgyConstants::BAN_PREFIX+to_string(indice));
+                std::string property_name(PorgyConstants::BAN_PREFIX + std::to_string(indice));
                 if ((!graph->existLocalProperty(property_name)) && (!findP(property_name))) {
                     BanName = property_name;
                     break;
@@ -207,18 +203,18 @@ public:
                 ((newGraphAll.size() == 1) ||
                         (newGraphAll.empty() &&
                          traceobj.existAttribute(PorgyConstants::FAILURE_NODE_ADDED)))) {
-            node last;
+            tlp::node last;
             if (!traceobj.getAttribute(PorgyConstants::FAILURE_NODE_ADDED, last)) {
-                Graph *new_graph = newGraphAll[0];
+                tlp::Graph *new_graph = newGraphAll[0];
                 last = traceobj.findNode(new_graph->getName());
             } else {
                 traceobj.removeAttribute(PorgyConstants::FAILURE_NODE_ADDED);
             }
-            node first = traceobj.findNode(graph->getName());
+            tlp::node first = traceobj.findNode(graph->getName());
             traceobj.addStrategyTransformationEdge(first, last, Pname, BanName, strategy);
         }
 
-        Observable::unholdObservers();
+        tlp::Observable::unholdObservers();
         return true;
     }
 };

@@ -25,11 +25,12 @@
 
 #include <portgraph/PorgyConstants.h>
 #include <portgraph/porgyconf.h>
+#include <porgy/PortQt.h>
 
 #include <tulip/Coord.h>
 
 class PortNode;
-class PortQt;
+//class PortQt;
 
 namespace tlp {
 class Graph;
@@ -39,7 +40,6 @@ struct node;
 class PORGY_SCOPE PortNodeQt {
   QString name;
   QColor color;
-
   std::vector<PortQt> ports;
 
 public:

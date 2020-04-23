@@ -30,15 +30,12 @@
 #include <portgraph/PortGraph.h>
 #include <portgraph/PortGraphRule.h>
 
-using namespace tlp;
-using namespace std;
-
-BridgePort::BridgePort(const node n, const Bridge *pp)
+BridgePort::BridgePort(const tlp::node n, const Bridge *pp)
     : PortBase(n, (PortNode *)(pp)), greenedge(false) {
   // je cherche les sommets qui correspondent dans les parties droite et gauche
   // de la règle
   PortGraphRuleDecorator dec(pp->getParentPortGraph().getGraph());
-  for (node tmp : dec.getInOutNodes(n)) {
+  for (tlp::node tmp : dec.getInOutNodes(n)) {
     if (dec.getSide(tmp) == PorgyConstants::SIDE_LEFT) {
       left = tmp;
     } else if (dec.getSide(tmp) == PorgyConstants::SIDE_RIGHT) {
@@ -47,9 +44,9 @@ BridgePort::BridgePort(const node n, const Bridge *pp)
   }
   if (!right.isValid()) { // arête verte
     greenedge = true;
-    for (edge e : dec.allEdges(n)) {
+    for (tlp::edge e : dec.allEdges(n)) {
       if (dec.isElement(e) && dec.getSide(e) == PorgyConstants::SIDE_BRIDGE_OPP) {
-        const pair<node, node> &ends = dec.ends(e);
+        const std::pair<tlp::node, tlp::node> &ends = dec.ends(e);
         if ((ends.second != n) && (left != ends.second))
           right = ends.second;
         else if ((ends.first != n) && (left != ends.first))

@@ -140,6 +140,7 @@ private:
   bool verifyPos(BooleanProperty *pos) const;
   bool verifyIso() const;
   bool verifyAntiEdge(Graph *left_anti) const;
+  bool verifyCondition(Graph* image_to_check) const;
   Graph *addSub(int num_solutions, BooleanProperty *position, BooleanProperty *banp) const;
 };
 
@@ -322,6 +323,49 @@ bool PartialMap::verifyAntiEdge(Graph *left_anti) const {
     }
   }
   return true;
+}
+
+/**
+ * @brief PartialMap::verifyCondition Applies checks, on the LHS, defined on the Conditions tab (RuleConditionWidget)
+ * @return true if condition evaluates to true.
+ */
+bool PartialMap::verifyCondition(Graph* image_to_check) const {    
+    std::string cond_text("");    
+    g_left->getAttribute(PorgyConstants::RULE_CONDITION, cond_text);
+    
+    if (cond_text.empty())
+        return true; //if no condition is specified there is nothing to check
+    if (image_to_check == nullptr) {
+        if(_debug)
+            tlp::debug() << "Error in verifyCondition(): image_to_check is nullptr." << endl;
+        return false;
+    }
+    
+#ifdef PORGY_RULE_DEBUG_MESSAGES
+    cerr << __PRETTY_FUNCTION__ << " Rule condition: " << cond_text << endl;
+#endif
+
+    //image_to_check: isomorphic subgraph
+    //model: entire graph the matching started on
+    tlp::DataSet condDataSet;
+    condDataSet.set<string>("Conditions", cond_text);
+    condDataSet.set<string>("Mode", "execute");
+    condDataSet.set<tlp::Graph*>("Model", g_model);
+    condDataSet.set<string>("LhsMappingProperty", PorgyConstants::TAG);
+    std::string err("");
+    bool res = image_to_check->applyAlgorithm(PorgyConstants::APPLY_RULE_CONDITION, err, &condDataSet);
+    
+    if (_debug)
+        tlp::debug() << "verifyCondition result: " << std::boolalpha << res << endl;
+#ifdef PORGY_RULE_DEBUG_MESSAGES
+    cerr << __PRETTY_FUNCTION__ << " Rule condition result: " << std::boolalpha << res << endl;
+#endif
+    
+    if (!err.empty())
+        if (_debug)
+            tlp::debug() << "Error in verifyCondition(): " << err << endl;
+    
+    return res;
 }
 
 bool PartialMap::verifyIso() const {
@@ -516,6 +560,10 @@ void PartialMap::backtrack(int numtofind, int &nbr_found, BooleanProperty *pos,
           if(verifyIso()) {
               if(verifyAntiEdge(left_anti)) { // only uses the content of current (M is false)
                   Graph *added_sub = addSub(nbr_found, pos, banp);
+                  if (!verifyCondition(added_sub)) {
+                      g_model->delSubGraph(added_sub);
+                      return;
+                  }
                   ++nbr_found;
                   graph_names.push_back(added_sub);
                   if (nbr_found == numtofind) {
