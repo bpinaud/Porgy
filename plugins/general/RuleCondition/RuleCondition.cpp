@@ -73,7 +73,7 @@ public:
         std::string cond_text;
         std::string _mode;
         std::string lhsMappingProperty;
-        tlp::Graph* pg_model;
+        tlp::Graph* pg_model(nullptr);
         pluginProgress->showPreview(false);
 
         if(dataSet!=nullptr) {
