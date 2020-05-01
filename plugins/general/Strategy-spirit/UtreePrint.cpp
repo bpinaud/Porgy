@@ -146,7 +146,7 @@ void utree_print::operator()(spirit::any_ptr const &a) const {
   StrategyElement::property_datastruct v(*v_ptr);
   // delete v_ptr; => memory leak but I do not know how to solve it. the pointer
   // cannot be deleted if the strategy uses a loop operator
-  // operation
+  // operation. Use std::unique_ptr instead?
   switch (get<0>(v)) {
   case StrategyElement::position_keywords::PROPERTY:
     out << "property(";
