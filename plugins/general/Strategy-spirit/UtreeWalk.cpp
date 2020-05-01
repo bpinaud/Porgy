@@ -319,7 +319,7 @@ void utree_walk::operator()(spirit::any_ptr const &a) const {
   // right now, I am using any_ptr only for StrategyElement::property_datastruct
   StrategyElement::property_datastruct *v_ptr = a.get<StrategyElement::property_datastruct *>();
   StrategyElement::property_datastruct v(*v_ptr);
-  // do not delete in case of a while. I have a memory leak here.
+  // do not delete in case of a while. I have a memory leak here. use std::unique_ptr instead?.
   //  delete v_ptr;
 
   // starting set
