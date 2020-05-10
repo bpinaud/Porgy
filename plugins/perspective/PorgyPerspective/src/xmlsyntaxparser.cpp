@@ -35,7 +35,7 @@
 
 #include <tulip/TlpQtTools.h>
 
-bool XmlSyntaxParser::parse(const QString &file, std::unordered_map<std::string, std::vector<HighlightingRule *>> &rules,
+bool XmlSyntaxParser::parse(const QString &file, std::unordered_map<std::string, std::vector<HighlightingRule> > &rules,
                             QString &error) {
   QFile f(file);
 
@@ -103,12 +103,10 @@ bool XmlSyntaxParser::parse(const QString &file, std::unordered_map<std::string,
 
         else if (reader.name() == "function") {
           QRegExp rExp(reader.attributes().value("value").toString());
-          HighlightingRule *hRule = new HighlightingRule(rExp, cFormat);
-          rules["function"].push_back(hRule);
+          rules["function"].push_back(HighlightingRule(rExp, cFormat));
         } else {
           QRegExp rExp(reader.readElementText());
-          HighlightingRule *hRule = new HighlightingRule(rExp, cFormat);
-          rules[tlp::QStringToTlpString(reader.name().toString())].push_back(hRule);
+          rules[tlp::QStringToTlpString(reader.name().toString())].push_back(HighlightingRule(rExp, cFormat));
         }
       }
     }

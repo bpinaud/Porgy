@@ -76,7 +76,7 @@ protected:
   void highlightBlock(const QString &text) override;
 
 private:
-  std::unordered_map<std::string, std::vector<HighlightingRule *>> _highlightingRules;
+  std::unordered_map<std::string, std::vector<HighlightingRule>> _highlightingRules;
   QString _error;
 };
 

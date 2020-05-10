@@ -61,10 +61,10 @@ GeneralPurposeSyntaxHighlighter::GeneralPurposeSyntaxHighlighter(const QString &
  ****************************************************************************************/
 QStringList GeneralPurposeSyntaxHighlighter::getKeywords() {
   QStringList keywords;
-  std::vector<HighlightingRule *> &vec = _highlightingRules["instruction"];
+  std::vector<HighlightingRule> &vec = _highlightingRules["instruction"];
 
   for (const auto& hr:vec) {
-    QString str = hr->toString();
+    QString str = hr.toString();
     XmlSyntaxParser::removeWordBoundary(str);
     keywords << str;
   }
@@ -72,7 +72,7 @@ QStringList GeneralPurposeSyntaxHighlighter::getKeywords() {
   vec = _highlightingRules["function"];
 
   for (const auto& hr:vec) {
-    QString str = hr->toString();
+   QString str = hr.toString();
     XmlSyntaxParser::removeWordBoundary(str);
     keywords << str;
   }
@@ -101,12 +101,12 @@ void GeneralPurposeSyntaxHighlighter::highlightBlock(const QString &text) {
 
     for (const auto& itM :_highlightingRules) {
         for (const auto& itV: itM.second) {
-            QRegExp expression(itV->getPattern());
+            QRegExp expression(itV.getPattern());
             int index = expression.indexIn(text);
 
             while (index >= 0) {
                 int length = expression.matchedLength();
-                setFormat(index, length, itV->getFormat());
+                setFormat(index, length, itV.getFormat());
                 index = expression.indexIn(text, index + length);
             }
         }
@@ -114,26 +114,26 @@ void GeneralPurposeSyntaxHighlighter::highlightBlock(const QString &text) {
 
   setCurrentBlockState(0);
 
-  vector<HighlightingRule *> &vec = _highlightingRules["multicomment"];
+  vector<HighlightingRule> &vec = _highlightingRules["multicomment"];
   assert(!vec.empty());
   int startIndex = 0;
 
   if (previousBlockState() != 1) {
-    startIndex = vec.at(0)->getPattern().indexIn(text);
+    startIndex = vec.at(0).getPattern().indexIn(text);
   }
 
   while (startIndex >= 0) {
-    int endIndex = vec.at(1)->getPattern().indexIn(text, startIndex);
+    int endIndex = vec.at(1).getPattern().indexIn(text, startIndex);
     int commentLength;
 
     if (endIndex == -1) {
       setCurrentBlockState(1);
       commentLength = text.length() - startIndex;
     } else {
-      commentLength = endIndex - startIndex + vec.at(1)->getPattern().matchedLength();
+      commentLength = endIndex - startIndex + vec.at(1).getPattern().matchedLength();
     }
 
-    setFormat(startIndex, commentLength, vec.at(0)->getFormat());
-    startIndex = vec.at(0)->getPattern().indexIn(text, startIndex + commentLength);
+    setFormat(startIndex, commentLength, vec.at(0).getFormat());
+    startIndex = vec.at(0).getPattern().indexIn(text, startIndex + commentLength);
   }
 }

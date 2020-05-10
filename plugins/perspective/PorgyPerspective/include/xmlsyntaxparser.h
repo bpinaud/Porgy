@@ -59,7 +59,7 @@
  */
 class XmlSyntaxParser {
 public:
-  static bool parse(const QString &file, std::unordered_map<std::string, std::vector<HighlightingRule *>> &rules,
+  static bool parse(const QString &file, std::unordered_map<std::string, std::vector<HighlightingRule>> &rules,
                     QString &error);
 
   /*!
