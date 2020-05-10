@@ -29,7 +29,6 @@ SET(LIB_SRCS
     src/codeeditorplaintextview.cpp
     src/xmlsyntaxparser.cpp
     src/highlightingrule.cpp
-    src/generalpurposesyntaxhighlightingrules.cpp
     src/generalpurposesyntaxhighlighter.cpp
     src/PreferencesDialog.cpp
     src/validaterule.cpp)

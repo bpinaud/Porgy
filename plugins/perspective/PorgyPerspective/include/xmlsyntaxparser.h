@@ -32,8 +32,11 @@
 #include <QBrush>
 #include <QFont>
 #include <QXmlStreamReader>
+#include <unordered_map>
+#include <vector>
+#include <string>
 
-class GeneralPurposeSyntaxHighlightingRules;
+#include "highlightingrule.h"
 
 /*!
  * \class XmlSyntaxParser
@@ -56,7 +59,7 @@ class GeneralPurposeSyntaxHighlightingRules;
  */
 class XmlSyntaxParser {
 public:
-  static bool parse(const QString &file, GeneralPurposeSyntaxHighlightingRules *rules,
+  static bool parse(const QString &file, std::unordered_map<std::string, std::vector<HighlightingRule *>> &rules,
                     QString &error);
 
   /*!

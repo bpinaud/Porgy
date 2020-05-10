@@ -28,7 +28,6 @@
  */
 
 #include "xmlsyntaxparser.h"
-#include "generalpurposesyntaxhighlightingrules.h"
 #include "highlightingrule.h"
 
 #include <QFile>
@@ -36,7 +35,7 @@
 
 #include <tulip/TlpQtTools.h>
 
-bool XmlSyntaxParser::parse(const QString &file, GeneralPurposeSyntaxHighlightingRules *rules,
+bool XmlSyntaxParser::parse(const QString &file, std::unordered_map<std::string, std::vector<HighlightingRule *>> &rules,
                             QString &error) {
   QFile f(file);
 
@@ -105,11 +104,11 @@ bool XmlSyntaxParser::parse(const QString &file, GeneralPurposeSyntaxHighlightin
         else if (reader.name() == "function") {
           QRegExp rExp(reader.attributes().value("value").toString());
           HighlightingRule *hRule = new HighlightingRule(rExp, cFormat);
-          rules->appendRule("function", hRule);
+          rules["function"].push_back(hRule);
         } else {
           QRegExp rExp(reader.readElementText());
           HighlightingRule *hRule = new HighlightingRule(rExp, cFormat);
-          rules->appendRule(tlp::QStringToTlpString(reader.name().toString()), hRule);
+          rules[tlp::QStringToTlpString(reader.name().toString())].push_back(hRule);
         }
       }
     }
