@@ -30,7 +30,7 @@
 #ifndef GENERALPURPOSESYNTAXHIGHLIGHTINGRULES_H
 #define GENERALPURPOSESYNTAXHIGHLIGHTINGRULES_H
 
-#include <map>
+#include <unordered_map>
 #include <vector>
 #include <string>
 
@@ -77,7 +77,7 @@ public:
    * \return an iterator positioned on the first member of the highlighting
    * rules container.
    */
-  std::map<std::string, std::vector<HighlightingRule *>>::iterator begin();
+  std::unordered_map<std::string, std::vector<HighlightingRule *>>::const_iterator begin() const;
 
   /*!
    * \brief Get an iterator positioned on the end (end + 1) member of the
@@ -85,7 +85,7 @@ public:
    * \return An iterator positioned on the end (end + 1) member of the
    * highlighting rules container.
    */
-  std::map<std::string, std::vector<HighlightingRule *>>::iterator end();
+  std::unordered_map<std::string, std::vector<HighlightingRule *>>::const_iterator end() const;
 
   /*!
    * \brief Get the size of the highlighting rule container.
@@ -116,28 +116,14 @@ public:
   std::vector<HighlightingRule *> operator[](const std::string &key) const;
 
   /*!
-   * \brief Get a copy of a set of rules for a given type of rule.
-   * \param key : Type of rule.
-   * \return A copy of a set of rules for a given type of rule.
-   */
-  std::vector<HighlightingRule *> operator[](const char *key) const;
-
-  /*!
    * \brief Set an highlighting rule of a set of rules for a given type of rule.
    * \param key : Type of rule.
    * \return A reference to a set of rules for a given type of rule.
    */
   std::vector<HighlightingRule *> &operator[](const std::string &key);
 
-  /*!
-   * \brief Set an highlighting rule of a set of rules for a given type of rule.
-   * \param key : Type of rule.
-   * \return A reference to a set of rules for a given type of rule.
-   */
-  std::vector<HighlightingRule *> &operator[](const char *key);
-
 private:
-  std::map<std::string, std::vector<HighlightingRule *>>
+  std::unordered_map<std::string, std::vector<HighlightingRule *>>
       _highlightingRules; /*!< Set of highlightning rules. */
 };
 

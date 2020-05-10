@@ -70,9 +70,9 @@ void GeneralPurposeSyntaxHighlightingRules::appendRule(const std::string &key,
  * Get map begin.
  *
  ****************************************************************************************/
-std::map<std::string, std::vector<HighlightingRule *>>::iterator
-GeneralPurposeSyntaxHighlightingRules::begin() {
-  return _highlightingRules.begin();
+std::unordered_map<std::string, std::vector<HighlightingRule *>>::const_iterator
+GeneralPurposeSyntaxHighlightingRules::begin() const {
+  return _highlightingRules.cbegin();
 }
 
 /****************************************************************************************
@@ -81,9 +81,9 @@ GeneralPurposeSyntaxHighlightingRules::begin() {
  * Get map end.
  *
  ****************************************************************************************/
-std::map<std::string, std::vector<HighlightingRule *>>::iterator
-GeneralPurposeSyntaxHighlightingRules::end() {
-  return _highlightingRules.end();
+std::unordered_map<std::string, std::vector<HighlightingRule *>>::const_iterator
+GeneralPurposeSyntaxHighlightingRules::end() const {
+  return _highlightingRules.cend();
 }
 
 /****************************************************************************************
@@ -143,21 +143,6 @@ operator[](const std::string &key) const {
 /****************************************************************************************
  ****************************************************************************************
  *
- * Get a vector of rules.
- *
- ****************************************************************************************/
-std::vector<HighlightingRule *> GeneralPurposeSyntaxHighlightingRules::
-operator[](const char *key) const {
-  if (_highlightingRules.find(key) == _highlightingRules.end()) {
-    return std::vector<HighlightingRule *>();
-  }
-
-  return _highlightingRules.at(key);
-}
-
-/****************************************************************************************
- ****************************************************************************************
- *
  * Set a rule.
  *
  ****************************************************************************************/
@@ -166,13 +151,3 @@ operator[](const std::string &key) {
   return _highlightingRules[key];
 }
 
-/****************************************************************************************
- ****************************************************************************************
- *
- * Set a rule.
- *
- ****************************************************************************************/
-std::vector<HighlightingRule *> &GeneralPurposeSyntaxHighlightingRules::
-operator[](const char *key) {
-  return _highlightingRules[key];
-}

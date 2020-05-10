@@ -110,8 +110,8 @@ QString GeneralPurposeSyntaxHighlighter::getParseError() const {
  *
  ****************************************************************************************/
 void GeneralPurposeSyntaxHighlighter::highlightBlock(const QString &text) {
-  typedef std::map<std::string, std::vector<HighlightingRule *>>::iterator map_it;
-  typedef std::vector<HighlightingRule *>::iterator vec_it;
+  typedef std::unordered_map<std::string, std::vector<HighlightingRule *>>::const_iterator map_it;
+  typedef std::vector<HighlightingRule *>::const_iterator vec_it;
 
   for (map_it itM = _highlightingRules->begin(); itM != _highlightingRules->end(); ++itM) {
     for (vec_it itV = itM->second.begin(); itV != itM->second.end(); ++itV) {
