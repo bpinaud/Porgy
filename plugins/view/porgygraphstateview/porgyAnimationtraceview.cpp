@@ -64,10 +64,9 @@ void PorgyAnimationTraceView::setAnimationData(tlp::Graph *graph,
 void PorgyAnimationTraceView::addRedrawTriggers(tlp::GlScene *scene) {
   GlGraphComposite *composite = scene->getGlGraphComposite();
   addRedrawTrigger(composite->getGraph());
-  std::set<tlp::PropertyInterface *> properties = composite->getInputData()->properties();
-  for (std::set<tlp::PropertyInterface *>::iterator it = properties.begin(); it != properties.end();
-       ++it) {
-    addRedrawTrigger(*it);
+  const auto &properties = composite->getInputData()->properties();
+  for (auto it: properties) {
+    addRedrawTrigger(it);
   }
 }
 

@@ -31,16 +31,21 @@
 #include "highlightingrule.h"
 
 #include <QFile>
+#include <QString>
 #include <QXmlStreamReader>
 
 #include <tulip/TlpQtTools.h>
 
-bool XmlSyntaxParser::parse(const QString &file, std::unordered_map<std::string, std::vector<HighlightingRule> > &rules,
-                            QString &error) {
-  QFile f(file);
+bool XmlSyntaxParser::parse(const QString &f, std::unordered_map<std::string, std::vector<HighlightingRule>> &rules, QString &error) {
 
-  if (f.open(QIODevice::ReadOnly | QIODevice::Text)) {
-    QXmlStreamReader reader(&f);
+    QFile fi(f);
+
+    if (!fi.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        error = "Cannot open syntax file";
+        return false;
+    }
+
+    QXmlStreamReader reader(&fi);
     QXmlStreamAttributes attributes;
     QTextCharFormat cFormat;
 
@@ -54,10 +59,9 @@ bool XmlSyntaxParser::parse(const QString &file, std::unordered_map<std::string,
           if (reader.attributes().value("version") != "0.1") {
             error = "Not a valid Porgy Strategy syntax file version 0.1";
             return false;
-          } else
-            continue;
+          }
         }
-        if (reader.name() == "instructions") {
+        else if (reader.name() == "instructions") {
           attributes = reader.attributes();
           cFormat.setForeground(
               XmlSyntaxParser::intToRgb(attributes.value("color").toString().toInt()));
@@ -110,11 +114,5 @@ bool XmlSyntaxParser::parse(const QString &file, std::unordered_map<std::string,
         }
       }
     }
-
-    f.close();
-    return true;
-  } else {
-    error = "Cannot open syntax file";
-    return false;
-  }
+    return reader.hasError();
 }

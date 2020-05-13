@@ -57,10 +57,9 @@
  * changes in the
  *          associated XSD file (porgy-sript.xsd).
  */
-class XmlSyntaxParser {
-public:
-  static bool parse(const QString &file, std::unordered_map<std::string, std::vector<HighlightingRule>> &rules,
-                    QString &error);
+struct XmlSyntaxParser {
+
+  static bool parse(const QString &f, std::unordered_map<std::string, std::vector<HighlightingRule>> &rules, QString &error);
 
   /*!
    * \brief Converts an RGB color into a QBrush.

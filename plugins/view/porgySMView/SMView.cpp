@@ -185,8 +185,8 @@ void PorgySMView::graphChanged(tlp::Graph *graph) {
     graphicsView()->setEnabled(false);
   }
   addRedrawTrigger(_smallMultipleGraph);
-  GlGraphComposite *composite = scene->getGlGraphComposite();
-  for (const auto &prop : composite->getInputData()->properties()) {
+  const auto &properties = scene->getGlGraphComposite()->getInputData()->properties();
+  for (const auto prop : properties) {
     addRedrawTrigger(prop);
   }
 }

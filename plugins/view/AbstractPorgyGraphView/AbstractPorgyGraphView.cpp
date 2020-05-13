@@ -218,8 +218,8 @@ void AbstractPorgyGraphView::initObservers() {
     GlGraphComposite* composite = getGlMainWidget()->getScene()->getGlGraphComposite();
   if (composite != nullptr) {
     GlGraphInputData *inputData = composite->getInputData();
-    std::set<tlp::PropertyInterface *> properties = inputData->properties();
-    for (auto &it : properties) {
+    const auto &properties = inputData->properties();
+    for (auto it : properties) {
       addRedrawTrigger(it);
     }
     addRedrawTrigger(inputData->graph);
@@ -230,8 +230,8 @@ void AbstractPorgyGraphView::clearObservers() {
     GlGraphComposite* composite = getGlMainWidget()->getScene()->getGlGraphComposite();
   if (composite != nullptr) {
     GlGraphInputData *inputData = composite->getInputData();
-    std::set<tlp::PropertyInterface *> properties = inputData->properties();
-    for (auto &it : properties) {
+    const auto &properties = inputData->properties();
+    for (auto it : properties) {
       removeRedrawTrigger(it);
     }
     removeRedrawTrigger(inputData->graph);
