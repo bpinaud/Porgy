@@ -29,7 +29,6 @@
 
 #include "codeeditorplaintextview.h"
 #include "generalpurposesyntaxhighlighter.h"
-#include "generalpurposesyntaxhighlightingrules.h"
 #include "strategymanager.h"
 #include "xmlsyntaxparser.h"
 

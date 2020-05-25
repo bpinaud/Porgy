@@ -32,8 +32,11 @@
 #include <QBrush>
 #include <QFont>
 #include <QXmlStreamReader>
+#include <unordered_map>
+#include <vector>
+#include <string>
 
-class GeneralPurposeSyntaxHighlightingRules;
+#include "highlightingrule.h"
 
 /*!
  * \class XmlSyntaxParser
@@ -54,10 +57,9 @@ class GeneralPurposeSyntaxHighlightingRules;
  * changes in the
  *          associated XSD file (porgy-sript.xsd).
  */
-class XmlSyntaxParser {
-public:
-  static bool parse(const QString &file, GeneralPurposeSyntaxHighlightingRules *rules,
-                    QString &error);
+struct XmlSyntaxParser {
+
+  static bool parse(const QString &f, std::unordered_map<std::string, std::vector<HighlightingRule>> &rules, QString &error);
 
   /*!
    * \brief Converts an RGB color into a QBrush.

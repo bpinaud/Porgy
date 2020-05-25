@@ -28,7 +28,6 @@
  */
 
 #include "generalpurposesyntaxhighlighter.h"
-#include "generalpurposesyntaxhighlightingrules.h"
 #include "highlightingrule.h"
 #include "xmlsyntaxparser.h"
 
@@ -46,22 +45,11 @@ using namespace std;
  *
  ****************************************************************************************/
 GeneralPurposeSyntaxHighlighter::GeneralPurposeSyntaxHighlighter(const QString &syntaxFile,
-                                                                 QTextDocument *parent)
-    : QSyntaxHighlighter(parent), _highlightingRules(new GeneralPurposeSyntaxHighlightingRules()) {
+                                                                 QTextDocument *parent): QSyntaxHighlighter(parent) {
   XmlSyntaxParser::parse(syntaxFile, _highlightingRules, _error);
   if (!_error.isEmpty()) {
     qDebug() << "error when parsing syntax file: " << _error;
   }
-}
-
-/****************************************************************************************
- ****************************************************************************************
- *
- * Default destructor
- *
- ****************************************************************************************/
-GeneralPurposeSyntaxHighlighter::~GeneralPurposeSyntaxHighlighter() {
-  delete _highlightingRules;
 }
 
 /****************************************************************************************
@@ -73,18 +61,18 @@ GeneralPurposeSyntaxHighlighter::~GeneralPurposeSyntaxHighlighter() {
  ****************************************************************************************/
 QStringList GeneralPurposeSyntaxHighlighter::getKeywords() {
   QStringList keywords;
-  std::vector<HighlightingRule *> vec = (*_highlightingRules)["instruction"];
+  std::vector<HighlightingRule> &vec = _highlightingRules["instruction"];
 
-  for (std::size_t i = 0; i < vec.size(); ++i) {
-    QString str = vec.at(i)->toString();
+  for (const auto& hr:vec) {
+    QString str = hr.toString();
     XmlSyntaxParser::removeWordBoundary(str);
     keywords << str;
   }
 
-  vec = (*_highlightingRules)["function"];
+  vec = _highlightingRules["function"];
 
-  for (std::size_t i = 0; i < vec.size(); ++i) {
-    QString str = vec.at(i)->toString();
+  for (const auto& hr:vec) {
+   QString str = hr.toString();
     XmlSyntaxParser::removeWordBoundary(str);
     keywords << str;
   }
@@ -110,44 +98,42 @@ QString GeneralPurposeSyntaxHighlighter::getParseError() const {
  *
  ****************************************************************************************/
 void GeneralPurposeSyntaxHighlighter::highlightBlock(const QString &text) {
-  typedef std::map<std::string, std::vector<HighlightingRule *>>::iterator map_it;
-  typedef std::vector<HighlightingRule *>::iterator vec_it;
 
-  for (map_it itM = _highlightingRules->begin(); itM != _highlightingRules->end(); ++itM) {
-    for (vec_it itV = itM->second.begin(); itV != itM->second.end(); ++itV) {
-      QRegExp expression((*itV)->getPattern());
-      int index = expression.indexIn(text);
+    for (const auto& itM :_highlightingRules) {
+        for (const auto& itV: itM.second) {
+            QRegExp expression(itV.getPattern());
+            int index = expression.indexIn(text);
 
-      while (index >= 0) {
-        int length = expression.matchedLength();
-        setFormat(index, length, (*itV)->getFormat());
-        index = expression.indexIn(text, index + length);
-      }
+            while (index >= 0) {
+                int length = expression.matchedLength();
+                setFormat(index, length, itV.getFormat());
+                index = expression.indexIn(text, index + length);
+            }
+        }
     }
-  }
 
   setCurrentBlockState(0);
 
-  vector<HighlightingRule *> vec = (*_highlightingRules)["multicomment"];
+  vector<HighlightingRule> &vec = _highlightingRules["multicomment"];
   assert(!vec.empty());
   int startIndex = 0;
 
   if (previousBlockState() != 1) {
-    startIndex = vec.at(0)->getPattern().indexIn(text);
+    startIndex = vec.at(0).getPattern().indexIn(text);
   }
 
   while (startIndex >= 0) {
-    int endIndex = vec.at(1)->getPattern().indexIn(text, startIndex);
+    int endIndex = vec.at(1).getPattern().indexIn(text, startIndex);
     int commentLength;
 
     if (endIndex == -1) {
       setCurrentBlockState(1);
       commentLength = text.length() - startIndex;
     } else {
-      commentLength = endIndex - startIndex + vec.at(1)->getPattern().matchedLength();
+      commentLength = endIndex - startIndex + vec.at(1).getPattern().matchedLength();
     }
 
-    setFormat(startIndex, commentLength, vec.at(0)->getFormat());
-    startIndex = vec.at(0)->getPattern().indexIn(text, startIndex + commentLength);
+    setFormat(startIndex, commentLength, vec.at(0).getFormat());
+    startIndex = vec.at(0).getPattern().indexIn(text, startIndex + commentLength);
   }
 }

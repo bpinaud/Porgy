@@ -41,7 +41,7 @@ public:
   /*!
    * \brief Default constructor.
    */
-  HighlightingRule();
+  HighlightingRule() = delete;
 
   /*!
    * \brief Constructor which allows to populate the pattern of a keyword and

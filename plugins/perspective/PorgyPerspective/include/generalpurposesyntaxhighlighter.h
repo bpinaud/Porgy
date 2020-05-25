@@ -31,8 +31,14 @@
 #define GENERALPURPOSESYNTAXHIGHLIGHTER_H
 
 #include <QSyntaxHighlighter>
+#include <QStringList>
+#include <QString>
 
-class GeneralPurposeSyntaxHighlightingRules;
+#include "highlightingrule.h"
+
+#include <vector>
+#include <unordered_map>
+#include <string>
 
 /*!
  * \class GeneralPurposeSyntaxHighlighter
@@ -49,11 +55,6 @@ public:
    * \param parent : Parent document.
    */
   GeneralPurposeSyntaxHighlighter(const QString &syntaxFile, QTextDocument *parent);
-
-  /*!
-   * \brief Default destructor.
-   */
-  ~GeneralPurposeSyntaxHighlighter() override;
 
   /*!
    * \brief Return the Scripting Language keywords.
@@ -75,7 +76,7 @@ protected:
   void highlightBlock(const QString &text) override;
 
 private:
-  GeneralPurposeSyntaxHighlightingRules *_highlightingRules;
+  std::unordered_map<std::string, std::vector<HighlightingRule>> _highlightingRules;
   QString _error;
 };
 
