@@ -24,8 +24,8 @@ List of dependencies
   - Qt >= 5.6
   - cmake >= 3.1
 
-Compilation instruction
-=============================
+Compilation instructions
+=========================
 Porgy could be build along with Tulip or as a standalone project.
 
 ### Easy: compile Porgy along with Tulip:
