@@ -21,30 +21,41 @@ List of dependencies
 - Boost 1.60 (see http://www.boost.org/)
 - All dependencies from Tulip especially: 
   - C++11 compiler
-  - Qt > 5.5
+  - Qt >= 5.6
+  - cmake >= 3.1
 
-Basic compilation instruction
+Compilation instruction
 =============================
-Porgy uses CMake as its build system. It could be build along with Tulip or as a standalone project.
-The simplest way to compile this package is:
+Porgy could be build along with Tulip or as a standalone project.
+
+### Easy: compile Porgy along with Tulip:
 1. Download the current Tulip github code base.
 
 2. clone the Porgy project in the *externalplugins* directory of the Tulip source tree.
 
 3.  Go to the top level directory of the tulip soures, and create a `build` directory.
     Go to this `build` folder, and type `cmake ..` (or `cmake-gui` if you prefer the visual interface of CMake) .
-    This will check for all of Tulip and Porgy's dependencies, and warn if some are missing. If dependencies are correctly installed
-    Porgy will find it automatically.
-    If you want to compile in debug (resp. Release) mode set the CMAKE_BUILD_TYPE variable to "Debug" (resp. Release). See the CMake manual for more information.
+    This will check for all of Tulip and Porgy's dependencies, and warn if some are missing. If dependencies are correctly installed Porgy will find it automatically. If you want to compile in debug (resp. Release) mode set the CMAKE_BUILD_TYPE variable to "Debug" (resp. Release). See the CMake manual for more information.
 
-2. Type `make` to compile. (if you have more than one core, use `-jX`
+4. Type `make` to compile. (if you have more than one core, use `-jX`
    where X is your number of cores + 1). Ninja could be used instead.
 
-3. To install use `make install`. Porgy will be installed in the Tulip
+5. To install use `make install`. Porgy will be installed in the Tulip
    plugins directory found during the configuration process (1). You must have
    write access to the Tulip plugins directory.
 
-4. You can remove the program binaries and object files from the source code directory by typing `make clean'.
+6. You can remove the program binaries and object files from the source code directory by typing `make clean'.
 
-5. To execute Porgy just launch tulip with the `tulip` command and choose the
+7. To execute Porgy just launch tulip with the `tulip` command and choose the
 Porgy perspective or use from a command line `tulip_perspective -p Porgy`.
+
+### Compile Porgy on its own
+1. Install Tulip. Download also the associated source files. Source files are mandatory because Porgy needs some header files which are not distributed with the Tulip binaries nor installed when compiling and installing Tulip from source files.
+
+2. Download the latest Porgy github code base.
+
+3. When configuring the build with cmake, set PORGY_TULIP_SRC_DIR to the root directory of the tulip source tree. By default, it is set to `/usr/src/tulip`.
+
+4. You can also set PORGY_USE_CCACHE if you are using ccache.
+
+4. Compile and install as usual.
