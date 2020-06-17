@@ -25,7 +25,7 @@ List of dependencies
 
 Basic compilation instruction
 =============================
-Porgy uses CMake as its build system. It must be built with Tulip.
+Porgy uses CMake as its build system. It could be build along with Tulip or as a standalone project.
 The simplest way to compile this package is:
 1. Download the current Tulip github code base.
 

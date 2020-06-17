@@ -2,8 +2,14 @@ project(Porgy)
 CMAKE_MINIMUM_REQUIRED(VERSION 3.1)
 SET(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR}/cmake)
 
+# Force the use of the legacy libGL.so for CMake >= 3.11
+IF(POLICY CMP0072)
+  CMAKE_POLICY(SET CMP0072 OLD)
+ENDIF(POLICY CMP0072)
+
 FIND_PACKAGE( TULIP 5.4.0 REQUIRED )
 SET(TULIP_BINARIES_DIR ${TULIP_DIR}/bin)
+SET(PORGY_TULIP_SRC_DIR "/usr/src/tulip" CACHE PATH "Tulip sources tree is mandatory to compile Porgy. Set the path to the root directory of the Tulip sources.")
 
 SET(PORGY_RULE_DEBUG_MESSAGES OFF CACHE BOOL "Do you want to activate rule application debugging (lots of output)? [ON|OFF]")
 MARK_AS_ADVANCED(PORGY_RULE_DEBUG_MESSAGES)
