@@ -59,13 +59,17 @@ public:
   }
 
   void construct() override {
-      push_back(new MouseNKeysNavigator(false));
+      push_back(new MouseNKeysNavigator);
       push_back(new MetaNodeZoomInteractorComponent);
 
   }
 
   bool isCompatible(const std::string &viewName) const override {
     return (viewName == PorgyConstants::TRACE_VIEW_NAME);
+  }
+
+  QCursor cursor() const override {
+    return QCursor(Qt::OpenHandCursor);
   }
 };
 
