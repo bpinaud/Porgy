@@ -1,0 +1,640 @@
+\documentclass[a4paper,10pt,runningheads]{llncs}
+
+\usepackage{mathrsfs}
+\usepackage{stmaryrd}  
+% \usepackage{graphicx}
+% \usepackage{listings}
+% \usepackage{todonotes}
+\renewcommand{\sectionmark}[1]{\markright{#1}}
+
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{subfigure}
+\usepackage{url}
+\usepackage{multirow}
+\usepackage[ruled, vlined]{algorithm2e}
+\usepackage{rotating}
+\usepackage{enumitem}
+
+\usepackage[utf8]{inputenc}
+\usepackage{xspace}
+\usepackage{minted}
+\usepackage{hyperref}
+\usepackage[authoryear]{natbib}
+\usepackage{doi}
+
+\SetAlgorithmName{Strategy}{strategy}{List of Strategies}
+
+\title{Porgy Strategy Language: User Manual}
+\author{Maribel Fern\'andez\inst{1} \and H\'el\`ene Kirchner\inst{2} \and Bruno Pinaud\inst{3} \and Jason Vallet\inst{3} }
+\institute{King's College London, Department of Informatics, Strand, London WC2R 2LS, UK \email{maribel.fernandez@kcl.ac.uk} \and
+Inria, 200 avenue de la Vieille Tour, 33405 Talence, France \email{helene.kirchner@inria.fr} \and
+University of Bordeaux, LaBRI CNRS UMR 5800, 33405 Talence Cedex, France \email{firstname.lastname@u-bordeaux.fr}
+} 
+\newcommand{\urlporgy}{\url{http://porgy.labri.fr/strat_examples}\xspace}
+\newcommand{\PORGY}{{\sc Porgy}\xspace}
+\newcommand{\TULIP}{{\sc Tulip}\xspace}
+\newcommand{\Op}{ \mathcal{O}p}
+%\newcommand{\LL}{{\cal L}}
+\newcommand{\LL}{Label}
+\newcommand{\Interface}{\mathit{Interface}}
+\newcommand{\saturated}{\textit{saturated}}
+\newcommand{\R}{{\cal R}}
+\newcommand{\ppick}[1]{{\tt ppick(}#1{\tt )}}
+\newcommand{\all}[1]{{\tt all(}#1{\tt )}}
+\newcommand{\one}[1]{{\tt one(}#1{\tt )}}
+\newcommand{\CrtGraph}{{\tt crtGraph}}
+\newcommand{\CrtPos}{{\tt crtPos}}
+\newcommand{\CrtBan}{{\tt crtBan}}
+\newcommand{\Id}{{\sf id}}
+\newcommand{\Fail}{{\sf fail}}
+\newcommand{\isEmpty}[1]{{\tt isEmpty(}#1{\tt )}}
+\newcommand{\setPos}[1]{{\tt setPos(}#1{\tt )}}
+\newcommand{\setBan}[1]{{\tt setBan(}#1{\tt )}}
+\newcommand{\update}[1]{{\tt update(}#1{\tt )}}
+\newcommand{\Node}{{\tt node}}
+\newcommand{\Edge}{{\tt edge}}
+\newcommand{\Port}{{\tt port}}
+\newcommand{\tmatch}[1]{{\tt match(}#1{\tt )}}
+\newcommand{\orelse}[2]{(#1) {\tt orelse} (#2)}
+\newcommand{\whiledoop}[3]{{\tt while(}#1{\tt )}{\tt do(}#2{\tt )}#3}
+\newcommand{\whiledoo}[2]{{\tt while(}#1{\tt )do(}#2{\tt )}}
+\newcommand{\repeatt}[1]{{\tt repeat(}#1{\tt )}}
+\newcommand{\nott}[1]{{\tt not(}#1{\tt )}}
+\newcommand{\Property}[3]{{\tt property(}#1, #2, #3{\tt )}}
+\newcommand{\Ngb}[3]{{\tt ngb(}#1, #2, #3{\tt )}}
+\newcommand{\Ngbopt}[2]{{\tt ngb(}#1, #2{\tt )}}
+\newcommand{\try}[1]{{\tt try(}#1{\tt )}}
+\newcommand{\ifthenelsee}[3]{{\tt if(}#1{\tt )then(}#2{\tt )else(}#3{\tt )}}
+\newcommand{\ifthen}[2]{{\tt if(}#1{\tt )then(}#2{\tt )}}
+\newcommand{\set}[2]{{\tt update(}#1\{#2\}{\tt )}}
+% \input{../macros}
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+% This document provides a complete description of Porgy's strategy language: concrete syntax and semantics illustrated with examples.
+% After describing the main constructs in Porgy's strategy language, we provide examples to illustrate its use. 
+This document provides concrete syntax illustrated with examples for the \PORGY's strategy
+language and the language for rule algorithm and conditions.
+\newline
+\bf{Last update: \today}
+\end{abstract}
+
+% \section{Introduction}
+% This document provides the specification  of  \Porgy's strategy language: concrete syntax and semantics illustrated with examples.
+
+
+% \begin{center}
+% \begin{figure}[!ht]
+% \includegraphics[width=\textwidth, keepaspectratio]{../images/overview_annotated.png}
+%  \caption{Overview of \PORGY: (1) editing one state of the graph being rewritten; (2) editing a rule; (3) some available rewrite rules; (4) portion of the derivation tree, a complete trace of the computing history; (5) the strategy editor.}
+%  \label{fig:overview}
+% \end{figure}
+%  \end{center}
+
+\PORGY is a visual, interactive modelling tool based on port graph rewriting. In \PORGY, system states are represented by port graphs,
+and the dynamic evolution of the system is defined via port graph rewrite rules. Strategy expressions are used to control the application of rules, more
+precisely, strategy expressions indicate
+both the rule to be applied at each step in a rewriting derivation, and the position in the graph where the rule is applied (the latter is done via focusing constructs).
+
+Some of the strategy constructs are
+strongly inspired from term rewriting languages such as {\sc
+  Elan}~\cite{BorovanskyKKMR98}, Stratego~\cite{Vis01.rta} and
+Tom~\cite{TOM-RTA07}.  Focusing operators are not present in term
+rewriting languages (although they rely  on implicit traversal
+strategies).
+% (where the implicit assumption is that the rewrite
+% position is defined by traversing the term from the root downwards).x
+The direct management of positions in strategy expressions, via the
+distinguished position and banned subgraphs %$P$ and $Q$ 
+in the target graph and 
+%the distinguished graphs $W$, $M$ and $N$ 
+in a located port graph rewrite rule
+are original features of the language and are managed using
+positioning constructs.
+
+
+This document describes the concrete syntax of strategy expressions, explains how 
+ the different kinds of constructs  %expressions 
+are used, and provides examples. The complete formal syntax is described in~\cite{fernandezhal-01251871}.% in various application domains. 
+ 
+For more information on \PORGY we refer the reader to~\cite{pinaud:hal-00682550} (interactive features),~\cite{fernandezhal-01251871} for preliminary version of the language and,~\cite{fernandez2018} (social network examples).
+
+
+\section*{Concrete Syntax for Writing Strategies}\label{syntaxgrammar}
+The syntax of the strategy language is given in Table~\ref{tab:syntax-strategies}.
+\emph{Strategy expressions} are generated by the grammar rules from
+the non-terminal $S$. A strategy expression combines applications of
+located rewrite rules, generated by the non-terminal $A$, and position
+updates, generated by the non-terminal $U$, using \emph{focusing
+  expressions} generated by $F$.  
+  
+The syntax presented here extends the one in~\cite{FKN:Lopstr} by
+including a language to define subgraphs of a given graph by specifying
+simple properties, expressed with attributes of nodes, edges and ports.
+
+\begin{center}
+\begin{table}[!ht]
+\centering
+\fbox{
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{l}
+ Let $L, R$ be port graphs; 
+$M,N$ subgraphs of $R$; $W$ a subgraph of $L$;\\
+$n, k\in \mathbb{N}$; 
+$\pi_{i=1 \ldots n} \in [0,1]$; $\sum\limits_{i=1}^{n}\pi_i = 1$.
+Let \textit{attribute} be an attribute; \\ 
+$e$ a valid expression (quoted string, integer or double); \\
+\textit{function} a computable function with arguments in
+  \textit{parameters\_list}; \\
+``script.py'' a Python script which returns the probability
+  distribution.\\
+$[x]$ means the item $x$ is optional.\\
+\hline
+\begin{tabular}{lrrrl} 
+&{\bf (Comments)} & ~ & ~ & $ /* \ldots */ \mid // \ldots \backslash n$\\
+\hline
+&{\bf (Probabilities)} & $\Pi$ & $::=$ & $\{\pi_1, \dots, \pi_n\} \mid $ ``script.py'' \\
+\hline
+\multirow{3}{*}{\begin{sideways}~Rules \end{sideways}}  
+  & {\bf (Transformations)} & $T$ & $::=$ & $L_W \Rightarrow_C R_{M}^{N} \mid (T \parallel T) $\\
+  & & & $\mid$ & $\ppick{T_1, \dots, T_n, \Pi}$ \\
+& {\bf (Applications)} & $A$ & $::=$ & $\all{T} \mid \one{T} $ \\
+ \hline
+\multirow{5}{*}{\begin{sideways}Positions\end{sideways}} 
+& {\bf (Focusing)} &  $F$ & $::=$ & $\CrtGraph \mid  \CrtPos \mid \CrtBan$\\
+  &  & & $\mid$ & $F [cup] F \mid  F [cap] F  \mid  F \setminus F\mid (F) \mid  [emptySet] $\\
+&  & & $\mid$ & $\ppick{F_1, \dots, F_n, \Pi }$\\
+& & & $\mid$ & ${\tt property(}F, Elem [, Expr]{\tt )}$\\
+& & & $\mid$ & ${\tt ngb(}F, Elem [, Expr]{\tt )}$\\
+ & {\bf (Determining)} & $D$ & $::=$ & $\all{F} \mid \one{F}$\\
+& {\bf (Updating)} & $U$ & $::=$ & $ \setPos{D}\mid \setBan{D} $\\
+&&& $\mid$ & $\set{function}{parameters\_list}$\\ 
+ \hline
+\multirow{5}{*}{\begin{sideways}Properties\end{sideways}} & {\bf (Properties)} & $Elem$ & $::=$ &  $\Node \mid \Edge \mid \Port$\\
+& & $Expr$& $::=$ &  $  \textit{attribute} ~ Relop ~e \mid Expr \&\& Expr $\\
+& & $Relop$ & $::=$ & $ == ~ \mid ~  != ~ \mid ~ > ~ \mid ~ < ~  $\\
+& & & $\mid$ & $ =< ~ \mid ~ >= ~ \mid ~ =\thicksim ~$\\
+\hline
+\multirow{5}{*}{\begin{sideways}Compositions\end{sideways}} 
+& {\bf (Comparison)} &  $C$ & $::=$ & $ F = F \mid F !=  F \mid F [subSet] F \mid \isEmpty{F} $\\
+& & & $\mid$ & $\tmatch{T}$ \\
+& {\bf (Strategies)}   &
+ $S$ & $::=$ & $ \Id \mid \Fail \mid A \mid U \mid C \mid S ; S $ \\  
+  & & & $\mid$ & ${\tt if(}S{\tt)then(}S{\tt )[else(}S{\tt )]} \mid \orelse{S}{S}$\\
+ & & & $\mid$ & $ \repeatt{S}[(k)] \mid \whiledoop{S}{S}{[(k)]}$\\
+  & & & $\mid$ & $ \try{S}  \mid \nott{S} \mid \ppick{S_1, \dots, S_n, \Pi} $\\
+\end{tabular}
+\end{tabular}
+}
+\caption{Concrete Syntax of the Strategy Language.}\label{tab:syntax-strategies}
+\end{table}
+\end{center}
+
+We start by defining the necessary syntax to write comments, then Rule constructs, which specify  how to apply
+rules, Position constructs, which allow us to
+specify subgraphs $P$ and $Q$ in a given located graph. We finally define
+Composition constructs combining strategies.
+
+\paragraph{\bf Comments.}
+We use C-style comments ($/* \ldots comments \ldots */$) for general multi-line comments and C++-style comments for one line comment ($// \ldots \backslash n$).
+
+\paragraph{\bf Rule Constructs.}
+
+The simplest transformation is a located rule, which can only be
+applied to a located graph $G_P^Q$ if at least a part of the redex is
+in $P$, and does not involve $Q$.  The syntax $T\parallel T'$
+represents simultaneous application of the transformations $T$ and
+$T'$ on disjoint subgraphs of $G$; it succeeds if both are possible
+\emph{concurrently}, and it fails otherwise.
+\begin{itemize}
+ \item $\ppick{T_1, \ldots, T_n, \Pi}$ 
+picks one of the transformations for application, according to the probability distribution $\Pi$. 
+If $T$ and $T'$ have respective probabilities $\pi$ and $\pi'$,
+$T\parallel T'$ has probability $\pi \times \pi'$.
+
+
+\item $\all{T}$ denotes all  possible applications of the transformation $T$ on the
+located graph at the current position, creating a new located graph
+for each application. In the derivation tree, this creates as many
+children as there are possible applications.  
+
+\item $\one{T}$
+computes only one of the possible applications of
+the transformation and ignores the others; more precisely, it makes a 
+choice between all the possible applications, with equal probabilities. 
+\end{itemize}
+
+
+
+\paragraph{\bf Position Constructs.}
+
+The grammar for $F$ generates focusing
+expressions that
+are used to define positions for rewriting in a graph, or to define positions where rewriting
+is not allowed.  They  denote functions used in strategy expressions to change
+subgraphs $P$ and $Q$ in the current located graph $G^P_Q$ (e.g., 
+to specify graph traversals).
+
+\begin{itemize}
+
+\item
+Focusing constructs  
+\begin{itemize}
+\item 
+$\CrtGraph$, $\CrtPos$ and $\CrtBan$, applied to a located graph
+  $G_P^Q$, return respectively the whole graph $G$, $P$ and $Q$.
+
+\item
+${\tt property(}F, Elem [, Expr]{\tt \}}$, applied to a located graph
+  $G_P^Q$, is used to select elements of $G_P^Q$ filtered by $F$ that
+  satisfy a certain property, specified by $Expr$. It can be seen as a
+  filtering construct: if the expression $F$ defines a subgraph $G$
+  then $\Property{F}{Elem}{Expr}$ returns a subgraph $G'$ of
+  $G$ that satisfies the decidable property $Expr$. Depending on the value of $Elem$, the property is
+  evaluated on nodes, ports, or edges, allowing us for instance to
+  select the red nodes and red edges, or nodes with active ports, as
+  shown in examples below. % Note that if an edge is selected, the
+  %nodes at each extremities are automatically included in the resulting graph.
+  If $Expr$ is not specified, it is considered as the Boolean expression \textit{true} to allow to select all elements indicated by $Elem$.
+
+ \begin{itemize}
+  
+   \item $\Property{F}{\Node}{Name == ``Add''}$ returns all the nodes of the subgraph defined by the expression $F$ that are named $Add$.
+
+   \item $\Property{F}{\Port}{Active == ``true''}$ returns all the nodes
+ of the subgraph defined by the expression $F$ that have at least one port with
+an attribute $Active$ with the value $true$.
+  
+   \item $\Property{F}{\Node}{Colour == Valid}$ returns all the nodes
+     of the subgraph defined by the expression  $F$ that have  the
+     same values for the attributes  $Colour$ and $Valid$.
+
+ \item $\Property{F}{\Edge}{StateE > 3}$ returns all the edges (including the nodes at their 
+extremities) of the subgraph defined by the expression  $F$ that have an attribute  $StateE$ with a 
+value greater than $3$.
+ 
+ \item $\Property{F}{\Node}{Name =\thicksim ``\text{\textasciicircum{}Num[0-9]\$}''}$ returns all 
+the nodes of the subgraph defined by the expression $F$ with a name valid over the regular 
+expression ``{\textasciicircum}Num[0-9]\$'' (the name must start by the string ``Num'' and terminate 
+by a number). This syntax is inspired by languages such as Perl, Java or the more recent 
+\texttt{C++11}.
+ \item $\Property{F}{\Port}{Name == ``Principal'' \&\& State ==``Active''}$ returns 
+all nodes having at least one port named ``Principal'' which also has an attribute $State$ 
+set to ``Active''.
+ 
+\end{itemize}
+  
+\item 
+${\tt ngb(}F, Elem [, Expr]{\tt \}}$, applied to a located graph
+  $G_P^Q$, returns a subset of the neighbours (i.e., adjacent
+  nodes) of $F$ according to $Expr$.  When $\Edge$ is used as the element (i.e.,
+  when we write $\Ngb{F}{\Edge}{Expr}$), it returns all the
+  neighbours of $F$ connected to $F$ via edges which satisfy the
+  expression $Expr$.
+
+\begin{itemize}
+   \item $\Ngb{F}{\Node}{Name == ``Add''}$, returns all the nodes
+     that are adjacent to nodes named $Add$ in $F$ but are not in
+     $F$ themselves (i.e., it returns the neighbours of the nodes in
+     $F$ named $Add$).
+
+
+   \item $\Ngb{F}{\Port}{Active == ``true''}$ returns all the nodes
+     not already in $F$ that are adjacent to nodes that have a port
+     with an attribute  $Active$ set to the value $true$.
+  
+ \item $\Ngb{F}{\Edge}{State > 3}$ returns the nodes (not already
+   in $F$) at the other extremity of edges connected to nodes in $F$,
+   where the edge has an attribute $State$ with a value greater than
+   $3$.
+ 
+ \item $\Ngbopt{F}{\Edge}$ returns all the nodes adjacent to
+   nodes in $F$ and not already in $F$.
+\end{itemize}
+
+
+\item $[cup]$ ($\cup$),  $[cap]$ ($\cap$) and $\setminus$ are union, intersection and
+  complement of port graphs; $[emptySet]$ ($\emptyset$) denotes the empty graph.
+We assume the usual priorities (e.g., intersection has priority over union) and operations of the same priority are evaluated left to right.
+
+We can combine multiple \textsf{Property} operators using intersection
+$\cap$ to filter multiple times.  
+For example, to select the nodes in the subgraph denoted
+by $Pos$ that are names $Mult$ and that have at least one port named
+$Aux$ we write:
+\begin{equation*}
+ \begin{split}
+\all{\Property{Pos}{\Node}{Name == ``Mult''} \cap \\
+\Property{Pos}{\Port}{Name == ``Aux''}}  
+ \end{split}
+\end{equation*}
+
+ 
+
+When nodes have more than one port, strategies
+\begin{equation*}
+ \begin{split}
+  \all{\Property{F}{\Port}{Name == ``P''}\cap \\
+  \Property{F}{\Port}{State ==``Active''}}
+ \end{split}
+\end{equation*}
+ 
+     and
+$$\all{\Property{F}{\Port}{Name == ``P'' \&\& State ==``Active''}}$$
+
+are not equivalent.   The first strategy returns nodes 
+having at least one port named ``P'' and another port (same port or not) with the attribute 
+$State$ set to ``Active''. The latter strategy returns nodes having at least one port which 
+satisfies both conditions at the same time.
+
+% We give more examples in Section~\ref{Examples}.
+     
+\item 
+ $\ppick{F_1, \dots, F_n,\Pi}$
+picks one of the positions for application, according to the given
+probability distribution.
+
+\end{itemize}
+
+\item Determine Constructs.\\
+$\one{F}$ returns one node in $F$ chosen 
+at random and $\all{F}$ returns the full $F$. %When not specified, $F$ stands for $\all{F}$.
+
+
+\item 
+Update Constructs.\\
+\begin{itemize}
+\item $\setPos{D}$ (resp. $\setBan{D}$) sets the position subgraph $P$
+(resp. $Q$) to be the graph resulting from the expression $D$. It
+always succeeds (i.e., returns $\Id$).\\
+\item $\set{function\_name}{parameters\_list}$ updates attributes and their values 
+in the graph using an external \TULIP plugin, with given
+parameters. The plugin must be loaded by \TULIP and in the ``\PORGY'' group\footnote{See the \TULIP documentation 
+for more information on plugins.}. The 
+syntax is the following: $$\set{``plugin\_name''}{param1:value, \ldots, param_n:value}$$
+If a parameter is not given, its default value will be used. If the plugin does not have 
+parameters using ${\tt update(}``plugin\_name''{\tt)}$ is enough. If a plugin name or a parameter name 
+is not valid, an error will be raised and the strategy will not be executed.
+This is useful to update global properties of the graph, 
+in order to focus on specific nodes. For example, in social networks, 
+selecting a ``central'' node.
+This is also a way of interfacing with another language (e.g. a Python program or
+a plugin written outside \PORGY).
+\end{itemize}
+\end{itemize}
+
+\paragraph{\bf Composition Constructs.}
+
+The grammar for $S$ involves, beyond previous constructs, an additional class $C$
+of comparison constructs, useful for checking conditions.
+
+\begin{itemize}
+\item
+Comparison constructs:\\ 
+$C$ includes comparison operators for graphs
+and a matching construct that checks whether a rule matches the
+current graph.
+\begin{itemize}
+ \item 
+$ F = F'$  returns $\Id$ if  
+both expressions denote isomorphic port graphs (same sets of nodes, ports and edges), otherwise returns 
+$\Fail$.  
+%MF Questions: do they have to have the same nodes and edges, or nodes and edges with same attributes (same names, etc)???
+%BP same nodes and edges. We compate two sets build on one graph
+$F ~  !\!\! = ~  F'$ returns $\Id$ if 
+the expressions do not denote isomorphic port graphs, otherwise returns $\Fail$.
+Similarly $F [subSet] F'$ ($\subset$) checks whether $F$ denotes a subgraph of
+$F'$.
+We have also included an additional operation, which, although derivable from the rest of the language, facilitates the implementation:
+$\isEmpty{F}$ returns $\Id$ if $F$ denotes the empty graph and $\Fail$ otherwise. It is
+defined as $ F = emptySet$. 
+
+\item $\tmatch{T}$ returns $\Id$ if there exists a subgraph isomorphism
+from the left-hand side of $T$ to the current graph taking into
+account the current position and banned subgraphs. In other words,
+$\tmatch{T}$ can be seen as an abbreviation of the strategy
+$\ifthenelsee{\one{T}}{\Id}{\Fail}$ (see below), but it is directly
+implemented to improve its efficiency.
+\end{itemize}
+
+
+\item
+Strategies $S$ are  defined with the additional following
+constructs:
+\begin{itemize}
+
+\item  $\Id$ and $\Fail$ are two atomic strategies that respectively denote
+success and failure. 
+
+
+ \item  The expression $S{\tt ;}S'$ represents sequential application of $S$ followed by $S'$.
+
+ \item ${\tt if(}S{\tt)then(}S'{\tt )[else(}S''{\tt )]}$ checks if the
+  application of $S$ on a copy of $G_P^Q$ returns $\Id$, in which case
+  $S'$ is applied to the original $G_P^Q$, otherwise $S''$ is applied to the original $G_P^Q$. If $S''$ is not specified then we consider $S''=\Id$.
+
+ \item $\orelse{S}{S'}$  applies $S$ if possible, otherwise
+  applies $S'$. It fails if both $S$ and $S'$ fail. 
+
+ \item 
+
+%BP: repeatt and while fixed. No max() operator just a pair of parenthesis. n changed to k to avoid confusion in the grammar (n is used for probabilit distributions)
+$\repeatt{S}[(k)]$ simply iterates the application
+   of $S$ until it fails, but, if $k$ is specified between parenthesis, then
+   the number of repetitions cannot exceed $k$.
+
+
+ \item $\whiledoo{S}{S'}[(k)]$ keeps on sequentially
+   applying $S'$ while the expression $S$ succeeds on a copy of the
+   graph.  If $S$ fails, then $\Id$ is returned. If $k$ between parenthesis
+   is specified, then the number of iterations cannot exceed $k$.
+
+ \item $\try{S}$ behaves like $S$ if $S$ succeeds, but if $S$ fails,
+   it still returns $\Id$. It is a derived operation which is defined
+   as $\orelse{S}{\Id}$.
+  
+\item $\nott{S}$ returns $\Id$ (resp. $\Fail$) if $S$ fails (resp. succeeds). This is also a derivable construct: it is defined as $\ifthenelsee{S}{\Fail}{\Id}$.
+
+\item $\ppick{S_1, \ldots, S_n, \Pi}$
+picks one of the stategies for application, according to the given
+probability distribution. This 
+construct generalises the probabilistic constructs on rules and 
+positions seen above.
+
+\end{itemize}
+
+\end{itemize}
+
+% \section{Comments and Macros}
+% \label{strat_writing}
+% The grammar of the strategy language presented in Table~\ref{tab:syntax-strategies} 
+% gives the main syntactic constructs in the language but omits some details, such as the concrete syntax of mathematical 
+% operators or how to use the Python feature of ppick. This is given below.
+
+% \subsection{Comments}
+% We are using traditional C-style coomment ($/* \ldots comment \ldots */$) for one general multi-line comments and C++-style comment for one line comment ($// \ldots \backslash n$).
+% \subsection*{Mathematical Symbols}
+% The different mathematical symbols have to be written as described in Tab.~\ref{tab:math}.
+% 
+% \begin{table}[!ht]
+% \centering
+%  \begin{tabular}{l|l}
+%  \hline
+%   Grammar (Tab.~\ref{tab:syntax-strategies})&\Porgy\\
+%   \hline
+%   $F \cup F$ & $F$ [cup] $F$ \\
+%   \hline
+%   $F \cap F$ & $F$ [cap] $F$ \\
+%   \hline
+%   $F \subset F$ & $F [subSet] F$\\
+%   \hline
+%   $\emptyset$ & $[emptySet]$\\
+%   \hline
+%  \end{tabular}
+% \caption{How to write mathematical symbols inside \porgy}\label{tab:math}
+% \end{table}
+
+\section*{Using a Python Script with $\ppick{T_1, \dots, T_n, \Pi}$}
+\label{sect:python}
+
+The construct $\ppick{T_1, \dots, T_n, \Pi}$ %(resp. $\ppick{F_1, \dots, F_n, \Pi}$, $\ppick{S_1, \dots, S_n, \Pi}$) => not yet implemented
+picks one of the $T$ 
+%(resp. $F$, $S$)
+operation according to the probability distribution $\Pi$.
+$\Pi$ can be given as a list of probabilities, \emph{e.g.}, $\ppick{T_1, \dots, T_n, \{p_1, \dots, p_n\}}$ where 
+$\sum_{i=1}^n p_i=1$ or a Python script, \emph{e.g.}, $\ppick{T_1, \dots, T_n, ``script.py``}$ which computes and returns the probabilities.
+
+The basename of the given Python script file (i.e. filename without path information and extension) 
+is used as the name of the function to call inside the Python script. The function must have 5 
+parameters which are 
+in this order: the graph used to apply the rules on (\TULIP graph python object), a list of rules to test (array of strings),
+the position subgraph and the banned subgraph (both graphs described by a Boolean property).
+The script must return a Python array of strings (\TULIP library does not 
+support 
+conversion from Python dictionary to C++ object) which has as 
+elements the name of a rule followed by its application probability and so on for each rule.  
+Note that, all modifications made by the Python script on the graph structure 
+are not kept.
+A sample Python script is given in Listing~\ref{code:python}. See the \TULIP Python 
+documentation for more details on using the \TULIP Python API.
+
+%HK je ne comprends pas le ligne : proba.append(1/len(rules))
+\begin{listing}[!ht]
+\begin{minted}[linenos,fontsize=\footnotesize,tabsize=2,frame=lines,mathescape]{python}
+from tulip import tlp
+#toy example to compute a equiprobabilistic choice between all rules
+def script(graph, rules, position, ban): 
+	#graph: the graph where the rule are applied
+	#rules: string array of all rules used in the ppick operator
+	#position: Tulip Boolean property for the Position  set
+	#ban: Tulip Boolean properties for the Ban set
+	#for position and ban, a 'True' indicates the element belongs to the set.
+	#proba: a rule name followed by its probability (converted to a string)
+	proba=[] 
+	for r in rules:
+		proba.append(r)
+		proba.append(str(1/len(rules)))
+
+	return proba
+\end{minted}
+\caption{Sample Python3 script to compute probabilities for a ppick operator given a set 
+of rules.}
+\label{code:python}
+\end{listing}
+
+\section*{Macros}
+The user interface of \PORGY allows to define multiple strategies. From one strategy, it is possible to call other strategies by surrounding the name of the strategy to use by `\#'. %Strategy~\ref{alg:connected} 
+%from example~\ref{sub:graph_testing} can be written as described in Strategy~\ref{alg:macros}.
+When the strategy is executed, each string `\#$x$\#' is replaced by the content of $x$. This operation is accessible through a mouse context menu.
+
+% \begin{algorithm}
+% \#pick-one-node\#;\\
+% \#visit-neighbours\#;\\
+% \#check-all-nodes-visited\#\\
+% \caption{Strategy to check if a graph is connected using macros. All strategies must exist and be valid. See Strategy~\ref{alg:connected} for the definition of each strategy.}\label{alg:macros}
+% \end{algorithm}
+
+% \subsection{Update construct.}
+% $\set{function\_name}{parameters\_list}$ updates attributes and their values 
+% in the graph using an external Tulip plugin, with given
+% parameters. The plugin must be loaded by \Tulip and must be in the ``Porgy'' group\footnote{See the \Tulip documentation 
+% for more information on plugins.}. The 
+% syntax is the following: $$\set{``plugin\_name''}{param1:value, param2:value, \ldots, 
+% param_n:value}$$
+% If a parameter is not given, its default value will be used. If the plugin does not have 
+% parameters using ${\tt update(}``plugin\_name''{\tt)}$ is enough. If a plugin name or a parameter name 
+% is not valid, an error will be raised and the strategy will not be executed.
+
+\section*{Concrete Syntax for Computing Attributes Values}\label{app:inner}
+The value of any attribute of any element (nodes or ports) in the right-hand side can be computed with a formula.
+% In example~\ref{sub:propagation}, the value of $Sigma$ in rule $R1$ (Fig.~\ref{fig:LT_rules}) is given by Eq.~\ref{eq:sigma}.
+%In \Porgy, the user interface to write
+There is a dedicated user interface in the ``Algorithm'' configuration tab associated to each 
+rule. All formulas associated to a rule are stored into each rule and are separated by a semi-colon.
+Table~\ref{table:syntax-inner} gives the 
+associated grammar. 
+%At the time of writing, 
+Up to now, we only support 
+expressions for attributes of type double or integer without mixing them. 
+
+\label{app:inner_rule_exp}
+\begin{center}
+
+\begin{table}[!ht]
+\centering
+\fbox{
+\renewcommand{\arraystretch}{1.5}
+\begin{tabular}{l}
+
+Let $r\in \mathbb{R}$; Let $L=(V_L, P_L, E_L, D_L)$ and \\
+$R=(V_R, P_R, E_R, D_R)$ be port graphs (resp. left and right-hand side);\\
+with $V$ the set of nodes, $P$ the set of ports, $E$ the set of edges,\\
+$D$ the associated record;\\
+$n_L \in V_L$, $e_L \in E_L$, $p_L \in P_L$ (resp. $n_R$, $e_R$ and $p_R$ for $R$); \\
+\textit{attribute} be an existing attribute.\\ 
+$\Omega_{L}$ (resp. $\Omega_{R}$) generates attribute values in records $D$\\
+associated with $L$ (resp. $R$);\\
+$[S]$ means the item $S$ is optional.\\
+\hline
+\begin{tabular}{l|rrl}
+   {\bf (Expression)} & $S$ & $::=$ & $\Omega_{R} = \Psi ; [S]$ \\
+%HK could we add parentheses? for instance write :
+% {\bf (Expression)} & $S$ & $::=$ & $(\Omega_{R} := \Psi ) ; [S]$ \\
+   \hline
+{\bf (Attribute access)} & $\Omega_{R}$ & $::=$ &  ${\tt node}( n_R ).\textit{attribute} \mid{\tt 
+edge}(e_R).\textit{attribute}$\\
+  & & $\mid$ & ${\tt port}( p_R ).\textit{attribute}$\\
+  & $\Omega_L$ & $::=$ &  ${\tt node}( n_L {\tt ) }.\textit{attribute} \mid {\tt 
+ edge}(e_L {\tt )}.\textit{attribute}$\\
+  & & $\mid$ & ${\tt port}( p_L {\tt)}.\textit{attribute}$\\
+ \hline
+  {\bf (Instruction)} &  $\Psi$ & $::=$ & $r \mid \Omega_{L} \mid ( \Psi ) \mid -\Psi \mid \Psi ~ op ~ \Psi$ \\
+    & & $\mid$ & ${\tt random}( r ) \mid {\tt max}(\Psi, \Psi) \mid {\tt min}(\Psi, \Psi)$\\
+    & $op$ & $::=$ & $ + \mid - \mid \times \mid / \mid \%$\\
+\end{tabular}
+\end{tabular}
+}
+\caption{Grammar for rule formulas}\label{table:syntax-inner}
+\end{table}
+\end{center}
+
+For example, to compute a new value for an attribute called {\tt Sigma} of a node $n$ where the value is a maximum between the old value and a ratio beetween the value of another attribute over a random number is written: 
+\[ 
+node(n).Sigma = max(edge(e).Influence/random(1),node(n).Sigma);
+\]
+
+where $n$ and $e$ (and if necessary $p$) are the internal \TULIP element identifier. This 
+information is available through the ``Get Information'' interactor.
+
+An {\bf Instruction} always returns a double number and  follows the standard 
+mathematical priority. 
+The construct {\tt random(r)} returns a double number $0 < x < r$; {\tt max(x, y)} (resp. 
+{\tt min(x,y)}) returns the maximum (resp. minimum) of both arguments.
+
+\bibliographystyle{rnti}
+\bibliography{bib}
+
+\end{document}

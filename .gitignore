@@ -3,3 +3,10 @@
 
 # Visual Studio settings folder
 .vs/
+
+*.bbl
+*.aux
+*.blg
+*.out
+*.log
+_minted*/
