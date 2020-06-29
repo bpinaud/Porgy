@@ -50,8 +50,6 @@ class PorgyPerspective;
 class PorgyPerspective : public tlp::Perspective {
   Q_OBJECT
 
-  enum ViewManagerImplementation { MDI_AREA_IMPL, WORKSPACE_IMPL };
-
   static StatusBarPluginProgress *_PluginProgress;
 
   tlp::PythonIDE *pythonIDE;
@@ -223,7 +221,6 @@ private slots:
    */
   void showDocumentation();
   void showAbout();
-  void toggleViewManagerImplementation();
 
   void addPanel(tlp::Graph *graph);
 

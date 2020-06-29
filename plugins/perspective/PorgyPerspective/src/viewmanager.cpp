@@ -21,8 +21,6 @@
 
 #include <QGraphicsView>
 #include <QHBoxLayout>
-#include <QMdiArea>
-#include <QMdiSubWindow>
 
 #include <tulip/GraphHierarchiesModel.h>
 #include <tulip/PluginLister.h>
@@ -32,34 +30,11 @@
 using namespace tlp;
 
 ViewManager::ViewManager(QWidget *parent)
-    : QWidget(parent), _horizontalLayout(new QHBoxLayout(this)), _implementation(nullptr),
-      _parentWidget(nullptr), _currentView(nullptr) {}
+    : QWidget(parent), _layout(new QHBoxLayout(this)),
+      _model(new GraphHierarchiesModel(this)),_currentView(nullptr) {}
 
-ViewManager::~ViewManager() {}
+ViewManager::~ViewManager() {
 
-void ViewManager::setImplementation(ViewManagerImplementation *implementation) {
-  ViewManagerImplementation *oldImpl = _implementation;
-  QWidget *oldParentWidget = _parentWidget;
-  if (_parentWidget != nullptr) {
-    _parentWidget->setVisible(false);
-    layout()->removeWidget(_parentWidget);
-  }
-
-  _implementation = implementation;
-  _parentWidget = nullptr;
-  if (_implementation != nullptr) {
-    _parentWidget = new QWidget(this);
-    _horizontalLayout->addWidget(_parentWidget);
-    _implementation->setupUi(_parentWidget);
-    _parentWidget->setVisible(true);
-    connect(_implementation, SIGNAL(showGraphRequest(tlp::Graph *)),
-            SIGNAL(showGraphRequest(tlp::Graph *)));
-    connect(_implementation, SIGNAL(currentViewActivated(tlp::View *)),
-            SLOT(currentViewChangedInternal(tlp::View *)));
-  }
-
-  delete oldImpl;
-  delete oldParentWidget;
 }
 
 tlp::View *ViewManager::createView(const std::string &viewName, tlp::Graph *graph,
@@ -70,7 +45,10 @@ tlp::View *ViewManager::createView(const std::string &viewName, tlp::Graph *grap
     view->setupUi();
     view->setGraph(graph);
     view->setState(parameters);
-    _implementation->showView(view);
+    if (!_model->indexOf(view->graph()).isValid())
+      _model->addGraph(view->graph());
+    _workspace->addPanel(view);
+    _workspace->setActivePanel(view);
   } else {
     tlp::warning() << "Cannot create the view: \"" << viewName << "\"" << std::endl;
   }
@@ -85,13 +63,9 @@ void ViewManager::currentViewChangedInternal(tlp::View *view) {
   emit currentViewChanged(_currentView);
 }
 
-void ViewManager::drawAllViews() {
-  _implementation->drawAllViews();
-}
-
 std::vector<tlp::View *> ViewManager::getViewsForGraph(tlp::Graph *graph) const {
   std::vector<tlp::View *> result;
-  for (tlp::View *view : _implementation->panels()) {
+  for (tlp::View *view : _workspace->panels()) {
     if (view->graph() == graph) {
       result.push_back(view);
     }
@@ -99,68 +73,14 @@ std::vector<tlp::View *> ViewManager::getViewsForGraph(tlp::Graph *graph) const 
   return result;
 }
 
-QList<tlp::View *> ViewManager::views() const {
-  return _implementation->panels();
-}
-
-void ViewManager::saveToProject(tlp::TulipProject *project, QMap<tlp::Graph *, QString> rootIds,
-                                tlp::PluginProgress *progress) {
-  _implementation->saveToProject(project, rootIds, progress);
-}
-
-void ViewManager::restoreFromProject(tlp::TulipProject *project, QMap<QString, Graph *> rootIds,
-                                     tlp::PluginProgress *progress) {
-  _implementation->restoreFromProject(project, rootIds, progress);
-}
-
-void ViewManager::closeView(tlp::View *view) {
-  _implementation->closeView(view);
-}
-
-void ViewManager::closeAllView() {
-  _implementation->closeAll();
-}
-
 void ViewManager::closeProject() {
-  closeAllView();
+  _workspace->closeAll();
   _currentView = nullptr;
 }
 
-MDIAreaImplementation::MDIAreaImplementation() : _MdiArea(nullptr) {}
-
-MDIAreaImplementation::~MDIAreaImplementation() {}
-
-void MDIAreaImplementation::setupUi(QWidget *parent) {
-  _MdiArea = new QMdiArea(parent);
-  _layout = new QHBoxLayout(parent);
-  _layout->addWidget(_MdiArea);
-}
-
-void MDIAreaImplementation::showView(tlp::View *view) {
-  QMdiSubWindow *subWindow1 = new QMdiSubWindow(_MdiArea, Qt::WindowFlags(Qt::WA_NativeWindow));
-  view->graphicsView()->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-  view->graphicsView()->setCacheMode(QGraphicsView::CacheBackground);
-  subWindow1->setWidget(view->graphicsView());
-  subWindow1->setAttribute(Qt::WA_DeleteOnClose);
-  subWindow1->setOption(QMdiSubWindow::RubberBandResize, true);
-  subWindow1->setOption(QMdiSubWindow::RubberBandMove, true);
-  _MdiArea->addSubWindow(subWindow1);
-  subWindow1->setVisible(true);
-}
-
-void MDIAreaImplementation::drawAllViews() {}
-
-WorkspacePanelImplementation::WorkspacePanelImplementation()
-    : _workspace(nullptr), _layout(nullptr), _model(new tlp::GraphHierarchiesModel(this)) {}
-
-WorkspacePanelImplementation::~WorkspacePanelImplementation() {
-  delete _workspace;
-  // delete _model; //not necessary. _model has a parent
-}
-
-void WorkspacePanelImplementation::setupUi(QWidget *parent) {
-  _workspace = new tlp::Workspace(parent);
-  _layout = new QHBoxLayout(parent);
+void ViewManager::setupUi() {
+  _workspace = new tlp::Workspace(parentWidget());
+  _layout = new QHBoxLayout(parentWidget());
   _layout->addWidget(_workspace);
 
   _workspace->setModel(_model);
@@ -169,38 +89,8 @@ void WorkspacePanelImplementation::setupUi(QWidget *parent) {
   connect(_workspace, SIGNAL(addPanelRequest(tlp::Graph *)),
           SIGNAL(showGraphRequest(tlp::Graph *)));
   connect(_workspace, SIGNAL(panelFocused(tlp::View *)), SIGNAL(currentViewActivated(tlp::View *)));
-}
-
-void WorkspacePanelImplementation::showView(tlp::View *view) {
-  if (!_model->indexOf(view->graph()).isValid())
-    _model->addGraph(view->graph());
-  _workspace->addPanel(view);
-}
-
-void WorkspacePanelImplementation::drawAllViews() {
-  _workspace->redrawPanels();
-}
-
-QList<tlp::View *> WorkspacePanelImplementation::panels() const {
-  return _workspace->panels();
-}
-
-void WorkspacePanelImplementation::saveToProject(tlp::TulipProject *p,
-                                                 QMap<Graph *, QString> rootIds,
-                                                 tlp::PluginProgress *pp) {
-  _workspace->writeProject(p, rootIds, pp);
-}
-
-void WorkspacePanelImplementation::restoreFromProject(tlp::TulipProject *p,
-                                                      QMap<QString, Graph *> rootIds,
-                                                      tlp::PluginProgress *pp) {
-  _workspace->readProject(p, rootIds, pp);
-}
-
-void WorkspacePanelImplementation::closeView(tlp::View *view) {
-  _workspace->delView(view);
-}
-
-void WorkspacePanelImplementation::closeAll() {
-  _workspace->closeAll();
+  connect(_workspace, SIGNAL(showGraphRequest(tlp::Graph *)),
+             SIGNAL(showGraphRequest(tlp::Graph *)));
+  connect(_workspace, SIGNAL(currentViewActivated(tlp::View *)),
+             SLOT(currentViewChangedInternal(tlp::View *)));
 }

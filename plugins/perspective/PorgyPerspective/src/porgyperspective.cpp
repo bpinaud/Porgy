@@ -36,6 +36,7 @@
 #include <tulip/TulipSettings.h>
 #include <tulip/View.h>
 #include <tulip/StableIterator.h>
+#include <tulip/Workspace.h>
 
 #include <QClipboard>
 #include <QDesktopServices>
@@ -107,7 +108,7 @@ PorgyPerspective::PorgyPerspective(const tlp::PluginContext *context)
 }
 
 void PorgyPerspective::redrawPanels(bool) {
-  _ui->viewManager->drawAllViews();
+  _ui->viewManager->_workspace->redrawPanels();
 }
 
 StatusBarPluginProgress *PorgyPerspective::_PluginProgress = new StatusBarPluginProgress();
@@ -185,8 +186,49 @@ void PorgyPerspective::start(tlp::PluginProgress *progress) {
   // Settings
   settings.setTraceViewZoomAnimationTime(1000);
 
-  _ui->viewManager->setImplementation(new WorkspacePanelImplementation());
-  _ui->actionToggleViewManagerImplementation->setData(WORKSPACE_IMPL);
+  _ui->viewManager->setupUi();
+  _ui->singleModeButton->setEnabled(false);
+  _ui->singleModeButton->hide();
+  _ui->viewManager->_workspace->setSingleModeSwitch(_ui->singleModeButton);
+  _ui->viewManager->_workspace->setFocusedPanelHighlighting(true);
+  _ui->splitModeButton->setEnabled(false);
+  _ui->splitModeButton->hide();
+  _ui->viewManager->_workspace->setSplitModeSwitch(_ui->splitModeButton);
+  _ui->splitHorizontalModeButton->setEnabled(false);
+  _ui->splitHorizontalModeButton->hide();
+  _ui->viewManager->_workspace->setSplitHorizontalModeSwitch(_ui->splitHorizontalModeButton);
+  _ui->split3ModeButton->setEnabled(false);
+  _ui->split3ModeButton->hide();
+  _ui->viewManager->_workspace->setSplit3ModeSwitch(_ui->split3ModeButton);
+  _ui->split32ModeButton->setEnabled(false);
+  _ui->split32ModeButton->hide();
+  _ui->viewManager->_workspace->setSplit32ModeSwitch(_ui->split32ModeButton);
+  _ui->split33ModeButton->setEnabled(false);
+  _ui->split33ModeButton->hide();
+  _ui->viewManager->_workspace->setSplit33ModeSwitch(_ui->split33ModeButton);
+  _ui->gridModeButton->setEnabled(false);
+  _ui->gridModeButton->hide();
+  _ui->viewManager->_workspace->setGridModeSwitch(_ui->gridModeButton);
+  _ui->sixModeButton->setEnabled(false);
+  _ui->sixModeButton->hide();
+  _ui->viewManager->_workspace->setSixModeSwitch(_ui->sixModeButton);
+  _ui->viewManager->_workspace->setPageCountLabel(_ui->pageCountLabel);
+  connect(_ui->action_Close_All, SIGNAL(triggered()), _ui->viewManager->_workspace, SLOT(closeAll()));
+  //navbar
+  connect(_ui->previousPageButton, SIGNAL(clicked()), _ui->viewManager->_workspace, SLOT(previousPage()));
+  connect(_ui->nextPageButton, SIGNAL(clicked()), _ui->viewManager->_workspace, SLOT(nextPage()));
+  connect(_ui->singleModeButton, SIGNAL(clicked()), _ui->viewManager->_workspace, SLOT(switchToSingleMode()));
+  connect(_ui->splitHorizontalModeButton, SIGNAL(clicked()), _ui->viewManager->_workspace, SLOT(switchToSplitHorizontalMode()));
+  connect(_ui->split33ModeButton, SIGNAL(clicked()), _ui->viewManager->_workspace, SLOT(switchToSplit33Mode()));
+  connect(_ui->split32ModeButton, SIGNAL(clicked()), _ui->viewManager->_workspace, SLOT(switchToSplit32Mode()));
+  connect(_ui->sixModeButton, SIGNAL(clicked()), _ui->viewManager->_workspace, SLOT(switchToSplitSixMode()));
+  connect(_ui->split3ModeButton, SIGNAL(clicked()), _ui->viewManager->_workspace, SLOT(switchToSplit3Mode()));
+  connect(_ui->splitModeButton, SIGNAL(clicked()), _ui->viewManager->_workspace, SLOT(switchToSplitMode()));
+  connect(_ui->gridModeButton, SIGNAL(clicked()), _ui->viewManager->_workspace, SLOT(switchToGridMode()));
+  connect(_ui->sixModeButton, SIGNAL(clicked()), _ui->viewManager->_workspace, SLOT(switchToSixMode()));
+  connect(_ui->actionExposePanels, SIGNAL(toggled(bool)), _ui->viewManager->_workspace, SLOT(expose(bool)));
+
+  _ui->viewManager->_workspace->setExposeModeSwitch(_ui->exposeButton);
 
   if (!_externalFile.isEmpty()) {
     if (QFileInfo(_externalFile).exists()) {
@@ -281,10 +323,7 @@ void PorgyPerspective::initMenus() {
   connect(_ui->actionDocumentation, SIGNAL(triggered()), SLOT(showDocumentation()));
   connect(_ui->action_About, SIGNAL(triggered()), SLOT(showAbout()));
   connect(_ui->actionFull_Screen, SIGNAL(triggered(bool)), this, SLOT(showFullScreen(bool)));
-  connect(_ui->action_Close_All, SIGNAL(triggered()), _ui->viewManager, SLOT(closeAllView()));
   connect(_ui->actionPython_Documentation, SIGNAL(triggered()), this, SLOT(showPythonDocumentation()));
-  connect(_ui->actionToggleViewManagerImplementation, SIGNAL(triggered()),
-          SLOT(toggleViewManagerImplementation()));
 
   QMenu *algomenu = _ui->menuAlgorithms->addMenu(tlp::tlpStringToQString(tlp::ALGORITHM_CATEGORY));
   QMenu *algoDebug = algomenu->addMenu("Debug");
@@ -348,7 +387,7 @@ void PorgyPerspective::openPreferences() {
   if (dlg.exec() == QDialog::Accepted) {
     dlg.writeSettings();
 
-    foreach (tlp::View *v, _ui->viewManager->views()) {
+    foreach (tlp::View *v, _ui->viewManager->_workspace->panels()) {
       GlMainView *glMainView = static_cast<tlp::GlMainView *>(v);
       if (glMainView->getGlMainWidget() != nullptr) {
         glMainView->getGlMainWidget()
@@ -396,6 +435,8 @@ void PorgyPerspective::buildGUI() {
   _mainWindow->tabifyDockWidget(_ui->rulesDockWidget, _ui->tracesDockWidget);
   _ui->graphsDockWidget->raise(); // Display graph dock widget
 
+  _ui->pageCountLabel->setVisible(true);
+
   // Hide these widgets
   _ui->logDockWidget->setVisible(false);
 }
@@ -436,10 +477,10 @@ void PorgyPerspective::open(PluginProgress *prg) {
     //            savingObserver->forceToSave();
     QMap<QString, tlp::Graph *> rootIds;
     rootIds[entries.first()] = g;
-    _ui->viewManager->restoreFromProject(_project, rootIds, prg);
+    _ui->viewManager->_workspace->readProject(_project, rootIds, prg);
     _ui->strategiesManagementWidget->openAllStrategies(_project->toAbsolutePath(strategies_path));
     // reconnect signals
-    foreach (View *v, _ui->viewManager->views()) {
+    foreach (View *v, _ui->viewManager->_workspace->panels()) {
       if (v->name() == PorgyConstants::TRACE_VIEW_NAME ||
           v->name() == PorgyConstants::GRAPH_VIEW_NAME) {
         connect(v, SIGNAL(applyRuleOnModel(tlp::Graph *, tlp::Graph *, tlp::Graph *)),
@@ -560,7 +601,7 @@ bool PorgyPerspective::save(const QString &fileName, const QString &graph_extens
   _project->mkpath(GRAPHS_PATH);       // Create a new graph structure
   QMap<Graph *, QString> rootIds;
   rootIds[rootGraph] = QString::number(0); // Save the root graph
-  _ui->viewManager->saveToProject(_project, rootIds, _PluginProgress);
+  _ui->viewManager->_workspace->writeProject(_project, rootIds, _PluginProgress);
   QString folder = GRAPHS_PATH + "/" + QString::number(0) + "/";
   _project->mkpath(folder);
   bool ret = tlp::saveGraph(rootGraph, tlp::QStringToTlpString(_project->toAbsolutePath(
@@ -665,7 +706,7 @@ bool PorgyPerspective::setData(Graph *graph, DataSet dataSet) {
     }
     delete savingObserver;
   }
-  _ui->viewManager->closeAllView();
+  _ui->viewManager->_workspace->closeAll();
   tlp::Graph *oldGraph = rootGraph; // Keep old graph to delete it later
 
   std::string errorMsg;
@@ -1506,7 +1547,7 @@ void PorgyPerspective::viewActivated(View *view) {
 
 void PorgyPerspective::EnableInteractors(const bool enable) {
   // disable interactors
-  foreach (View *v, _ui->viewManager->views()) {
+  foreach (View *v, _ui->viewManager->_workspace->panels()) {
     foreach (Interactor *i, v->interactors()) { i->action()->setEnabled(enable); }
   }
 }
@@ -1833,19 +1874,6 @@ void PorgyPerspective::showAbout() {
   diag.exec();
 }
 
-void PorgyPerspective::toggleViewManagerImplementation() {
-
-  ViewManagerImplementation currentImpl = static_cast<ViewManagerImplementation>(
-      _ui->actionToggleViewManagerImplementation->data().toInt());
-  if (currentImpl == MDI_AREA_IMPL) {
-    _ui->viewManager->setImplementation(new WorkspacePanelImplementation());
-    _ui->actionToggleViewManagerImplementation->setData(WORKSPACE_IMPL);
-  } else {
-    _ui->viewManager->setImplementation(new MDIAreaImplementation());
-    _ui->actionToggleViewManagerImplementation->setData(MDI_AREA_IMPL);
-  }
-}
-
 void PorgyPerspective::addPanel(Graph *graph) {
   if (graph != nullptr) {
     if (PorgyTlpGraphStructure::isModelGraph(graph)) {
@@ -1905,7 +1933,7 @@ void PorgyPerspective::undo() {
     Observable::holdObservers();
     rootGraph->pop();
     Observable::unholdObservers();
-    foreach (View *v, _ui->viewManager->views()) { v->undoCallback(); }
+    foreach (View *v, _ui->viewManager->_workspace->panels()) { v->undoCallback(); }
   }
 }
 
@@ -1915,7 +1943,7 @@ void PorgyPerspective::redo() {
     rootGraph->unpop();
     Observable::unholdObservers();
 
-    foreach (View *v, _ui->viewManager->views()) { v->undoCallback(); }
+    foreach (auto *v, _ui->viewManager->_workspace->panels()) { v->undoCallback(); }
   }
 }
 
