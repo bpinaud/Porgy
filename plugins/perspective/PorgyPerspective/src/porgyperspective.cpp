@@ -163,6 +163,10 @@ void PorgyPerspective::usage(string& usage_str) const {
     usage_str += "  --Debug=on\tActivate Debug mode";
 }
 
+#define SET_TIPS(a, tt)                                                                            \
+  a->setToolTip(tt);                                                                               \
+  a->setStatusTip(a->toolTip())
+
 void PorgyPerspective::start(tlp::PluginProgress *progress) {
   _ui = new Ui::PorgyPerspective();
   _ui->setupUi(_mainWindow);
@@ -229,6 +233,19 @@ void PorgyPerspective::start(tlp::PluginProgress *progress) {
   connect(_ui->actionExposePanels, SIGNAL(toggled(bool)), _ui->viewManager->_workspace, SLOT(expose(bool)));
 
   _ui->viewManager->_workspace->setExposeModeSwitch(_ui->exposeButton);
+
+  SET_TIPS(_ui->exposeButton, _ui->actionExposePanels->toolTip());
+  SET_TIPS(_ui->singleModeButton, "Switch to 1 panel mode");
+  SET_TIPS(_ui->splitModeButton, "Switch to 2 panels mode");
+  SET_TIPS(_ui->splitHorizontalModeButton, "Switch to 2 panels mode");
+  SET_TIPS(_ui->split3ModeButton, "Switch to 2-top 1-bottom panels mode");
+  SET_TIPS(_ui->split32ModeButton, "Switch to 1-left 2-right panels mode");
+  SET_TIPS(_ui->split33ModeButton, "Switch to 2-left 1-right panels mode");
+  SET_TIPS(_ui->gridModeButton, "Switch to 4 panels mode");
+  SET_TIPS(_ui->sixModeButton, "Switch to 6 panels mode");
+
+  SET_TIPS_WITH_CTRL_SHORTCUT(_ui->previousPageButton, "Show previous panel", "Shift+Left");
+  SET_TIPS_WITH_CTRL_SHORTCUT(_ui->nextPageButton, "Show next panel", "Shift+Right");
 
   if (!_externalFile.isEmpty()) {
     if (QFileInfo(_externalFile).exists()) {
