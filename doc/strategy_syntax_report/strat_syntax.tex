@@ -23,11 +23,16 @@
 \usepackage[authoryear]{natbib}
 \usepackage{doi}
 
+\usepackage{framed}
+\usepackage[nounderscore]{syntax}
+\usepackage{listings}
+
 \SetAlgorithmName{Strategy}{strategy}{List of Strategies}
 
 \title{Porgy Strategy Language: User Manual}
-\author{Maribel Fern\'andez\inst{1} \and H\'el\`ene Kirchner\inst{2} \and Bruno Pinaud\inst{3} \and Jason Vallet\inst{3} }
-\institute{King's College London, Department of Informatics, Strand, London WC2R 2LS, UK \email{maribel.fernandez@kcl.ac.uk} \and
+\author{Maribel Fern\'andez\inst{1} \and H\'el\`ene Kirchner\inst{2} \and Bruno Pinaud\inst{3} \and Jason Vallet\inst{3} \and J\'anos Varga\inst{1} }
+\authorrunning{M Fern\'andez\inst{1} \and H Kirchner\inst{2} \and B Pinaud\inst{3} \and J Vallet\inst{3} \and J Varga\inst{1} }
+\institute{King's College London, Department of Informatics, Strand, London WC2R 2LS, UK \email{firstname.lastname@kcl.ac.uk} \and
 Inria, 200 avenue de la Vieille Tour, 33405 Talence, France \email{helene.kirchner@inria.fr} \and
 University of Bordeaux, LaBRI CNRS UMR 5800, 33405 Talence Cedex, France \email{firstname.lastname@u-bordeaux.fr}
 } 
@@ -68,6 +73,8 @@ University of Bordeaux, LaBRI CNRS UMR 5800, 33405 Talence Cedex, France \email{
 \newcommand{\ifthenelsee}[3]{{\tt if(}#1{\tt )then(}#2{\tt )else(}#3{\tt )}}
 \newcommand{\ifthen}[2]{{\tt if(}#1{\tt )then(}#2{\tt )}}
 \newcommand{\set}[2]{{\tt update(}#1\{#2\}{\tt )}}
+\newcommand{\CC}{{C\texttt{++}}\xspace}
+\newcommand{\NotNode}[1]{{\tt NotNode(}#1{\tt )}}
 % \input{../macros}
 \begin{document}
 
@@ -120,7 +127,7 @@ This document describes the concrete syntax of strategy expressions, explains ho
  the different kinds of constructs  %expressions 
 are used, and provides examples. The complete formal syntax is described in~\cite{fernandezhal-01251871}.% in various application domains. 
  
-For more information on \PORGY we refer the reader to~\cite{pinaud:hal-00682550} (interactive features),~\cite{fernandezhal-01251871} for preliminary version of the language and,~\cite{fernandez2018} (social network examples).
+For more information on \PORGY we refer the reader to~\cite{pinaud:hal-00682550} (interactive features),~\cite{fernandezhal-01251871} for preliminary version of the language,~\cite{fernandez2018} (social network examples) and~\cite{Varga19} on rule application conditions.
 
 
 \section*{Concrete Syntax for Writing Strategies}\label{syntaxgrammar}
@@ -633,6 +640,129 @@ An {\bf Instruction} always returns a double number and  follows the standard
 mathematical priority. 
 The construct {\tt random(r)} returns a double number $0 < x < r$; {\tt max(x, y)} (resp. 
 {\tt min(x,y)}) returns the maximum (resp. minimum) of both arguments.
+
+
+\section*{Syntax for Rule Application Conditions}\label{rulecond}
+
+\lstdefinestyle{rulecondstyle}{
+    basicstyle=\ttfamily,
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=none,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=2
+}
+
+A rule application condition is a textual constraint on the matching subgraph that has to evaluate to \textbf{true}
+for the rewriting to proceed on that particular redex. The grammar presented in this section
+forms a language for the Boolean expression $B$ that is part of the $Where$ attribute of the arrow node
+in every port graph rewrite rule.
+The EBNF grammar for $B$ is defined in Table~\ref{table:rulecondgrammar}.
+The structure of the grammar was inspired by \CC and follows the operator precedence of \CC, too.
+
+Let $L(V_L, E_L, P_L, D_L)$ be a port graph, the left-hand side of a rule, 
+and $G(V_G, E_G, P_G, D_G)$ the port graph being rewritten,
+with $V$ the set of nodes, $P$ the set of ports, $E$ the set of edges, $D$ the associated record and 
+$n_L \in V_L, e_L \in E_L, p_L \in P_L$.
+Then $g(L)$ is a \emph{match} of the left-hand side found in $G$ by total port graph morphism $g$ from $L$ to $G$.
+
+We point out that when referring to $n_L, e_L$ or $p_L$ the user has to use their internally assigned \Id. 
+Also, due to the implementation of \PORGY, there is no \Port terminal in the grammar -- 
+they have to be referred to as \Node. 
+This is because the underlying graph engine (\TULIP) processes ports as nodes.
+
+Terminal {\tt string} is an arbitrary-length string, in double quotes, made up of letters, digits and symbols 
+and {\tt number} can be any real number.
+Similarly, {\tt attribute\_name} is a valid name of an attribute from $D$, in double quotes.
+
+\begin{table}[!htb]
+\renewcommand{\arraystretch}{1.4}
+\grammarindent1.5in
+\centering
+\begin{framed}    
+\begin{flushleft}
+\begin{grammar}
+    <node> ::= '$node$' | '$n$' '$($' $n_L$ '$)$'
+
+    <edge> ::= '$edge$' | '$e$' '$($' $e_L$ '$)$'
+    
+    <port> ::= '$node$' | '$n$' '$($' $p_L$ '$)$'
+
+    <element attr> ::= ( <node> | <edge> | <port> ) '.' "attribute_name"
+
+    <factor> ::= "number" | "string"
+    \alt <element attr> | '$!$' <factor>
+    \alt '(' <expression> ')' | 'random(' <factor> ')'
+    \alt 'max(' <expression> ',' <expression> ')'
+    \alt 'min(' <expression> ',' <expression> ')'
+
+    <term> ::= <factor> \{('$*$' | '$/$' | '$\%$') <factor>\}
+
+    <expression> ::= <term> \{('$+$' | '$-$' ) <term>\}
+
+    <comp operator> ::= '$==$' | '$!=$' | '$\textgreater$' | '$\textless$' | '$\textgreater=$' | '$\textless=$'
+
+    <comparison> ::= <expression> <comp operator> <expression>
+    \alt 'NotNode('"attribute_name" <comp operator> <expression>')' ';'
+
+    <rule application condition> ::= <comparison> \{<comparison>\}
+\end{grammar}
+\end{flushleft}
+\end{framed}
+\caption{The Rule Application Condition grammar.}
+\label{table:rulecondgrammar}
+\end{table}
+
+We highlight the \NotNode{} operator: it iterates all nodes of $G$ and checks if there exists a node with an attribute {\tt attribute\_name} and if the comparison on them evaluates to true. Intuitively, if at least one such node is found in $G$, \NotNode{} returns false. It is very important to note here that this check is performed on the entire graph $G$, not just in $g(L)$. This is fundamentally different from the rest of the rule application condition grammar, which only applies to $g(L)$. This is a consequence of the definition of the port graph rewrite rule which states that all variables in the Boolean expression of the \emph{Where} attribute have to occur in $L$, so that the matching algorithm can work with them. When a match $g(L)$ is found, all variables of $B$ are mapped so that their actual values can be found. However, when checking the absence of a node, we are not constrained by this, because we are not specifying a node in \NotNode{} -- we are only specifying an attribute comparison that \emph{must} evaluate to false on all nodes of $G$.
+
+Examples of rule application conditions are provided below.
+
+\section{Rule Application Condition Examples}
+Suppose we want to constrain a rule to only apply if the integer value of a certain node attribute is lower than the sum of the value of two other attributes.
+A rule application condition ensuring this is shown in Listing~\ref{code:rulecond-sum}.
+\begin{lstlisting}[caption={Rule application condition example, sum of attributes}, label={code:rulecond-sum}, style=rulecondstyle]
+n(1)."Quantity" < n(1)."Capacity" + n(1)."Buffer";
+\end{lstlisting}
+
+Rule application conditions can be evaluated cross-node as well, the only constraint is that all nodes,
+edges and ports referenced have to exist in the matching isomorphic subgraph.
+Suppose we want to extend the previous condition by also applying a constraint on some attribute value of nodes 11 and 21.
+Remember, these ids are to reference objects in the rule LHS only; they are mapped to the isomorphic subgraph during the rewriting step.
+Then the condition looks as written in Listing~\ref{code:rulecond-crossnode}.
+\begin{lstlisting}[caption={Rule application condition example, cross-node}, label={code:rulecond-crossnode}, style=rulecondstyle]
+n(1)."Quantity" < n(1)."Capacity" + n(1)."Buffer";
+n(1)."Quantity" > n(11)."Quantity" + n(21)."Quantity";
+\end{lstlisting}
+
+Conditions on edges look similar. For example, if the "Capacity" value of an edge must be greater than the sum of some connecting nodes,
+we can implement that as presented in Listing~\ref{code:rulecond-edge}.
+\begin{lstlisting}[caption={Rule application condition example, edge attribute}, label={code:rulecond-edge}, style=rulecondstyle]
+e(2)."Capacity" > n(1)."Quantity" + n(11)."Quantity"
+                  + n(21)."Quantity";
+\end{lstlisting}
+
+Now let us extend the previous example with a condition on ports and let the engine enforce both.
+We may want to constrain that the value of attribute {\tt Capacity} of port number 5
+must be greater than (or equal to) {\tt Quantity} * {\tt Size} of two attribute nodes.
+This is enforced by Listing~\ref{code:rulecond-port}. Remember, ports are implemented as nodes,
+so we have to use the node syntax when referring to ports.
+\begin{lstlisting}[caption={Rule application condition example, port attribute}, label={code:rulecond-port}, style=rulecondstyle]
+n(5)."Capacity" >= n(1)."Quantity" * n(1)."Size";
+n(5)."Capacity" >= n(2)."Quantity" * n(2)."Size";
+\end{lstlisting}
+
+Lastly, suppose that we only want a rule to apply if a certain node \textbf{does not} exist in the graph.
+The \NotNode{} operator was proposed to enforce such constraints.
+For example, there can be a condition in the system model to not allow the appearance of a node with {\tt Size}
+that equals to the sum of {\tt Size} of two other nodes.
+We can implement that condition as shown in Listing~\ref{code:rulecond-notnode}.
+\begin{lstlisting}[caption={Rule application condition example, NotNode}, label={code:rulecond-notnode}, style=rulecondstyle]
+NotNode("Size" == n(1)."Size" + n(2)."Size");
+\end{lstlisting}
 
 \bibliographystyle{rnti}
 \bibliography{bib}
