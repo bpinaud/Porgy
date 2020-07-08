@@ -58,7 +58,7 @@ bool RuleAlgorithmWidget::eventFilter(QObject *, QEvent *event) {
         Qt::ControlModifier
 #endif
         ) {
-      int numDegrees = ev->delta() / 8;
+      int numDegrees = ev->angleDelta().y() / 8;
       int numSteps = numDegrees / 15;
       QFont f = _ui->instructionsText->font();
       f.setPointSize(f.pointSize() + numSteps);

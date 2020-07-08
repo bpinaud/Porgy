@@ -71,7 +71,7 @@ void CodeEditorListView::deleteCurrentStrat() {
  *
  ****************************************************************************************/
 void CodeEditorListView::wheelEvent(QWheelEvent *event) {
-  if (event->delta() > 0 && event->modifiers() == Qt::ControlModifier) {
+    if ( event->angleDelta().y() > 0 && event->modifiers() == Qt::ControlModifier) {
     emit wheelZoomIn(1);
     zoomIn(1);
   } else if (event->modifiers() == Qt::ControlModifier) {
