@@ -314,7 +314,7 @@ public:
       }
     }
 
-    // handle M and N
+    // handle M and N for new nodes only
     // if the M property is true, put elements inside the current P property
     // if the N property is true, put elements inside the current Ban property
     PortGraphModel pgm(new_graph);
@@ -329,29 +329,26 @@ public:
     }
 
     for (auto e : pgm.getEdges()) {
-      if (Pos != nullptr)
-        newP->copy(e, e, newM);
-      if (Ban != nullptr)
-        newBan->copy(e, e, newN);
-      if (newmodel_newelt->getEdgeValue(e) == true)
-        new_strategy_application->setEdgeValue(e, true);
+        if (newmodel_newelt->getEdgeValue(e) == true) {
+            if (Pos != nullptr)
+                newP->copy(e, e, newM);
+            if (Ban != nullptr)
+                newBan->copy(e, e, newN);
+            new_strategy_application->setEdgeValue(e, true);
+        }
     }
-    for (auto pn : pgm.getPortNodes()) {
-      if (Pos != nullptr && newM->getNodeValue(pn->getCenter())) {
-        pn->select(true, newP);
-      }
-      if (Ban != nullptr && newN->getNodeValue(pn->getCenter())) {
-        pn->select(true, newBan);
-      }
-      if (newmodel_newelt->getNodeValue(pn->getCenter()))
-        pn->select(true, new_strategy_application);
-    }
-
     set<node> setnewnode;
-    node n;
-    forEach (n, newmodel_newelt->getNodesEqualTo(true)) {
-      if (PortNode::isCenter(n, new_graph))
-        setnewnode.insert(n);
+    for (auto pn : pgm.getPortNodes()) {
+        if(newmodel_newelt->getNodeValue(pn->getCenter())) {
+            if (Pos != nullptr && newM->getNodeValue(pn->getCenter())) {
+                pn->select(true, newP);
+            }
+            if (Ban != nullptr && newN->getNodeValue(pn->getCenter())) {
+                pn->select(true, newBan);
+            }
+            pn->select(true, new_strategy_application);
+            setnewnode.insert(pn->getCenter());
+        }
     }
 
     LayoutProperty *layout_old_graph = graph->getProperty<LayoutProperty>("viewLayout");
@@ -388,6 +385,7 @@ public:
     // LHS and RHS are not linked. Try to put each new node at the same position
     // of an old node with the same label
     vector<set<node>::const_iterator> toremove;
+    node n;
     for (auto it = setnewnode.cbegin(); it != setnewnode.cend(); ++it) {
       node no(*it);
       // looking for an old node with the same label
