@@ -32,7 +32,7 @@ class GraphHierarchiesModel;
 class Workspace;
 }
 
-class QHBoxLayout;
+class QVBoxLayout;
 class QLabel;
 
 
@@ -46,7 +46,7 @@ class ViewManager : public QWidget {
   friend PorgyPerspective;
 
   tlp::Workspace *_workspace;
-  QHBoxLayout *_layout;
+  QVBoxLayout *_layout;
   tlp::GraphHierarchiesModel *_model;
 
   tlp::View *_currentView;

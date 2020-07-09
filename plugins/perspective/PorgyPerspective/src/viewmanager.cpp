@@ -20,7 +20,7 @@
 #include "viewmanager.h"
 
 #include <QGraphicsView>
-#include <QHBoxLayout>
+#include <QVBoxLayout>
 
 #include <tulip/GraphHierarchiesModel.h>
 #include <tulip/PluginLister.h>
@@ -30,7 +30,7 @@
 using namespace tlp;
 
 ViewManager::ViewManager(QWidget *parent)
-    : QWidget(parent), _layout(new QHBoxLayout(this)),
+    : QWidget(parent), _layout(new QVBoxLayout(this)),
       _model(new GraphHierarchiesModel(this)),_currentView(nullptr) {}
 
 ViewManager::~ViewManager() {
@@ -80,7 +80,6 @@ void ViewManager::closeProject() {
 
 void ViewManager::setupUi() {
   _workspace = new tlp::Workspace(parentWidget());
-  _layout = new QHBoxLayout(parentWidget());
   _layout->addWidget(_workspace);
 
   _workspace->setModel(_model);
