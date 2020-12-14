@@ -44,6 +44,7 @@
 
 #include <tulip/TlpQtTools.h>
 #include <tulip/TulipMimes.h>
+#include <tulip/TulipSettings.h>
 
 #include <portgraph/PorgyTlpGraphStructure.h>
 
@@ -122,7 +123,10 @@ CodeEditorPlainTextView::~CodeEditorPlainTextView() {
  ****************************************************************************************/
 void CodeEditorPlainTextView::lineNumberAreaPaintEvent(QPaintEvent *event) {
   QPainter painter(_lineNumberArea);
-  painter.fillRect(event->rect(), Qt::lightGray);
+  if(!TulipSettings::isDisplayInDarkMode())
+    painter.fillRect(event->rect(), Qt::lightGray);
+  else
+    painter.fillRect(event->rect(), Qt::black);
 
   QTextBlock block = firstVisibleBlock();
   int blockNumber = block.blockNumber();
@@ -132,7 +136,10 @@ void CodeEditorPlainTextView::lineNumberAreaPaintEvent(QPaintEvent *event) {
   while (block.isValid() && top <= event->rect().bottom()) {
     if (block.isVisible() && bottom >= event->rect().top()) {
       QString number = QString::number(blockNumber + 1);
-      painter.setPen(Qt::black);
+      if(!TulipSettings::isDisplayInDarkMode())
+        painter.setPen(Qt::black);
+      else
+        painter.setPen(Qt::white);
       painter.setFont(font());
 
       painter.drawText(0, top, _lineNumberArea->width(), fontMetrics().height(), Qt::AlignRight,
@@ -371,7 +378,9 @@ void CodeEditorPlainTextView::highlightCurrentLine() {
 
   if (!isReadOnly()) {
     QTextEdit::ExtraSelection selection;
-    QColor lineColor = QColor(Qt::gray).lighter(140);
+    QColor lineColor(QColor(Qt::gray).lighter(140));
+    if(TulipSettings::isDisplayInDarkMode())
+        lineColor = QColor(255-lineColor.red(), 255-lineColor.green(), 255-lineColor.blue());
     selection.format.setBackground(lineColor);
     selection.format.setProperty(QTextFormat::FullWidthSelection, true);
     selection.cursor = textCursor();
