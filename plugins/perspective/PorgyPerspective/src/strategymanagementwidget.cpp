@@ -359,7 +359,7 @@ void StrategyManagementWidget::deleteSourceCode() {
 void StrategyToolbar::initQAction(QAction *action, const QString &tooltip, const char *icon,
                                   const bool status) {
   action->setToolTip(tooltip);
-  action->setIcon(TulipFontIconEngine::icon(icon));
+  action->setIcon(TulipFontIconEngine::pixmap(string(icon), 32));
   action->setEnabled(status);
   addAction(action);
 }
@@ -474,11 +474,7 @@ void StrategyManagementWidget::_initConnections() {
   connect(ui->toolbar->_actionOpen, SIGNAL(triggered()), this, SLOT(open()));
   connect(ui->toolbar->_actionSave, SIGNAL(triggered()), this, SLOT(save()));
 
-  string dark("");
-  if (!TulipSettings::isDisplayInDarkMode())
-      dark="-o";
-
-  ui->toolbar->_menuNew->addAction(TulipFontIconEngine::icon(string("fa-file")+dark),
+  ui->toolbar->_menuNew->addAction(TulipFontIconEngine::pixmap(string("fa-file"),32),
                                    "New strategy", this, SLOT(addNewStrategy()),
                                    QKeySequence(Qt::CTRL + Qt::ALT + Qt::Key_N));
   _actionDuplicate = ui->toolbar->_menuNew->addAction("Duplicate selected strategy", this,
@@ -490,11 +486,11 @@ void StrategyManagementWidget::_initConnections() {
                                    SLOT(addStrategyFromSelectedElementsInTraceRoot()),
                                    QKeySequence(Qt::CTRL + Qt::ALT + Qt::Key_T));
   ui->toolbar->_menuOpen->addAction(
-      TulipFontIconEngine::icon(string("fa-folder-open")+dark), "Open a strategy",
+      TulipFontIconEngine::pixmap(string("fa-folder-open"),32), "Open a strategy",
       this, SLOT(open()), QKeySequence(Qt::CTRL + Qt::Key_O));
   ui->toolbar->_menuOpen->addAction("Open all strategies", this, SLOT(openAllStrategies()),
                                     QKeySequence(Qt::CTRL + Qt::ALT + Qt::Key_O));
-  ui->toolbar->_menuSave->addAction(TulipFontIconEngine::icon(string("fa-save")+dark),
+  ui->toolbar->_menuSave->addAction(TulipFontIconEngine::pixmap(string("fa-save"),32),
                                     "Export selected strategy", this, SLOT(save()),
                                     QKeySequence(Qt::CTRL + Qt::ALT + Qt::Key_S));
   ui->toolbar->_menuSave->addAction("Export all strategies", this, SLOT(saveAllStrategies()),

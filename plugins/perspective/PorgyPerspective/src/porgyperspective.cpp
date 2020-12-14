@@ -578,40 +578,34 @@ void PorgyPerspective::start(tlp::PluginProgress *progress) {
 }
 
 void PorgyPerspective::initMenus() {
-    string dark("");
-    if (!TulipSettings::isDisplayInDarkMode()) {
-        dark="-o";
-    }
-    else
-        tlp::warning() << "dark mode" << endl;
-  _ui->actionNew->setIcon(TulipFontIconEngine::icon(string("fa-file"), TulipSettings::isDisplayInDarkMode()));
+  _ui->actionNew->setIcon(TulipFontIconEngine::pixmap(string("fa-file"),32));
   _ui->actionNew_Empty_Graph_Model->setIcon(
-      TulipFontIconEngine::icon(string("fa-file")+dark));
+      TulipFontIconEngine::pixmap(string("fa-file"),32));
   _ui->actionOpen->setIcon(
-      TulipFontIconEngine::icon(string("fa-folder-open")+dark));
+      TulipFontIconEngine::pixmap(string("fa-folder-open"),32));
   _ui->actionSaveMenu->setIcon(
-      TulipFontIconEngine::icon("fa-save"));
-  _ui->actionSave->setIcon(TulipFontIconEngine::icon(string("fa-save")+dark));
-  _ui->actionSave_as->setIcon(TulipFontIconEngine::icon(string("fa-save")+dark));
+      TulipFontIconEngine::pixmap(string("fa-save"),32));
+  _ui->actionSave->setIcon(TulipFontIconEngine::pixmap(string("fa-save"),32));
+  _ui->actionSave_as->setIcon(TulipFontIconEngine::pixmap(string("fa-save"),32));
   QMenu *menusave = new QMenu();
   menusave->addAction(_ui->actionSave);
   menusave->addAction(_ui->actionSave_as);
   _ui->actionSaveMenu->setMenu(menusave);
 
-  _ui->actionClose->setIcon(TulipFontIconEngine::icon(string("fa-times-circle")+dark));
-  _ui->actionUndo->setIcon(TulipFontIconEngine::icon(string("fa-undo")));
-  _ui->actionRedo->setIcon(TulipFontIconEngine::icon(string("fa-redo")));
-  _ui->actionCopy->setIcon(TulipFontIconEngine::icon(string("fa-copy")+dark));
-  _ui->actionCut->setIcon(TulipFontIconEngine::icon(string("fa-cut")));
-  _ui->actionPaste->setIcon(TulipFontIconEngine::icon(string("fa-paste")));
+  _ui->actionClose->setIcon(TulipFontIconEngine::pixmap(string("fa-times-circle"), 32));
+  _ui->actionUndo->setIcon(TulipFontIconEngine::pixmap(string("fa-undo"),32));
+  _ui->actionRedo->setIcon(TulipFontIconEngine::pixmap(string("fa-redo"),32));
+  _ui->actionCopy->setIcon(TulipFontIconEngine::pixmap(string("fa-copy"),32));
+  _ui->actionCut->setIcon(TulipFontIconEngine::pixmap(string("fa-cut"),32));
+  _ui->actionPaste->setIcon(TulipFontIconEngine::pixmap(string("fa-paste"),32));
   _ui->actionDocumentation->setIcon(
-      TulipFontIconEngine::icon(string("fa-question-circle")+dark));
+      TulipFontIconEngine::pixmap(string("fa-question-circle"),32));
   _ui->action_Close_All->setIcon(
-      TulipFontIconEngine::icon(string("fa-window-close")+dark));
+      TulipFontIconEngine::pixmap(string("fa-window-close"),32));
   _ui->actionPreferences->setIcon(
-      TulipFontIconEngine::icon(string("fa-wrench")));
+      TulipFontIconEngine::pixmap(string("fa-wrench"),32));
   _ui->actionQuit->setIcon(
-      TulipFontIconEngine::icon(string("fa-window-close")+dark));
+      TulipFontIconEngine::pixmap(string("fa-window-close"),32));
 
   connect(_ui->actionNew, SIGNAL(triggered()), this, SLOT(fileNew()));
   connect(_ui->actionNew_Empty_Graph_Model, SIGNAL(triggered()), this,
