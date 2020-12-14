@@ -9,10 +9,9 @@
 #include <portgraph/PortGraphRule.h>
 #include <portgraph/PorgyTlpGraphStructure.h>
 
-#include <boost/lexical_cast.hpp>
-
 #include <numeric>
 #include <typeinfo>
+#include <string>
 
 #include <QFile>
 #include <QFileInfo>
@@ -38,8 +37,8 @@ static bool run_rule(const string &rulename, Graph *g, const string &P, const st
   bool ret(false);
   string errMsg;
   if (!isMatch) {
+      assert(!rulename.empty());
 #ifdef PORGY_STRATEGY_DEBUG_MESSAGES
-    assert(!rulename.empty());
     cerr << "Running " << rulename << " on " << g->getName() << endl;
 #endif
     ret = g->applyAlgorithm(PorgyConstants::CHECK_APPLY_RULE, errMsg, &ds, pp);
@@ -252,7 +251,7 @@ bool OneAllVisitor::operator()(const StrategyElement::ppickT_datastruct &ds) {
           // application probability (one list element each)
           std::vector<double> pr;
           for (unsigned i = 1; i < ret.size(); i += 2) {
-            pr.push_back(lexical_cast<double>(ret[i]));
+            pr.push_back(std::stod(ret[i]));
           }
           std::discrete_distribution<> dist(pr.begin(), pr.end()); // choose the rule to run
           unsigned num(dist(PorgyTlpGraphStructure::gen) * 2);

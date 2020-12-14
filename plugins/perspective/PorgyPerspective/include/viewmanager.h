@@ -80,8 +80,9 @@ public slots:
   void closeProject();
 
 signals:
-  void showGraphRequest(tlp::Graph *);
+  //void showGraphRequest(tlp::Graph *);
   void currentViewChanged(tlp::View *);
+  void currentViewActivated(tlp::View *);
 
 private slots:
   void currentViewChangedInternal(tlp::View *);

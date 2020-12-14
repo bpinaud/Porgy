@@ -7,9 +7,8 @@
 #include <portgraph/Port.h>
 #include <portgraph/PortNode.h>
 
-#include <boost/lexical_cast.hpp>
-
 #include <regex>
+#include <string>
 
 using namespace tlp;
 using namespace std;
@@ -116,7 +115,7 @@ void utree_walk::operator()(spirit::utf8_symbol_range_type const &str) const {
   booleanptr p3(new BooleanProperty(new_model));
   p3->copy(p2.get());
   StrategyElement::set_theory_op op =
-      static_cast<StrategyElement::set_theory_op>(lexical_cast<unsigned>(st));
+      static_cast<StrategyElement::set_theory_op>(std::stoul(st));
   switch (op) {
   case StrategyElement::set_theory_op::MINUS:
     // A \ B : keeps all elements of A set to true which are not true in B

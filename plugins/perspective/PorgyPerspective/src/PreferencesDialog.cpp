@@ -58,11 +58,12 @@ void PreferencesDialog::writeSettings() {
 
   QAbstractItemModel *model = _ui->graphDefaultsTable->model();
 
-  TulipSettings::instance().setDefaultSelectionColor(
+  TulipSettings::setDefaultSelectionColor(
       model->data(model->index(0, 1)).value<tlp::Color>());
-  TulipSettings::instance().setDefaultLabelColor(
+  TulipSettings::setDefaultLabelColor(
       model->data(model->index(1, 1)).value<tlp::Color>());
-  TulipSettings::instance().setUseTlpbFileFormat(_ui->usetlpbformat->isChecked());
+  TulipSettings::setDisplayInDarkMode(_ui->displayModeCombo->currentIndex());
+  TulipSettings::setUseTlpbFileFormat(_ui->usetlpbformat->isChecked());
 }
 
 void PreferencesDialog::readSettings() {
@@ -70,13 +71,13 @@ void PreferencesDialog::readSettings() {
   QAbstractItemModel *model = _ui->graphDefaultsTable->model();
 
   model->setData(model->index(0, 1), QVariant::fromValue<tlp::Color>(
-                                         TulipSettings::instance().defaultSelectionColor()));
+                                         TulipSettings::getDefaultSelectionColor()));
   model->setData(model->index(0, 2), QVariant::fromValue<tlp::Color>(
-                                         TulipSettings::instance().defaultSelectionColor()));
+                                         TulipSettings::getDefaultSelectionColor()));
   model->setData(model->index(1, 1),
-                 QVariant::fromValue<tlp::Color>(TulipSettings::instance().defaultLabelColor()));
+                 QVariant::fromValue<tlp::Color>(TulipSettings::defaultLabelColor()));
   model->setData(model->index(1, 2),
-                 QVariant::fromValue<tlp::Color>(TulipSettings::instance().defaultLabelColor()));
+                 QVariant::fromValue<tlp::Color>(TulipSettings::defaultLabelColor()));
   // edges selection color is not editable
   //_ui->graphDefaultsTable->item(3,2)->setFlags(Qt::ItemIsSelectable |
   // Qt::ItemIsEnabled);
@@ -86,8 +87,10 @@ void PreferencesDialog::cellChanged(int row, int column) {
   // force selection color to be the same for nodes & edges
   QAbstractItemModel *model = _ui->graphDefaultsTable->model();
   model->setData(model->index(row, column == 1 ? 2 : 1), model->data(model->index(row, column)));
+  _ui->displayModeCombo->setCurrentIndex(TulipSettings::isDisplayInDarkMode() ? 1 : 0);
 
-  if (TulipSettings::instance().isUseTlpbFileFormat()) {
+
+  if (TulipSettings::isUseTlpbFileFormat()) {
     _ui->usetlpbformat->setChecked(true);
   } else
     connect(_ui->usetlpbformat, SIGNAL(stateChanged(int)), this, SLOT(usetlpbformat(int)));

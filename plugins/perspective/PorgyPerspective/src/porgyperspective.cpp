@@ -168,7 +168,305 @@ void PorgyPerspective::usage(string& usage_str) const {
   a->setStatusTip(a->toolTip())
 
 void PorgyPerspective::start(tlp::PluginProgress *progress) {
-  _ui = new Ui::PorgyPerspective();
+    // configure style sheet
+    QString s_sheet(R"(
+  #AboutDialog #AboutTulipPageWidget, #AboutTulipPageWidget QTextEdit, #AlgorithmRunner, #AlgorithmRunner #contents, tlp--AlgorithRunnerItem, #ElementInformationWidget, #interactorConfigWidget, #interactorConfigWidgetDoc, #interactorConfigWidgetOptions, #mainWidget, #stringsListSelectionWidget, #TableViewWidget, QAbstractItemView, QCheckBox, QDialog, QHeaderView::section, QMessageBox, QRadioButton, QStackedWidget, QTabBar::tab, QTableView QTableCornerButton::section, QTextBrowser, QWizard, QWizard > * { background-color: %BG_COLOR%; }
+
+  #AxisSlidersOptions { background-color: %BG_COLOR%; }
+
+  #HeaderFrameData QComboBox QAbstractItemView {
+  background-color: %BG_COLOR%;
+  color: %FG_COLOR%;
+  border: 1px solid #C9C9C9;
+  }
+
+  #parameters {
+  color: black;
+  font: 12px;
+  }
+
+  #parameters QHeaderView::section {
+  background-color: %BG_COLOR%;
+  padding-top: -1px;
+  padding-left: 4px;
+  padding-right: 4px;
+  font: bold 12px;
+  }
+
+  #PreferencesDialog QHeaderView::section {
+  height: 30px;
+  font: bold 12px;
+  color: %FG_COLOR%;
+  border: 0px;
+  }
+
+  #PropertiesEditor QCheckBox::indicator:checked, QTableView::indicator:checked {
+  image: url(:/tulip/gui/icons/eye-%FG_COLOR%.png);
+  }
+
+  #PropertiesEditor QCheckBox::indicator:indeterminate {
+  image: url(:/tulip/gui/icons/eye_partially_disabled-%FG_COLOR%.png);
+  }
+
+  #PropertiesEditor QCheckBox::indicator:unchecked, QTableView::indicator:unchecked {
+  image: url(:/tulip/gui/icons/eye_disabled-%FG_COLOR%.png);
+  }
+
+  #scrollArea, #scrollAreaWidgetContents {
+  background-color: %BG_COLOR%;
+  border: 0px;
+  }
+
+  #SearchWidget QTableView {
+  border: 1px solid #C9C9C9;
+  color: %FG_COLOR%;
+  font: 12px;
+  }
+
+  #AboutDialog #AboutTulipPageWidget QTextEdit:enabled, #ElementInformationWidget, #ElementInformationWidget QPushButton, #PanelSelectionWizard QListView, QComboBox QAbstractItemView:enabled, QComboBox:item:enabled, QCheckBox:enabled, QGroupBox:enabled, QHeaderView::section:enabled, QLabel:enabled, QListWidget:enabled, QRadioButton:enabled, QTabBar::tab:enabled, QTableWidget:enabled, QTableView:enabled, QTextBrowser:enabled, QToolButton:enabled, QTreeView:enabled {
+  color: %FG_COLOR%;
+  }
+
+  QLineEdit[clearableLineEdit] {
+  border: 1px solid #808080;
+  background-color: white;
+  color: black;
+  }
+
+  QHeaderView::down-arrow {
+  image: url(:/tulip/gui/ui/down_arrow-%FG_COLOR%.png);
+  }
+
+  QHeaderView::up-arrow {
+  image: url(:/tulip/gui/ui/up_arrow-%FG_COLOR%.png);
+  }
+
+  QListView, QTableView {
+  alternate-background-color: #A0A0A0;
+  }
+
+  QPlainTextEdit {
+  background-color: %BG_COLOR%;
+  color: %FG_COLOR%;
+  selection-background-color: #C0C0C0;
+  }
+
+  QPushButton, QComboBox {
+  color: black;
+  }
+
+  QPushButton, QComboBox {
+  border-image: url(:/tulip/gui/ui/btn_26.png) 4;
+  border-width: 4;
+  padding: 0px 6px;
+  font-size: 12px;
+  }
+
+  QPushButton::flat {
+  border-width: 0;
+  background-color: transparent;
+  }
+
+  QPushButton:hover {
+  border-image: url(:/tulip/gui/ui/btn_26_hover.png) 4;
+  border-width: 4;
+  }
+
+  QComboBox:hover, QToolButton:hover {
+  border-image: url(:/tulip/gui/ui/btn_26_hover.png) 4;
+  }
+
+  QPushButton:disabled, QComboBox::disabled, QToolButton::disabled {
+  color:gray;
+  }
+
+  QPushButton:pressed, QToolButton:pressed{
+  border-image: url(:/tulip/gui/ui/btn_26_pressed.png) 4;
+  }
+
+  QPushButton::menu-indicator{
+  subcontrol-origin: margin;
+  subcontrol-position: center right;
+  right: 4px;
+  }
+
+  QPushButton {
+  outline: none;
+  margin: 2
+  }
+
+  QComboBox::down-arrow {
+  image: url(:/tulip/gui/ui/combobox_arrow.png);
+  }
+
+  QComboBox:drop-down {
+  subcontrol-origin: padding;
+  subcontrol-position: top right;
+  border-left-style: none;
+  border-top-right-radius: 1px;
+  border-bottom-right-radius: 1px;
+  }
+
+  #bottomFrame * {
+  font: bold 11px;
+  }
+
+  #bottomFrame {
+  border-top: 1px solid black;
+  border-bottom: 1px solid rgba(117,117,117,255);
+  border-right: 1px solid rgba(117,117,117,255);
+  border-left: 0px;
+  background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:, y2:1,
+  stop:0 rgb(75,75,75),
+  stop:1 rgb(60, 60, 60));
+  }
+
+  #bottomFrame QPushButton, #bottomFrame QLabel {
+  color: white;
+  }
+
+  #bottomFrame QPushButton {
+  border: 0px;
+  border-image: none;
+  }
+
+  #bottomFrame QPushButton:hover {
+  border: 0px;
+  border-image: none;
+  background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:, y2:1,
+  stop:0 rgb(85,85,85),
+  stop:1 rgb(70, 70, 70));
+  }
+
+  #bottomFrame QPushButton:pressed, #bottomFrame .QPushButton:checked {
+  border: 0px;
+  border-image: none;
+  background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:, y2:1,
+  stop:0 rgb(105,105,105),
+  stop:1 rgb(90, 90, 90));
+  }
+
+  #bottomFrame OutputPanelButton{
+  border-image: url(:/tulip/graphperspective/ui/panel_button.png) 2 2 2 19;
+  border-width: 2px 2px 2px 19px;
+  padding-left: -17;
+  padding-right: 4;
+  }
+
+  #bottomFrame OutputPanelButton:checked{
+  border-image: url(:/tulip/graphperspective/ui/panel_button_checked.png) 2 2 2 19
+  }
+
+  #bottomFrame OutputPanelButton::menu-indicator{
+  width:0; height:0
+  }
+
+  #bottomFrame OutputPanelButton:checked:hover{
+  border-image: url(:/tulip/graphperspective/ui/panel_button_checked_hover.png) 2 2 2 19
+  }
+
+  #bottomFrame OutputPanelButton:pressed:hover{
+  border-image: url(:/tulip/graphperspective/ui/panel_button_pressed.png) 2 2 2 19
+  }
+
+  #bottomFrame OutputPanelButton:hover{
+  border-image: url(:/tulip/graphperspective/ui/panel_button_hover.png) 2 2 2 19
+  }
+
+  #bottomFrame QToolButton {
+      border-image:none;
+      border-top: 1px solid rgba(0,0,0,0);
+      border-bottom: 1px solid rgba(0,0,0,0);
+      border-left: 0px solid rgba(0,0,0,0);
+      border-right: 0px solid rgba(0,0,0,0);
+      color: white;
+      font: bold 10px;
+      height:20px;
+      background-color: rgba(0,0,0,0);
+  }
+
+  #bottomFrame QToolButton:hover {
+      border-image:none;
+      background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0,
+      stop:0 rgba(93, 93, 93, 255),
+      stop:1 rgba(150, 150, 150, 255));
+      border-top: 1px solid qlineargradient(x1: 0, y1: 0, x2: 1, y2: 0,
+      stop: 0.0 rgba(0,0,0,0),
+      stop: 0.4 rgba(170,170,170,255),
+      stop: 0.5 rgba(170,170,170,255),
+      stop: 1.0 rgba(0,0,0,0));
+      border-bottom: 1px solid qlineargradient(x1: 0, y1: 0, x2: 1, y2: 0,
+      stop: 0.0 rgba(0,0,0,0),
+      stop: 0.4 rgba(170,170,170,255),
+      stop: 0.5 rgba(170,170,170,255),
+      stop: 1.0 rgba(0,0,0,0));
+  }
+
+  QFrame[ section=\"true\" ] {
+  border-top: 1px solid #D9D9D9;
+  padding-top: 20px;
+  }
+
+  QLabel[groupTitle] {
+  background-color: #A0A0A0;
+  font-weight: bold;
+  }
+
+  QSplitter::handle {
+  background-color: #C0C0C0;
+  border-width:0px;
+  }
+
+  QScrollBar {
+  background-color: #D0D0D0;
+  }
+
+  QScrollBar::sub-page, QScrollBar::add-page {
+  background-color: #A0A0A0;
+  }
+
+  QTableWidget, QTableView {
+  gridline-color: #808080;
+  }
+
+  QTabBar::tab {
+  background: #A0A0A0;
+  border: 1px solid #808080;
+  border-top-left-radius: 2px;
+  border-top-right-radius: 2px;
+  font-weight: 100;
+  min-width: 8ex;
+  padding: 5px;
+  }
+
+  QTabBar::tab:selected {
+  background: %BG_COLOR%;
+  margin-bottom: -1px;
+  font-weight: normal;
+  }
+
+  QTabBar::tab:!selected:hover {
+  background: #D0D0D0;
+  font-weight: 300;
+  }
+
+  QTabBar::tab:disabled {
+  color: #808080;
+  }
+
+  QTabWidget::pane {
+  background: #808080;
+  padding: 1px;
+  top: -1px;
+  }
+  )");
+
+    if (TulipSettings::isDisplayInDarkMode())
+      s_sheet.replace("%BG_COLOR%", "#323232").replace("%FG_COLOR%", "white");
+    else
+      s_sheet.replace("%BG_COLOR%", "white").replace("%FG_COLOR%", "black");
+    _mainWindow->setStyleSheet(s_sheet);
+    _ui = new Ui::PorgyPerspective();
   _ui->setupUi(_mainWindow);
 
   _ui->statusbar->addPermanentWidget(_PluginProgress);
@@ -225,7 +523,7 @@ void PorgyPerspective::start(tlp::PluginProgress *progress) {
   connect(_ui->splitHorizontalModeButton, SIGNAL(clicked()), _ui->viewManager->_workspace, SLOT(switchToSplitHorizontalMode()));
   connect(_ui->split33ModeButton, SIGNAL(clicked()), _ui->viewManager->_workspace, SLOT(switchToSplit33Mode()));
   connect(_ui->split32ModeButton, SIGNAL(clicked()), _ui->viewManager->_workspace, SLOT(switchToSplit32Mode()));
-  connect(_ui->sixModeButton, SIGNAL(clicked()), _ui->viewManager->_workspace, SLOT(switchToSplitSixMode()));
+  connect(_ui->sixModeButton, SIGNAL(clicked()), _ui->viewManager->_workspace, SLOT(switchToSixMode()));
   connect(_ui->split3ModeButton, SIGNAL(clicked()), _ui->viewManager->_workspace, SLOT(switchToSplit3Mode()));
   connect(_ui->splitModeButton, SIGNAL(clicked()), _ui->viewManager->_workspace, SLOT(switchToSplitMode()));
   connect(_ui->gridModeButton, SIGNAL(clicked()), _ui->viewManager->_workspace, SLOT(switchToGridMode()));
@@ -280,35 +578,40 @@ void PorgyPerspective::start(tlp::PluginProgress *progress) {
 }
 
 void PorgyPerspective::initMenus() {
-
-  _ui->actionNew->setIcon(TulipFontIconEngine::icon("fa-file"));
+    string dark("");
+    if (!TulipSettings::isDisplayInDarkMode()) {
+        dark="-o";
+    }
+    else
+        tlp::warning() << "dark mode" << endl;
+  _ui->actionNew->setIcon(TulipFontIconEngine::icon(string("fa-file"), TulipSettings::isDisplayInDarkMode()));
   _ui->actionNew_Empty_Graph_Model->setIcon(
-      TulipFontIconEngine::icon("fa-file"));
+      TulipFontIconEngine::icon(string("fa-file")+dark));
   _ui->actionOpen->setIcon(
-      TulipFontIconEngine::icon("fa-folder-open"));
+      TulipFontIconEngine::icon(string("fa-folder-open")+dark));
   _ui->actionSaveMenu->setIcon(
       TulipFontIconEngine::icon("fa-save"));
-  _ui->actionSave->setIcon(TulipFontIconEngine::icon("fa-save"));
-  _ui->actionSave_as->setIcon(TulipFontIconEngine::icon("fa-save"));
+  _ui->actionSave->setIcon(TulipFontIconEngine::icon(string("fa-save")+dark));
+  _ui->actionSave_as->setIcon(TulipFontIconEngine::icon(string("fa-save")+dark));
   QMenu *menusave = new QMenu();
   menusave->addAction(_ui->actionSave);
   menusave->addAction(_ui->actionSave_as);
   _ui->actionSaveMenu->setMenu(menusave);
 
-  _ui->actionClose->setIcon(TulipFontIconEngine::icon("fa-times"));
-  _ui->actionUndo->setIcon(TulipFontIconEngine::icon("fa-undo"));
-  _ui->actionRedo->setIcon(TulipFontIconEngine::icon("fa-redo"));
-  _ui->actionCopy->setIcon(TulipFontIconEngine::icon("fa-copy"));
-  _ui->actionCut->setIcon(TulipFontIconEngine::icon("fa-cut"));
-  _ui->actionPaste->setIcon(TulipFontIconEngine::icon("fa-paste"));
+  _ui->actionClose->setIcon(TulipFontIconEngine::icon(string("fa-times-circle")+dark));
+  _ui->actionUndo->setIcon(TulipFontIconEngine::icon(string("fa-undo")));
+  _ui->actionRedo->setIcon(TulipFontIconEngine::icon(string("fa-redo")));
+  _ui->actionCopy->setIcon(TulipFontIconEngine::icon(string("fa-copy")+dark));
+  _ui->actionCut->setIcon(TulipFontIconEngine::icon(string("fa-cut")));
+  _ui->actionPaste->setIcon(TulipFontIconEngine::icon(string("fa-paste")));
   _ui->actionDocumentation->setIcon(
-      TulipFontIconEngine::icon("fa-question-circle"));
+      TulipFontIconEngine::icon(string("fa-question-circle")+dark));
   _ui->action_Close_All->setIcon(
-      TulipFontIconEngine::icon("fa-window-close-o"));
+      TulipFontIconEngine::icon(string("fa-window-close")+dark));
   _ui->actionPreferences->setIcon(
-      TulipFontIconEngine::icon("fa-wrench"));
+      TulipFontIconEngine::icon(string("fa-wrench")));
   _ui->actionQuit->setIcon(
-      TulipFontIconEngine::icon("fa-window-close"));
+      TulipFontIconEngine::icon(string("fa-window-close")+dark));
 
   connect(_ui->actionNew, SIGNAL(triggered()), this, SLOT(fileNew()));
   connect(_ui->actionNew_Empty_Graph_Model, SIGNAL(triggered()), this,
@@ -425,7 +728,7 @@ void PorgyPerspective::debugPressed(bool checked) {
 
 void PorgyPerspective::buildGUI() {
   // Building element properties management widget
-  connect(_ui->viewManager, SIGNAL(showGraphRequest(tlp::Graph *)), SLOT(addPanel(tlp::Graph *)));
+  //connect(_ui->viewManager, SIGNAL(showGraphRequest(tlp::Graph *)), SLOT(addPanel(tlp::Graph *)));
   connect(_ui->viewManager, SIGNAL(currentViewChanged(tlp::View *)),
           SLOT(viewActivated(tlp::View *)));
   connect(_ui->ruleWidget, SIGNAL(showRule(tlp::Graph *)), this, SLOT(showRule(tlp::Graph *)));

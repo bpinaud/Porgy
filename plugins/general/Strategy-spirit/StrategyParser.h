@@ -20,8 +20,6 @@
 #ifndef STRATEGYPARSER_CXX
 #define STRATEGYPARSER_CXX
 
-#define BOOST_SPIRIT_USE_PHOENIX_V3
-
 #include <boost/fusion/adapted.hpp>
 #include <boost/spirit/include/phoenix.hpp>
 #include <boost/spirit/include/phoenix_fusion.hpp>

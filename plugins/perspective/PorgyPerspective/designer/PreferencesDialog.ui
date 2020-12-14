@@ -29,65 +29,6 @@
    <iconset>
     <normaloff>:/tulip/gui/icons/logo32x32.png</normaloff>:/tulip/gui/icons/logo32x32.png</iconset>
   </property>
-  <property name="styleSheet">
-   <string notr="true">QPushButton, QComboBox {
-border-image: url(:/tulip/gui/ui/btn_26.png) 4;
-border-width: 4;
-padding: 0px 6px;
-font-size: 12px;
-}
-QPushButton::flat {
-border-image: none;
-border-width: 4;
-padding: 0px 6px;
-font-size: 12px;
-background-color: transparent;
-}
-QPushButton, QComboBox, QLabel {
-color: black;
-}
-QPushButton:hover, QComboBox:hover {
-border-image: url(:/tulip/gui/ui/btn_26_hover.png) 4;
-}
-QPushButton:disabled, QComboBox::disabled {
-color:gray;
-}
-QPushButton:pressed{
-border-image: url(:/tulip/gui/ui/btn_26_pressed.png) 4;
-}
-QPushButton::menu-indicator{
-subcontrol-origin: margin;
-subcontrol-position: center right;
-right: 4px;
-}
-QPushButton {
-outline: none;
-margin: 2
-}
-QComboBox::down-arrow {
-image: url(:/tulip/gui/ui/combobox_arrow.png);
-}
-QComboBox:drop-down {
-subcontrol-origin: padding;
-subcontrol-position: top right;
-border-left-style: none; 
-border-top-right-radius: 1px;
-border-bottom-right-radius: 1px;
-}
-#PreferencesDialog {
-background-color: white;
-border: 0px;
-}
-QFrame[ section=&quot;true&quot; ] {
-border-top: 1px solid #D9D9D9;
-padding-top: 20px;
-}
-QFrame[ subsection = &quot;true&quot; ] {
-border-top: 1px solid #D9D9D9;
-padding-top: 5px;
-background-color: #F4F4F4;
-}</string>
-  </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <property name="spacing">
     <number>0</number>
@@ -140,10 +81,6 @@ background-color: #F4F4F4;
           <height>36</height>
          </size>
         </property>
-        <property name="styleSheet">
-         <string notr="true">font-weight: bold;
-color: #595959;</string>
-        </property>
         <property name="text">
          <string>&lt;font size=&quot;5&quot;&gt;Preferences&lt;/font&gt;</string>
         </property>
@@ -161,7 +98,7 @@ color: #595959;</string>
       </sizepolicy>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="renderingTabWidgetPage1">
       <attribute name="title">
@@ -190,23 +127,6 @@ color: #595959;</string>
              <verstretch>0</verstretch>
             </sizepolicy>
            </property>
-           <property name="styleSheet">
-            <string notr="true">QAbstractItemView {
-background-color: white;
-border: 0px;
-}
-QHeaderView::section {
-background-color: white;
-height: 30px;
-font: bold 10pt;
-color: black;
-border: 0px;
-}
-QTableView {
-font: 10pt;
-}
-</string>
-           </property>
            <property name="frameShape">
             <enum>QFrame::NoFrame</enum>
            </property>
@@ -219,11 +139,11 @@ font: 10pt;
            <property name="cornerButtonEnabled">
             <bool>false</bool>
            </property>
-           <attribute name="horizontalHeaderDefaultSectionSize">
-            <number>200</number>
-           </attribute>
            <attribute name="horizontalHeaderMinimumSectionSize">
             <number>1</number>
+           </attribute>
+           <attribute name="horizontalHeaderDefaultSectionSize">
+            <number>200</number>
            </attribute>
            <row>
             <property name="text">
@@ -297,6 +217,51 @@ font: 10pt;
        </item>
        <item>
         <spacer name="verticalSpacer">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tab_2">
+      <attribute name="title">
+       <string>Display options</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_3">
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout">
+         <item>
+          <widget class="QLabel" name="label">
+           <property name="text">
+            <string>Display mode</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QComboBox" name="displayModeCombo">
+           <item>
+            <property name="text">
+             <string>Light</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Dark</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <spacer name="verticalSpacer_2">
          <property name="orientation">
           <enum>Qt::Vertical</enum>
          </property>

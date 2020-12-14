@@ -474,7 +474,11 @@ void StrategyManagementWidget::_initConnections() {
   connect(ui->toolbar->_actionOpen, SIGNAL(triggered()), this, SLOT(open()));
   connect(ui->toolbar->_actionSave, SIGNAL(triggered()), this, SLOT(save()));
 
-  ui->toolbar->_menuNew->addAction(TulipFontIconEngine::icon("fa-file-o"),
+  string dark("");
+  if (!TulipSettings::isDisplayInDarkMode())
+      dark="-o";
+
+  ui->toolbar->_menuNew->addAction(TulipFontIconEngine::icon(string("fa-file")+dark),
                                    "New strategy", this, SLOT(addNewStrategy()),
                                    QKeySequence(Qt::CTRL + Qt::ALT + Qt::Key_N));
   _actionDuplicate = ui->toolbar->_menuNew->addAction("Duplicate selected strategy", this,
@@ -486,11 +490,11 @@ void StrategyManagementWidget::_initConnections() {
                                    SLOT(addStrategyFromSelectedElementsInTraceRoot()),
                                    QKeySequence(Qt::CTRL + Qt::ALT + Qt::Key_T));
   ui->toolbar->_menuOpen->addAction(
-      TulipFontIconEngine::icon("fa-folder-open-o"), "Open a strategy",
+      TulipFontIconEngine::icon(string("fa-folder-open")+dark), "Open a strategy",
       this, SLOT(open()), QKeySequence(Qt::CTRL + Qt::Key_O));
   ui->toolbar->_menuOpen->addAction("Open all strategies", this, SLOT(openAllStrategies()),
                                     QKeySequence(Qt::CTRL + Qt::ALT + Qt::Key_O));
-  ui->toolbar->_menuSave->addAction(TulipFontIconEngine::icon("fa-save"),
+  ui->toolbar->_menuSave->addAction(TulipFontIconEngine::icon(string("fa-save")+dark),
                                     "Export selected strategy", this, SLOT(save()),
                                     QKeySequence(Qt::CTRL + Qt::ALT + Qt::Key_S));
   ui->toolbar->_menuSave->addAction("Export all strategies", this, SLOT(saveAllStrategies()),

@@ -85,11 +85,8 @@ void ViewManager::setupUi() {
   _workspace->setModel(_model);
   _workspace->setAutoCenterPanelsOnDraw(false);
 
-  connect(_workspace, SIGNAL(addPanelRequest(tlp::Graph *)),
-          SIGNAL(showGraphRequest(tlp::Graph *)));
+//  connect(_workspace, SIGNAL(addPanelRequest(tlp::Graph *)), SIGNAL(showGraphRequest(tlp::Graph *)));
   connect(_workspace, SIGNAL(panelFocused(tlp::View *)), SIGNAL(currentViewActivated(tlp::View *)));
-  connect(_workspace, SIGNAL(showGraphRequest(tlp::Graph *)),
-             SIGNAL(showGraphRequest(tlp::Graph *)));
-  connect(_workspace, SIGNAL(currentViewActivated(tlp::View *)),
-             SLOT(currentViewChangedInternal(tlp::View *)));
+ // connect(_workspace, SIGNAL(showGraphRequest(tlp::Graph *)), SIGNAL(showGraphRequest(tlp::Graph *)));
+ // connect(_workspace, SIGNAL(currentViewActivated(tlp::View *)), SLOT(currentViewChangedInternal(tlp::View *)));
 }
