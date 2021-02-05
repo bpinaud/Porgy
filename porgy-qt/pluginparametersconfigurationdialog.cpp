@@ -32,6 +32,7 @@ PluginParametersConfigurationDialog::PluginParametersConfigurationDialog(QWidget
       _graph(nullptr), _parametersModel(nullptr) {
   ui->setupUi(this);
   ui->tableView->setItemDelegate(new tlp::TulipItemDelegate(ui->tableView));
+  setStyleSheet(parent->styleSheet());
 }
 
 PluginParametersConfigurationDialog::~PluginParametersConfigurationDialog() {

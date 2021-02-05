@@ -29,6 +29,7 @@
 #include <QMenu>
 #include <QMessageBox>
 #include <QToolTip>
+#include <QMainWindow>
 
 #include <tulip/BooleanProperty.h>
 #include <tulip/ConnectedTest.h>
@@ -36,6 +37,7 @@
 #include <tulip/StringProperty.h>
 #include <tulip/TlpQtTools.h>
 #include <tulip/PluginLister.h>
+#include <tulip/Perspective.h>
 
 #include <portgraph/PorgyTlpGraphStructure.h>
 #include <portgraph/Trace.h>
@@ -232,7 +234,7 @@ void TracesWidget::exportCSV() {
     params.buildDefaultDataSet(dataSet, selectedGraph);
     bool ok = true;
     dataSet = PluginParametersConfigurationDialog::getParameters(
-        this, "CSV Export plugin parameters", params, ok, &dataSet, selectedGraph);
+        Perspective::instance()->mainWindow(), "CSV Export plugin parameters", params, ok, &dataSet, selectedGraph);
     if (ok) {
       ok = tlp::saveGraph(selectedGraph, QStringToTlpString(filesave), nullptr, &dataSet);
       if (ok)

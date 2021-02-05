@@ -22,6 +22,7 @@
 #include <tulip/GlMainWidget.h>
 #include <tulip/Interactor.h>
 #include <tulip/TlpQtTools.h>
+#include <tulip/Perspective.h>
 
 #include <portgraph/PortGraphModel.h>
 #include <portgraph/PortNode.h>
@@ -30,6 +31,7 @@
 
 #include <QGraphicsView>
 #include <QMessageBox>
+#include <QMainWindow>
 
 using namespace tlp;
 using namespace std;
@@ -58,7 +60,7 @@ void AbstractPortGraphView::redrawGraph(Graph *g) {
     if (plugins.size() == 1) {
       pluginName = plugins.front();
       parameters = PluginParametersConfigurationDialog::getParameters(
-          graphicsView()->window(), "Configure draw plugin",
+          Perspective::instance()->mainWindow(), "Configure draw plugin",
           tlp::PluginLister::getPluginParameters(pluginName), ok, nullptr, g);
     } else {
       assert(false);

@@ -70,7 +70,6 @@ vector<PortQt> CreatePortNode::getPortQts() const {
 
 void CreatePortNode::init(const QColor &color) {
   ui->setupUi(this);
-  ui->pushButtonColor->setDialogParent(this);
   ui->pushButtonColor->setColor(color);
   connect(ui->pushButtonAdd, SIGNAL(clicked()), this, SLOT(showPortDialog()));
   connect(ui->pushButtonDelete, SIGNAL(clicked()), this, SLOT(removePort()));

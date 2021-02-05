@@ -59,7 +59,6 @@ void CreatePort::init(const QColor &color) {
   for (auto s : glyphs) {
     ui->comboBoxGlyph->addItem(tlp::tlpStringToQString(s));
   }
-  ui->ColorPortButton->setDialogParent(this);
   ui->ColorPortButton->setColor(color);
 }
 

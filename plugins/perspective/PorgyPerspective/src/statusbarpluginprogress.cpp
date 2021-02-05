@@ -20,14 +20,13 @@
 #include "statusbarpluginprogress.h"
 #include "ui_statusbarpluginprogress.h"
 
-#include <QStyle>
+#include <tulip/TulipFontIconEngine.h>
 
 StatusBarPluginProgress::StatusBarPluginProgress(QWidget *parent)
     : QWidget(parent), _ui(new Ui::StatusBarPluginProgress) {
   _ui->setupUi(this);
-  _ui->cancelPushButton->setIcon(
-      QApplication::style()->standardIcon(QStyle::SP_DialogCancelButton));
-  _ui->stopPushButton->setIcon(QApplication::style()->standardIcon(QStyle::SP_MediaStop));
+  _ui->cancelPushButton->setIcon(TulipFontIconEngine::pixmap(std::string("md-cancel"),32));
+  _ui->stopPushButton->setIcon(TulipFontIconEngine::pixmap(std::string("fa-stop-circle"),32));
   connect(_ui->cancelPushButton, SIGNAL(clicked()), SLOT(cancelClicked()));
   connect(_ui->stopPushButton, SIGNAL(clicked()), SLOT(stopClicked()));
 }

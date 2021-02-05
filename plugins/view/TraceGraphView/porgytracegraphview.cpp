@@ -32,6 +32,7 @@
 #include <tulip/TlpQtTools.h>
 #include <tulip/TulipMetaTypes.h>
 #include <tulip/TulipMimes.h>
+#include <tulip/Perspective.h>
 
 #include <portgraph/PorgyTlpGraphStructure.h>
 #include <portgraph/Trace.h>
@@ -50,6 +51,7 @@
 #include <QPropertyAnimation>
 #include <QTimer>
 #include <QToolTip>
+#include <QMainWindow>
 
 #include "../../StandardInteractorPriority.h"
 
@@ -103,7 +105,7 @@ void PorgyTraceGraphView::applyColorMapping() {
   params.buildDefaultDataSet(dataSet, g);
   QString title = QString("Lauching Color Mapping on ") + tlp::tlpStringToQString(g->getName());
   bool resultBool = true;
-  parameters = PluginParametersConfigurationDialog::getParameters(getGlMainWidget(), title, params,
+  parameters = PluginParametersConfigurationDialog::getParameters(Perspective::instance()->mainWindow(), title, params,
                                                                   resultBool, &dataSet, g);
 
   g->applyPropertyAlgorithm("Color Mapping", color, err, &parameters);
