@@ -48,6 +48,7 @@ RuleConditionWidget::~RuleConditionWidget() {
     delete _ui;
 }
 
+
 bool RuleConditionWidget::eventFilter(QObject *, QEvent *event) {
     if(event->type()==QEvent::Wheel) {
         QWheelEvent *ev = static_cast<QWheelEvent*>(event);
@@ -58,11 +59,10 @@ bool RuleConditionWidget::eventFilter(QObject *, QEvent *event) {
             Qt::ControlModifier
 #endif
         ) {
-            int numDegrees = ev->delta()/8;
-            int numSteps = numDegrees / 15;
-            QFont f = _ui->conditionsText->font();
-            f.setPointSize(f.pointSize()+numSteps);
-            _ui->conditionsText->setFont(f);
+            if (ev->angleDelta().y() > 0 )
+                   _ui->conditionsText->zoomIn(1);
+            else
+                _ui->conditionsText->zoomOut(1);
             event->accept();
             return true;
         }
@@ -73,7 +73,7 @@ bool RuleConditionWidget::eventFilter(QObject *, QEvent *event) {
 void RuleConditionWidget::tryCondition() {
     string text = QStringToTlpString(_ui->conditionsText->toPlainText());
     string err("");
-    if (text == "") {
+    if (text.empty() ) {
         _ui->conditionParsingResult->setText(tlpStringToQString(""));
         _g->setAttribute(PorgyConstants::RULE_CONDITION, text);
         return;

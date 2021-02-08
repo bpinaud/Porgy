@@ -199,19 +199,7 @@ private slots:
   void addMacro();
 
 public slots:
-  /*!
-   * \brief Zoom-in function of the QTextEdit object.
-   *        This slot is intended to be used by a parent object. It allows to
-   *        magnify the font of the code editing area.
-   */
-  void zoomIn(const int s = 1);
 
-  /*!
-   * \brief Zoom-out function of the QTextEdit object.
-   *        This slot is intended to be used by a parent object. It allows to
-   *        reduce the font size of the code editing area.
-   */
-  void zoomOut(const int s = 1);
 
   /*!
    * \brief Autocomplete a keyword.

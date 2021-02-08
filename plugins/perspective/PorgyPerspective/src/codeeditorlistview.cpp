@@ -78,10 +78,7 @@ void CodeEditorListView::wheelEvent(QWheelEvent *event) {
     emit wheelZoomOut(1);
     zoomOut(1);
   } else {
-    // Prend toujours le contrôle (prioritaire) sur les deux évenements
-    // ci-dessus.
-    // D'où la désactivation lors du zoom.
-    QListView::wheelEvent(event);
+     QListView::wheelEvent(event);
   }
 }
 

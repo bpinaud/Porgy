@@ -58,13 +58,12 @@ bool RuleAlgorithmWidget::eventFilter(QObject *, QEvent *event) {
         Qt::ControlModifier
 #endif
         ) {
-      int numDegrees = ev->angleDelta().y() / 8;
-      int numSteps = numDegrees / 15;
-      QFont f = _ui->instructionsText->font();
-      f.setPointSize(f.pointSize() + numSteps);
-      _ui->instructionsText->setFont(f);
-      event->accept();
-      return true;
+        if (ev->angleDelta().y() > 0 )
+               _ui->instructionsText->zoomIn(1);
+        else
+            _ui->instructionsText->zoomOut(1);
+        event->accept();
+        return true;
     }
   }
   return false;
