@@ -2085,14 +2085,14 @@ void PorgyPerspective::ImportGraph() {
   ParameterDescriptionList params =
       PluginLister::getPluginParameters(tlp::QStringToTlpString(algorithm));
   if (!params.empty()) {
-    params.buildDefaultDataSet(dataSet, graph);
+    params.buildDefaultDataSet(dataSet);
     bool ok = true;
     dataSet = PluginParametersConfigurationDialog::getParameters(
-        _mainWindow, algorithm + " plugin parameters", params, ok, &dataSet, graph);
+        _mainWindow, algorithm + " plugin parameters", params, ok, &dataSet);
   }
   if (dataSet.empty())
     return;
-  graph = tlp::importGraph(algorithm.toStdString(), dataSet, _PluginProgress, graph);
+  graph = tlp::importGraph(algorithm.toStdString(), dataSet, _PluginProgress);
   if (graph != nullptr) {
     Graph *g = PorgyTlpGraphStructure::setPorgyStructure(graph);
 

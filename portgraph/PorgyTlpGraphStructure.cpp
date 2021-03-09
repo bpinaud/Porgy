@@ -114,16 +114,12 @@ tlp::Graph *PorgyTlpGraphStructure::setPorgyStructure(tlp::Graph *root) {
       ->setAllEdgeValue(EdgeExtremityShape::None);
   root->getProperty<DoubleProperty>("viewBorderWidth")->setAllNodeValue(1.0);
   PortNodeBase::getTypeProperty(root);
-  BooleanProperty selectRoot(root);
-  selectRoot.setAllNodeValue(true);
-  selectRoot.setAllEdgeValue(true);
+
 
   // graphs
-  Graph *models_root = root->addSubGraph(&selectRoot, PorgyConstants::GRAPHS_GRAPH_NAME);
+  Graph *models_root = root->addCloneSubGraph(PorgyConstants::GRAPHS_GRAPH_NAME);
   BooleanProperty *selectModel = models_root->getLocalProperty<BooleanProperty>("viewSelection");
-  selectModel->setAllNodeValue(true);
-  selectModel->setAllEdgeValue(true);
-  Graph *G0 = models_root->addSubGraph(selectModel, PorgyConstants::INITIAL_GRAPH);
+  Graph *G0 = models_root->addCloneSubGraph(PorgyConstants::INITIAL_GRAPH);
 
   models_root->getProperty<IntegerProperty>("viewShape")
       ->setAllNodeValue(PorgyConstants::CENTER_SHAPE);
