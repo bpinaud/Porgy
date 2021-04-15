@@ -27,7 +27,7 @@ struct node;
 }
 
 class PortGraphAddEdgeComponent : public tlp::MouseEdgeBuilder {
-  void addLink(const tlp::node &source, const tlp::node &dest) override;
+  void addLink(tlp::node source, tlp::node dest) override;
 
 public:
   PortGraphAddEdgeComponent();

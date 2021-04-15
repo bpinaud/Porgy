@@ -39,7 +39,7 @@ using namespace std;
 
 PortGraphAddEdgeComponent::PortGraphAddEdgeComponent() {}
 
-void PortGraphAddEdgeComponent::addLink(const node &source, const node &dest) {
+void PortGraphAddEdgeComponent::addLink(node source, node dest) {
   Graph *g = view()->graph();
   if (!PorgyTlpGraphStructure::isRuleGraph(g)) {
     MouseEdgeBuilder::addLink(source, dest);
