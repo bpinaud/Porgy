@@ -3,10 +3,10 @@
 
 #include "RuleConditionElement.h"
 
+#include <boost/phoenix.hpp>
+#include <boost/phoenix/function.hpp>
+#include <boost/phoenix/fusion.hpp>
 #include <boost/spirit/include/qi.hpp>
-#include <boost/spirit/include/phoenix.hpp>
-#include <boost/spirit/include/phoenix_fusion.hpp>
-#include <boost/spirit/include/phoenix_function.hpp>
 
 namespace ConditionParser {
   //grammar to handle comments, tab or space

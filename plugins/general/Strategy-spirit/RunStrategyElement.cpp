@@ -63,13 +63,13 @@ bool runStrategyElement::run_strat(StrategyElement::stackStrat &s,
       continue;
     }
     for (auto it = cond.begin(); ((it != cond.end()) && (pp->state() == TLP_CONTINUE)); ++it) {
-      const StrategyElement &elt = *it;
+      const StrategyElement &el = *it;
       StrategyElement::vector_strategyelts remaining_op(it + 1, cond.end());
       bool doBreak(false);
       ++step;
       pp->setComment(string("Running strategy step ").append(to_string(step)));
       StrategyElement::vectNewGraphs newGraphAll;
-      ret = elt.run(pp, g, P, Ban, state, s, remaining_op, doBreak, newGraphAll, debug) &&
+      ret = el.run(pp, g, P, Ban, state, s, remaining_op, doBreak, newGraphAll, debug) &&
             (pp->state() == TLP_CONTINUE);
       if (ret) {
         if (doBreak)

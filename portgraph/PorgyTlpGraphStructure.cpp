@@ -483,7 +483,7 @@ bool PorgyTlpGraphStructure::isPorgyGraph(const Graph *graph, string &errMsg) {
 
   //no subgraphs for rules at this point
   for (Graph *g : rules_root->subGraphs()) {
-    fix = (g->numberOfSubGraphs() > 0);
+    fix = fix || (g->numberOfSubGraphs() > 0);
     auto v = g->subGraphs();
     for (Graph *gr : v) {
       g->delAllSubGraphs(gr);
@@ -507,10 +507,10 @@ bool PorgyTlpGraphStructure::isPorgyGraph(const Graph *graph, string &errMsg) {
   }
 
   // local properties on trace graphs
-  fix = fixTraceGraph(traceMain);
+  fix = fix || fixTraceGraph(traceMain);
   for (Graph *g : traces_root->subGraphs()) {
     if (g != traceMain) {
-      fix = fixTraceGraph(g);
+      fix = fix || fixTraceGraph(g);
     }
   }
 
