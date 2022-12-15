@@ -389,7 +389,7 @@ void PortNode::placePorts(LayoutProperty *layout, std::vector<Port *> &northPort
   newC.setZ(0);
 
   // NORTH
-  if (northPorts.size() != 0) {
+  if (!northPorts.empty()) {
     ratio = width / northPorts.size();
     newC.setY(center.getY() + height / 2.0f + decalage);
     float X = center.getX() - width / 2.0f + ratio / 2.0f;
@@ -400,7 +400,7 @@ void PortNode::placePorts(LayoutProperty *layout, std::vector<Port *> &northPort
     }
   }
   // EAST
-  if (eastPorts.size() != 0) {
+  if (!eastPorts.empty()) {
     ratio = height / eastPorts.size();
     newC.setX(center.getX() + width / 2.0f + decalage);
     float Y = center.getY() + height / 2.0f - ratio / 2.0f;
@@ -411,7 +411,7 @@ void PortNode::placePorts(LayoutProperty *layout, std::vector<Port *> &northPort
     }
   }
   // SOUTH
-  if (southPorts.size() != 0) {
+  if (!southPorts.empty()) {
     ratio = width / southPorts.size();
     float X = center.getX() + width / 2.0f - ratio / 2.0f;
     newC.setY(center.getY() - height / 2.0f - decalage);
@@ -422,7 +422,7 @@ void PortNode::placePorts(LayoutProperty *layout, std::vector<Port *> &northPort
     }
   }
   // WEST
-  if (westPorts.size() != 0) {
+  if (!westPorts.empty()) {
     ratio = height / westPorts.size();
     newC.setX(center.getX() - width / 2.0f - decalage);
     float Y = center.getY() - height / 2.0f + ratio / 2.0f;

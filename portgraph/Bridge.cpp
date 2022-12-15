@@ -138,7 +138,7 @@ static float meanYStepAux(const float x1, const float x2, const float y1, const 
 void Bridge::setPositions(LayoutProperty *layout) {
   PortGraphRuleDecorator dec(ParentPortGraph.getGraph());
   // Size of bridge : (nbPorts-1) * PortNodeBase::space + nbPorts * 1
-  if (ports.size() != 0) {
+  if (!ports.empty()) {
     float min = 0, sum = 0;
     Coord c1, c2;
     for (BridgePort *bp : getBridgePorts()) {
