@@ -52,9 +52,9 @@ void CodeEditorListView::contextMenuEvent(QContextMenuEvent *event) {
   menu.setStyleSheet("QMenu::item:disabled {color: white; background-color: "
                      "qlineargradient(spread:pad, x1:0, y1:0, x2:, y2:1, "
                      "stop:0 rgb(75,75,75), stop:1 rgb(60, 60, 60))}");
-  menu.addAction(TulipFontIconEngine::icon("fa-times-circle-o"),
+  menu.addAction(TulipFontIconEngine::icon("mdi-delete"),
                  "Delete strategy", this, SLOT(deleteCurrentStrat()));
-  menu.addAction(TulipFontIconEngine::icon("fa-save"),
+  menu.addAction(TulipFontIconEngine::icon("mdi-content-save"),
                  "Export strategy", this, SIGNAL(exportStrat()));
   menu.move(event->globalPos());
   menu.exec();

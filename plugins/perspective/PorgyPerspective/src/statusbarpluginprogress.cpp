@@ -25,8 +25,8 @@
 StatusBarPluginProgress::StatusBarPluginProgress(QWidget *parent)
     : QWidget(parent), _ui(new Ui::StatusBarPluginProgress) {
   _ui->setupUi(this);
-  _ui->cancelPushButton->setIcon(TulipFontIconEngine::pixmap(std::string("md-cancel"),32));
-  _ui->stopPushButton->setIcon(TulipFontIconEngine::pixmap(std::string("fa-stop-circle"),32));
+  _ui->cancelPushButton->setIcon(TulipFontIconEngine::pixmap(std::string("mdi-cancel"),32));
+  _ui->stopPushButton->setIcon(TulipFontIconEngine::pixmap(std::string("mdi-stop-circle"),32));
   connect(_ui->cancelPushButton, SIGNAL(clicked()), SLOT(cancelClicked()));
   connect(_ui->stopPushButton, SIGNAL(clicked()), SLOT(stopClicked()));
 }

@@ -373,27 +373,27 @@ StrategyToolbar::StrategyToolbar(QWidget *parent)
       _toolButtonClear(new QAction(this)), _toolButtonDelete(new QAction(this)), _toolButtonHelp(new QAction(this)),
       _menuNew(new QMenu(this)), _menuOpen(new QMenu(this)), _menuSave(new QMenu(this)) {
 
-  initQAction(_actionNew, "New Strategy...", "fa-file-o");
+  initQAction(_actionNew, "New Strategy...", "far-file");
   _actionNew->setMenu(_menuNew);
-  initQAction(_actionOpen, "Open an existing strategy...", "fa-upload");
+  initQAction(_actionOpen, "Open an existing strategy...", "fas-upload");
   _actionOpen->setMenu(_menuOpen);
-  initQAction(_actionSave, "Export strategies...", "fa-download", false);
+  initQAction(_actionSave, "Export strategies...", "fas-download", false);
   _actionSave->setMenu(_menuSave);
   addSeparator();
-  initQAction(_actionUndo, "Undo", "fa-undo", false);
-  initQAction(_actionRedo, "Redo", "fa-redo", false);
+  initQAction(_actionUndo, "Undo", "mdi-undo", false);
+  initQAction(_actionRedo, "Redo", "mdi-redo", false);
   addSeparator();
-  initQAction(_toolButtonCopy, "Copy", "fa-copy", false);
-  initQAction(_toolButtonCut, "Cut", "fa-cut", false);
-  initQAction(_toolButtonPaste, "Paste", "fa-paste", false);
+  initQAction(_toolButtonCopy, "Copy", "mdi-content-copy", false);
+  initQAction(_toolButtonCut, "Cut", "mdi-content-cut", false);
+  initQAction(_toolButtonPaste, "Paste", "mdi-content-paste", false);
   addSeparator();
-  initQAction(_toolButtonZoomIn, "Zoom-in", "fa-search-plus");
-  initQAction(_toolButtonZoomOut, "Zoom-out", "fa-search-minus");
+  initQAction(_toolButtonZoomIn, "Zoom-in", "mdi-magnify-plus");
+  initQAction(_toolButtonZoomOut, "Zoom-out", "mdi-magnify-minus");
   addSeparator();
-  initQAction(_toolButtonClear, "Clear the code of the current strategy","fa-eraser", false);
-  initQAction(_toolButtonDelete, "Delete current strategy", "fa-times-circle-o",
+  initQAction(_toolButtonClear, "Clear the code of the current strategy","mdi-eraser", false);
+  initQAction(_toolButtonDelete, "Delete current strategy", "mdi-delete",
               false);
-  initQAction(_toolButtonHelp, "Strategy language documentation", "md-help-circle-outline",
+  initQAction(_toolButtonHelp, "Strategy language documentation", "mdi-help-circle-outline",
               false);
 }
 
@@ -474,7 +474,7 @@ void StrategyManagementWidget::_initConnections() {
   connect(ui->toolbar->_actionOpen, SIGNAL(triggered()), this, SLOT(open()));
   connect(ui->toolbar->_actionSave, SIGNAL(triggered()), this, SLOT(save()));
 
-  ui->toolbar->_menuNew->addAction(TulipFontIconEngine::pixmap(string("fa-file"),32),
+  ui->toolbar->_menuNew->addAction(TulipFontIconEngine::pixmap(string("fas-file"),32),
                                    "New strategy", this, SLOT(addNewStrategy()),
                                    QKeySequence(Qt::CTRL + Qt::ALT + Qt::Key_N));
   _actionDuplicate = ui->toolbar->_menuNew->addAction("Duplicate selected strategy", this,
@@ -486,11 +486,11 @@ void StrategyManagementWidget::_initConnections() {
                                    SLOT(addStrategyFromSelectedElementsInTraceRoot()),
                                    QKeySequence(Qt::CTRL + Qt::ALT + Qt::Key_T));
   ui->toolbar->_menuOpen->addAction(
-      TulipFontIconEngine::pixmap(string("fa-folder-open"),32), "Open a strategy",
+      TulipFontIconEngine::pixmap(string("fas-folder-open"),32), "Open a strategy",
       this, SLOT(open()), QKeySequence(Qt::CTRL + Qt::Key_O));
   ui->toolbar->_menuOpen->addAction("Open all strategies", this, SLOT(openAllStrategies()),
                                     QKeySequence(Qt::CTRL + Qt::ALT + Qt::Key_O));
-  ui->toolbar->_menuSave->addAction(TulipFontIconEngine::pixmap(string("fa-save"),32),
+  ui->toolbar->_menuSave->addAction(TulipFontIconEngine::pixmap(string("mdi-content-save"),32),
                                     "Export selected strategy", this, SLOT(save()),
                                     QKeySequence(Qt::CTRL + Qt::ALT + Qt::Key_S));
   ui->toolbar->_menuSave->addAction("Export all strategies", this, SLOT(saveAllStrategies()),

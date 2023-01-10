@@ -29,7 +29,7 @@ PorgyPerspectiveLogger::PorgyPerspectiveLogger(QWidget *parent)
     : QWidget(parent, Qt::Window), _logSeverity(QtDebugMsg), _logCount(0),
       _ui(new Ui::PorgyPerspectiveLogger) {
   _ui->setupUi(this);
-  _ui->clearButton->setIcon(TulipFontIconEngine::icon("fa-trash"));
+  _ui->clearButton->setIcon(TulipFontIconEngine::icon("fas-trash"));
   connect(_ui->clearButton, SIGNAL(clicked()), this, SLOT(clear()));
 }
 
@@ -44,16 +44,16 @@ static QIcon iconForType(QtMsgType type) {
   switch (type) {
   case QtDebugMsg:
   case QtInfoMsg:
-    px = TulipFontIconEngine::icon("fa-info-circle");
+    px = TulipFontIconEngine::icon("fas-info-circle");
     break;
 
   case QtWarningMsg:
-    px = TulipFontIconEngine::icon("fa-exclamation");
+    px = TulipFontIconEngine::icon("fas-exclamation");
     break;
 
   case QtCriticalMsg:
   case QtFatalMsg:
-    px = TulipFontIconEngine::icon("fa-minus-circle");
+    px = TulipFontIconEngine::icon("fas-minus-circle");
     break;
   }
 
