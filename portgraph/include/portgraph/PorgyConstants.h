@@ -118,7 +118,7 @@ const static unsigned PORT_ALPHA = 255;
 const static unsigned PORTNODEEDGE_ALPHA = 0;
 const static tlp::NodeShape::NodeShapes CENTER_SHAPE = tlp::NodeShape::RoundedBox;
 const static tlp::NodeShape::NodeShapes BRIDGE_CENTER_SHAPE = tlp::NodeShape::Icon;
-#define CENTER_ICON "fa-arrow-alt-circle-right-o"
+#define CENTER_ICON "far-circle-right"
 const static tlp::NodeShape::NodeShapes PORT_DEFAULT_SHAPE = tlp::NodeShape::Square;
 
 const static tlp::Color DEFAULT_COLOR = tlp::Color(0, 0, 255);
