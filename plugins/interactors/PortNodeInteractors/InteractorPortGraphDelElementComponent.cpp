@@ -112,7 +112,7 @@ bool PortGraphDelElementComponent::eventFilter(QObject *widget, QEvent *e) {
   if (e->type() == QEvent::MouseMove) {
     SelectedEntity selectedEntity;
     QMouseEvent *qMouseEv = static_cast<QMouseEvent *>(e);
-    glMainWidget->pickNodesEdges(qMouseEv->x(), qMouseEv->y(), selectedEntity, nullptr, true,
+    glMainWidget->pickNodesEdges(qMouseEv->pos().x(), qMouseEv->pos().y(), selectedEntity, nullptr, true,
                                  false);
     node n(selectedEntity.getNode());
     if (n.isValid() && (Bridge::isBridge(n, _graph) && (PortNodeBase::isCenter(n, _graph)))) {

@@ -54,7 +54,7 @@ public:
       GlMainWidget *glMainWidget = static_cast<GlMainWidget *>(obj);
       Graph *g = glMainWidget->getScene()->getGlGraphComposite()->getInputData()->getGraph();
       SelectedEntity select;
-      if (glMainWidget->pickNodesEdges(qMouseEv->x(), qMouseEv->y(), select, nullptr, false,
+      if (glMainWidget->pickNodesEdges(qMouseEv->pos().x(), qMouseEv->pos().y(), select, nullptr, false,
                                        true)) {
         return true;
       }

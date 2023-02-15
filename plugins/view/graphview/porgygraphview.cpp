@@ -235,7 +235,7 @@ bool PorgyGraphView::eventFilter(QObject *object, QEvent *event) {
     QHelpEvent *he = static_cast<QHelpEvent *>(event);
     Graph *g = getGlMainWidget()->getScene()->getGlGraphComposite()->getInputData()->getGraph();
     SelectedEntity selectedEntity;
-    if (getGlMainWidget()->pickNodesEdges(he->x(), he->y(), selectedEntity, nullptr, true, false)) {
+    if (getGlMainWidget()->pickNodesEdges(he->pos().x(), he->pos().y(), selectedEntity, nullptr, true, false)) {
       string label;
       node n(selectedEntity.getNode());
       if (n.isValid()) {

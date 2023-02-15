@@ -106,10 +106,10 @@ bool XmlSyntaxParser::parse(const QString &f, std::unordered_map<std::string, st
         }
 
         else if (reader.name() == "function") {
-          QRegExp rExp(reader.attributes().value("value").toString());
+          QRegularExpression rExp(reader.attributes().value("value").toString());
           rules["function"].push_back(HighlightingRule(rExp, cFormat));
         } else {
-          QRegExp rExp(reader.readElementText());
+          QRegularExpression rExp(reader.readElementText());
           rules[tlp::QStringToTlpString(reader.name().toString())].push_back(HighlightingRule(rExp, cFormat));
         }
       }

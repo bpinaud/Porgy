@@ -101,13 +101,14 @@ void GeneralPurposeSyntaxHighlighter::highlightBlock(const QString &text) {
 
     for (const auto& itM :_highlightingRules) {
         for (const auto& itV: itM.second) {
-            QRegExp expression(itV.getPattern());
-            int index = expression.indexIn(text);
+            QRegularExpression expression(itV.getPattern());
+            QRegularExpressionMatch match;
+            int index = text.indexOf(expression,0,&match);
 
             while (index >= 0) {
-                int length = expression.matchedLength();
+                int length = match.capturedLength();
                 setFormat(index, length, itV.getFormat());
-                index = expression.indexIn(text, index + length);
+                index = text.indexOf(expression, index + length);
             }
         }
     }
@@ -119,21 +120,23 @@ void GeneralPurposeSyntaxHighlighter::highlightBlock(const QString &text) {
   int startIndex = 0;
 
   if (previousBlockState() != 1) {
-    startIndex = vec.at(0).getPattern().indexIn(text);
+    startIndex = text.indexOf(vec.at(0).getPattern());
   }
 
   while (startIndex >= 0) {
-    int endIndex = vec.at(1).getPattern().indexIn(text, startIndex);
+      QRegularExpressionMatch match;
+
+    int endIndex = text.indexOf(vec.at(1).getPattern(), startIndex,&match);
     int commentLength;
 
     if (endIndex == -1) {
       setCurrentBlockState(1);
       commentLength = text.length() - startIndex;
     } else {
-      commentLength = endIndex - startIndex + vec.at(1).getPattern().matchedLength();
+      commentLength = endIndex - startIndex + match.capturedLength();
     }
 
     setFormat(startIndex, commentLength, vec.at(0).getFormat());
-    startIndex = vec.at(0).getPattern().indexIn(text, startIndex + commentLength);
+    startIndex = text.indexOf(vec.at(0).getPattern(), startIndex + commentLength);
   }
 }

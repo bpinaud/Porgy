@@ -42,7 +42,7 @@ bool MetaNodeZoomInteractorComponent::eventFilter(QObject *obj, QEvent *e) {
   SelectedEntity selectedEntity;
   if (e->type() == QEvent::MouseMove) {
     QMouseEvent *qMouseEv = static_cast<QMouseEvent *>(e);
-    if (glw->pickNodesEdges(qMouseEv->x(), qMouseEv->y(), selectedEntity, nullptr, true, false)) {
+    if (glw->pickNodesEdges(qMouseEv->pos().x(), qMouseEv->pos().y(), selectedEntity, nullptr, true, false)) {
       node meta(selectedEntity.getNode());
       if (meta.isValid() && (graph->isMetaNode(meta))) {
         glw->setCursor(Qt::CrossCursor);
@@ -54,7 +54,7 @@ bool MetaNodeZoomInteractorComponent::eventFilter(QObject *obj, QEvent *e) {
     QMouseEvent *qMouseEv = static_cast<QMouseEvent *>(e);
     if (qMouseEv->button() == Qt::LeftButton) {
       node metaNode;
-      if (glw->pickNodesEdges(qMouseEv->x(), qMouseEv->y(), selectedEntity, nullptr, true, false)) {
+      if (glw->pickNodesEdges(qMouseEv->pos().x(), qMouseEv->pos().y(), selectedEntity, nullptr, true, false)) {
         metaNode = selectedEntity.getNode();
         if ((metaNode.isValid()) && (graph->isMetaNode(metaNode))) {
           if (zoom == false) {

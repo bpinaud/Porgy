@@ -30,6 +30,8 @@
 #define HIGHLIGHTINGRULE_H
 
 #include <QTextCharFormat>
+#include <QRegularExpression>
+
 
 /*!
  * \class HighlightingRule
@@ -49,13 +51,13 @@ public:
    * \param pattern : Regular expression representing a keyword.
    * \param format : Style of the keyword.
    */
-  HighlightingRule(const QRegExp &pattern, const QTextCharFormat &format);
+  HighlightingRule(const QRegularExpression &pattern, const QTextCharFormat &format);
 
   /*!
    * \brief Get the pattern of a keyword.
    * \return A regular expression object representing the pattern of a keyword.
    */
-  QRegExp getPattern() const;
+  QRegularExpression getPattern() const;
 
   /*!
    * \brief Get the format of a keyword.
@@ -67,7 +69,7 @@ public:
    * \brief Set the pattern of a keyword.
    * \param pattern : Pattern of a keyword.
    */
-  void setPattern(const QRegExp &pattern);
+  void setPattern(const QRegularExpression &pattern);
 
   /*!
    * \brief Set the format of a keyword.
@@ -82,7 +84,7 @@ public:
   QString toString() const;
 
 private:
-  QRegExp _pattern;        /*!< Regular expression representing a keyword. */
+  QRegularExpression _pattern;        /*!< Regular expression representing a keyword. */
   QTextCharFormat _format; /*!< Format of a keyword (style). */
 };
 

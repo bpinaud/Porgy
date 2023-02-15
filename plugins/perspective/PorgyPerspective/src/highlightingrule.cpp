@@ -35,7 +35,7 @@
  * Default constructor.
  *
  ****************************************************************************************/
-HighlightingRule::HighlightingRule(const QRegExp &pattern, const QTextCharFormat &format)
+HighlightingRule::HighlightingRule(const QRegularExpression &pattern, const QTextCharFormat &format)
     : _pattern(pattern), _format(format) {}
 
 /****************************************************************************************
@@ -44,7 +44,7 @@ HighlightingRule::HighlightingRule(const QRegExp &pattern, const QTextCharFormat
  * Get pattern.
  *
  ****************************************************************************************/
-QRegExp HighlightingRule::getPattern() const {
+QRegularExpression HighlightingRule::getPattern() const {
   return _pattern;
 }
 
@@ -64,7 +64,7 @@ QTextCharFormat HighlightingRule::getFormat() const {
  * Set pattern.
  *
  ****************************************************************************************/
-void HighlightingRule::setPattern(const QRegExp &pattern) {
+void HighlightingRule::setPattern(const QRegularExpression &pattern) {
   _pattern = pattern;
 }
 

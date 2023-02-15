@@ -46,7 +46,7 @@ bool MouseAddPortNode::eventFilter(QObject *widget, QEvent *e) {
   SelectedEntity selectedEntity;
   if (qMouseEv != nullptr) {
     if (e->type() == QEvent::MouseMove) {
-      if (glw->pickNodesEdges(qMouseEv->x(), qMouseEv->y(), selectedEntity, nullptr, true, false) &&
+      if (glw->pickNodesEdges(qMouseEv->pos().x(), qMouseEv->pos().y(), selectedEntity, nullptr, true, false) &&
           selectedEntity.getEntityType() == SelectedEntity::NODE_SELECTED) {
         glw->setCursor(Qt::ForbiddenCursor);
       } else {
@@ -57,7 +57,7 @@ bool MouseAddPortNode::eventFilter(QObject *widget, QEvent *e) {
     }
 
     if ((e->type() == QEvent::MouseButtonPress) && (qMouseEv->button() == Qt::LeftButton)) {
-      if (glw->pickNodesEdges(qMouseEv->x(), qMouseEv->y(), selectedEntity, nullptr, true, false) &&
+      if (glw->pickNodesEdges(qMouseEv->pos().x(), qMouseEv->pos().y(), selectedEntity, nullptr, true, false) &&
           selectedEntity.getEntityType() == SelectedEntity::NODE_SELECTED) {
         return true;
       }
@@ -83,8 +83,8 @@ bool MouseAddPortNode::eventFilter(QObject *widget, QEvent *e) {
 
         _graph->push(); // allow to undo
         Observable::holdObservers();
-        Coord posCenter(static_cast<double>(glw->width()) - static_cast<double>(qMouseEv->x()),
-                        static_cast<double>(qMouseEv->y()), 0);
+        Coord posCenter(static_cast<double>(glw->width()) - static_cast<double>(qMouseEv->pos().x()),
+                        static_cast<double>(qMouseEv->pos().y()), 0);
         posCenter =
             glw->getScene()->getGraphCamera().viewportTo3DWorld(glw->screenToViewport(posCenter));
 

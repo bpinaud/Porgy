@@ -97,7 +97,7 @@ bool TraceInformationGraphComponent::eventFilter(QObject *, QEvent *event) {
     GlGraphInputData *inputdata = _glMainWidget->getScene()->getGlGraphComposite()->getInputData();
     Graph *g = inputdata->getGraph();
     Trace trace(g);
-    if (_glMainWidget->pickNodesEdges(mouseEvent->x(), mouseEvent->y(), selectedEntity)) {
+    if (_glMainWidget->pickNodesEdges(mouseEvent->pos().x(), mouseEvent->pos().y(), selectedEntity)) {
       if (selectedEntity.getEntityType() == SelectedEntity::EDGE_SELECTED) {
         QString text;
         e = selectedEntity.getEdge();

@@ -158,9 +158,9 @@ bool StrategyManager::setData(const QModelIndex &curindex, const QVariant &value
   if (curindex.isValid()) {
     if (role == Qt::EditRole) {
       QString strategyName = value.toString();
-      QRegExp rx(PorgyConstants::STRAT_MACRO_REGEXP);
-      StrategyErrors errorCode = StrategyErrors::STRATEGY_INVALID_NAME;
-      if (rx.indexIn(strategyName) == -1)
+      QRegularExpression rx(PorgyConstants::STRAT_MACRO_REGEXP);
+      StrategyErrors errorCode = StrategyErrors::STRATEGY_INVALID_NAME;      
+      if (strategyName.indexOf(rx,0) == -1)
         errorCode = setStrategyName(curindex.row(), strategyName);
       if (errorCode == StrategyErrors::STRATEGY_NO_ERROR) {
         return true;

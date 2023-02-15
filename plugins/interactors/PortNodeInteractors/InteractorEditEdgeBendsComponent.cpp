@@ -43,7 +43,7 @@ bool EditEdgeBendsPorgyComponent::eventFilter(QObject *widget, QEvent *e) {
   Graph *_graph = view()->graph();
   if ((e->type() == QEvent::MouseButtonPress) && (qMouseEv->button() == Qt::LeftButton)) {
     SelectedEntity pickedEntity;
-    glMainWidget->pickNodesEdges(qMouseEv->x(), qMouseEv->y(), pickedEntity, nullptr, true, false);
+    glMainWidget->pickNodesEdges(qMouseEv->pos().x(), qMouseEv->pos().y(), pickedEntity, nullptr, true, false);
     node n = pickedEntity.getNode();
     if (n.isValid()) {
       if ((PortBase::isPort(n, _graph)) && (!Bridge::isBridge(n, _graph))) {
@@ -64,7 +64,7 @@ bool EditEdgeBendsPorgyComponent::eventFilter(QObject *widget, QEvent *e) {
   } else if (e->type() == QEvent::MouseButtonRelease && qMouseEv->button() == Qt::LeftButton &&
              operation() != NONE_OP) {
     SelectedEntity pickedEntity;
-    glMainWidget->pickNodesEdges(qMouseEv->x(), qMouseEv->y(), pickedEntity, nullptr, true, false);
+    glMainWidget->pickNodesEdges(qMouseEv->pos().x(), qMouseEv->pos().y(), pickedEntity, nullptr, true, false);
     node n = pickedEntity.getNode();
     if (n.isValid()) {
       if (!PortNode::isCenter(n, _graph) && (!Bridge::isBridge(n, _graph))) {

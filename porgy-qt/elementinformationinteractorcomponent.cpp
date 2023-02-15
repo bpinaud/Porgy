@@ -95,7 +95,7 @@ bool ElementInformationRuleInteractorComponent::eventFilter(QObject *widget, QEv
     Graph *g = view()->graph();
     PortGraphRuleDecorator dec(g);
     SelectedEntity pickedEntity;
-    glMainWidget->pickNodesEdges(qMouseEv->x(), qMouseEv->y(), pickedEntity, nullptr, true, true);
+    glMainWidget->pickNodesEdges(qMouseEv->pos().x(), qMouseEv->pos().y(), pickedEntity, nullptr, true, true);
     IntegerProperty *rule_side = dec.getSideProperty();
     edge ed = pickedEntity.getEdge();
     if (ed.isValid()) {

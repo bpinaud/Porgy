@@ -90,7 +90,7 @@ bool PortGraphAddEdgeComponent::eventFilter(QObject *widget, QEvent *e) {
   IntegerProperty *arity = dec.getArityProperty();
   if ((e->type() == QEvent::MouseButtonDblClick) && (qMouseEv->button() == Qt::LeftButton) &&
       (PorgyTlpGraphStructure::isRuleGraph(g))) {
-    glMainWidget->pickNodesEdges(qMouseEv->x(), qMouseEv->y(), selectedEntity, nullptr, false,
+    glMainWidget->pickNodesEdges(qMouseEv->pos().x(), qMouseEv->pos().y(), selectedEntity, nullptr, false,
                                  true);
     edge e(selectedEntity.getEdge());
     ColorProperty *col = g->getProperty<ColorProperty>("viewColor");
@@ -121,7 +121,7 @@ bool PortGraphAddEdgeComponent::eventFilter(QObject *widget, QEvent *e) {
     }
   } else if ((e->type() == QEvent::MouseButtonPress) && (qMouseEv->button() == Qt::LeftButton)) {
 
-    glMainWidget->pickNodesEdges(qMouseEv->x(), qMouseEv->y(), selectedEntity, nullptr, true,
+    glMainWidget->pickNodesEdges(qMouseEv->pos().x(), qMouseEv->pos().y(), selectedEntity, nullptr, true,
                                  false);
     node n(selectedEntity.getNode());
     if (n.isValid()) {
