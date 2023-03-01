@@ -69,7 +69,7 @@ public:
   PorgyAnimationTraceView(const tlp::PluginContext *);
   ~PorgyAnimationTraceView() override;
 
-  QList<QWidget *> configurationWidgets() const override;
+  std::list<QWidget *> configurationWidgets() const override;
 
   tlp::DataSet state() const override;
   void setState(const tlp::DataSet &) override;

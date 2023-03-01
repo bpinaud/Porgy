@@ -142,8 +142,8 @@ void PorgySMView::setState(const tlp::DataSet &ds) {
   AbstractPorgyGraphView::setState(ds);
 }
 
-QList<QWidget *> PorgySMView::configurationWidgets() const {
-  return QList<QWidget *>() << _configurationWidget;
+std::list<QWidget *> PorgySMView::configurationWidgets() const {
+  return std::list<QWidget *>{_configurationWidget};
 }
 
 QuickAccessBar *PorgySMView::getQuickAccessBarImpl() {

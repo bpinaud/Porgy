@@ -111,7 +111,7 @@ void AbstractPortGraphView::graphChanged(Graph *g) {
     emit(interactorsChanged());
 }
 
-void AbstractPortGraphView::setInteractors(const QList<tlp::Interactor *> &l) {
+void AbstractPortGraphView::setInteractors(const std::list<tlp::Interactor *> &l) {
   AbstractPorgyGraphView::setInteractors(l);
   checkInteractors();
 }

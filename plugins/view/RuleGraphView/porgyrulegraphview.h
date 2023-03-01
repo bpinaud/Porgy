@@ -67,7 +67,7 @@ protected:
   PortGraph *buildPortGraph(tlp::Graph *graph) const override;
   PortGraphDecorator *buildPortGraphDecorator(tlp::Graph *graph) const override;
   void initGlParameters(tlp::GlGraphRenderingParameters &parameters) const override;
-  QList<QWidget *> configurationWidgets() const override;
+  std::list<QWidget *> configurationWidgets() const override;
   bool checkInteractors() override;
   tlp::QuickAccessBar *getQuickAccessBarImpl() override;
 

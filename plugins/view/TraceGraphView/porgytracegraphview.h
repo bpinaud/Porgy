@@ -64,7 +64,7 @@ public:
                     "1.0", PorgyConstants::CATEGORY_NAME)
   PorgyTraceGraphView(const tlp::PluginContext *);
   bool eventFilter(QObject *object, QEvent *event) override;
-  QList<QWidget *> configurationWidgets() const override;
+  std::list<QWidget *> configurationWidgets() const override;
 
 signals:
   void applyRuleOnModel(tlp::Graph *model, tlp::Graph *rule, tlp::Graph *trace);

@@ -45,7 +45,7 @@ public:
   ~AbstractPortGraphView() override;
 
 protected:
-  void setInteractors(const QList<tlp::Interactor *> &) override;
+  void setInteractors(const std::list<tlp::Interactor *> &) override;
   void graphChanged(tlp::Graph *) override;
   void setupWidget() override;
   virtual bool checkInteractors() = 0;

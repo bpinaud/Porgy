@@ -60,7 +60,7 @@ public:
                     "1.0", PorgyConstants::CATEGORY_NAME)
   PorgySMView(const tlp::PluginContext *);
   ~PorgySMView() override;
-  QList<QWidget *> configurationWidgets() const override;
+  std::list<QWidget *> configurationWidgets() const override;
 
   tlp::DataSet state() const override;
   tlp::QuickAccessBar *getQuickAccessBarImpl() override;

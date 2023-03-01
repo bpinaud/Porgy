@@ -67,8 +67,10 @@ PorgyRuleGraphView::~PorgyRuleGraphView() {
   delete _RuleCondition;
 }
 
-QList<QWidget *> PorgyRuleGraphView::configurationWidgets() const {
-  return AbstractPortGraphView::configurationWidgets() << _RuleAttributes << _RuleAlgorithm << _RuleCondition;
+std::list<QWidget *> PorgyRuleGraphView::configurationWidgets() const {
+  std::list<QWidget *> l(std::list<QWidget *>(AbstractPortGraphView::configurationWidgets()));
+  l.splice(l.end(), {_RuleAttributes, _RuleAlgorithm, _RuleCondition});
+  return l;
 }
 
 void PorgyRuleGraphView::graphChanged(tlp::Graph *g) {
