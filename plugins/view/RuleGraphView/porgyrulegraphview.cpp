@@ -68,7 +68,7 @@ PorgyRuleGraphView::~PorgyRuleGraphView() {
 }
 
 std::list<QWidget *> PorgyRuleGraphView::configurationWidgets() const {
-  std::list<QWidget *> l(std::list<QWidget *>(AbstractPortGraphView::configurationWidgets()));
+  std::list<QWidget *> l(AbstractPortGraphView::configurationWidgets());
   l.splice(l.end(), {_RuleAttributes, _RuleAlgorithm, _RuleCondition});
   return l;
 }

@@ -79,7 +79,7 @@ QuickAccessBar *PorgyTraceGraphView::getQuickAccessBarImpl() {
 }
 
 std::list<QWidget *> PorgyTraceGraphView::configurationWidgets() const {
-  return std::list<QWidget *>();
+    return {};
 }
 
 void PorgyTraceGraphView::initGlParameters(tlp::GlGraphRenderingParameters &parameters) const {

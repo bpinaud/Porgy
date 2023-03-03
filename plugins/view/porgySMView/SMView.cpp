@@ -143,7 +143,7 @@ void PorgySMView::setState(const tlp::DataSet &ds) {
 }
 
 std::list<QWidget *> PorgySMView::configurationWidgets() const {
-  return std::list<QWidget *>{_configurationWidget};
+  return {_configurationWidget};
 }
 
 QuickAccessBar *PorgySMView::getQuickAccessBarImpl() {

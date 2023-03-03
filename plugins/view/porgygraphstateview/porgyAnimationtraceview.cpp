@@ -143,7 +143,7 @@ void PorgyAnimationTraceView::setState(const tlp::DataSet &ds) {
 }
 
 std::list<QWidget *> PorgyAnimationTraceView::configurationWidgets() const {
-  return std::list<QWidget *>{_configurationWidget};
+  return {_configurationWidget};
 }
 
 void PorgyAnimationTraceView::graphChanged(tlp::Graph *graph) {
