@@ -246,10 +246,10 @@ edge Trace::addTransformationEdge(const node src, const node tgt, const string& 
     return meta_e;
 }
 
-node Trace::createMetaNode(Graph *content, bool multiEdges, bool delAllEdge) {
+node Trace::createMetaNode(Graph *content, bool multiEdges, bool delAllEdge, bool allGrouped) {
   graph_component->addNodes(content->nodes());
   graph_component->addEdges(content->edges());
-  node meta = graph_component->createMetaNode(content, multiEdges, delAllEdge);
+  node meta = graph_component->createMetaNode(content, multiEdges, delAllEdge, allGrouped);
   return meta;
 }
 

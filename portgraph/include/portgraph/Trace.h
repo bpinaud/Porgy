@@ -201,7 +201,7 @@ public:
                                        const PorgyConstants::strat_focus_op op) const;
 
   tlp::node createMetaNode(Graph *subGraph, bool multiEdges = true,
-                           bool delAllEdge = true) override;
+                           bool delAllEdge = true, bool allGrouped=true) override;
   /**
         * @brief Add a failure node
         **/
