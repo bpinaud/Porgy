@@ -1,12 +1,10 @@
 project(Porgy)
-CMAKE_MINIMUM_REQUIRED(VERSION 3.1)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.12)
 SET(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR}/cmake)
 
-IF(POLICY CMP0072)
-  CMAKE_POLICY(SET CMP0072 NEW)
-ENDIF(POLICY CMP0072)
+CMAKE_POLICY(SET CMP0072 NEW)
 
-FIND_PACKAGE( TULIP 5.4.0 REQUIRED )
+FIND_PACKAGE( TULIP 5.7.0 REQUIRED )
 SET(TULIP_BINARIES_DIR ${TULIP_DIR}/bin)
 SET(PORGY_TULIP_SRC_DIR "/usr/src/tulip" CACHE PATH "Tulip sources tree is mandatory to compile Porgy. Set the path to the root directory of the Tulip sources.")
 
@@ -28,11 +26,7 @@ IF(PORGY_RULE_DEBUG_MESSAGES)
 ENDIF(PORGY_RULE_DEBUG_MESSAGES)
 
 ADD_DEFINITIONS(-DBOOST_ALL_NO_LIB)
-FIND_PACKAGE( Boost 1.60 REQUIRED)
-
-IF(Boost_VERSION_STRING EQUAL "1.74.0" OR Boost_VERSION_STRING EQUAL "1.75.0")
-    message(FATAL_ERROR "Boost ${Boost_VERSION_STRING} detected. Boost versions 1.74 and 1.75 have a bug in spirit. They cannot be used")
-ENDIF(Boost_VERSION_STRING EQUAL "1.74.0" OR Boost_VERSION_STRING EQUAL "1.75.0")
+FIND_PACKAGE( Boost 1.76 REQUIRED)
 
 ## ========================================================
 ## Porgy version variables
