@@ -55,49 +55,49 @@ bool XmlSyntaxParser::parse(const QString &f, std::unordered_map<std::string, st
           error = reader.errorString();
           return false;
         }
-        if (reader.name() == "PorgyStrategyLanguage") {
-          if (reader.attributes().value("version") != "0.1") {
+        if (reader.name().toString() == QString("PorgyStrategyLanguage")) {
+          if (reader.attributes().value("version").toString() != "0.1") {
             error = "Not a valid Porgy Strategy syntax file version 0.1";
             return false;
           }
         }
-        else if (reader.name() == "instructions") {
+        else if (reader.name().toString() == "instructions") {
           attributes = reader.attributes();
           cFormat.setForeground(
               XmlSyntaxParser::intToRgb(attributes.value("color").toString().toInt()));
           cFormat.setFontWeight(XmlSyntaxParser::isBold(attributes.value("style").toString()));
           cFormat.setFontItalic(XmlSyntaxParser::isItalic(attributes.value("style").toString()));
-        } else if (reader.name() == "functions") {
+        } else if (reader.name().toString() == "functions") {
           attributes = reader.attributes();
           cFormat.setForeground(
               XmlSyntaxParser::intToRgb(attributes.value("color").toString().toInt()));
           cFormat.setFontWeight(XmlSyntaxParser::isBold(attributes.value("style").toString()));
           cFormat.setFontItalic(XmlSyntaxParser::isItalic(attributes.value("style").toString()));
-        } else if (reader.name() == "operators") {
+        } else if (reader.name().toString() == "operators") {
           attributes = reader.attributes();
           cFormat.setForeground(
               XmlSyntaxParser::intToRgb(attributes.value("color").toString().toInt()));
           cFormat.setFontWeight(XmlSyntaxParser::isBold(attributes.value("style").toString()));
           cFormat.setFontItalic(XmlSyntaxParser::isItalic(attributes.value("style").toString()));
-        } else if (reader.name() == "symbols") {
+        } else if (reader.name().toString() == "symbols") {
           attributes = reader.attributes();
           cFormat.setForeground(
               XmlSyntaxParser::intToRgb(attributes.value("color").toString().toInt()));
           cFormat.setFontWeight(XmlSyntaxParser::isBold(attributes.value("style").toString()));
           cFormat.setFontItalic(XmlSyntaxParser::isItalic(attributes.value("style").toString()));
-        } else if (reader.name() == "singlecomments") {
+        } else if (reader.name().toString() == "singlecomments") {
           attributes = reader.attributes();
           cFormat.setForeground(
               XmlSyntaxParser::intToRgb(attributes.value("color").toString().toInt()));
           cFormat.setFontWeight(XmlSyntaxParser::isBold(attributes.value("style").toString()));
           cFormat.setFontItalic(XmlSyntaxParser::isItalic(attributes.value("style").toString()));
-        } else if (reader.name() == "multicomments") {
+        } else if (reader.name().toString() == "multicomments") {
           attributes = reader.attributes();
           cFormat.setForeground(
               XmlSyntaxParser::intToRgb(attributes.value("color").toString().toInt()));
           cFormat.setFontWeight(XmlSyntaxParser::isBold(attributes.value("style").toString()));
           cFormat.setFontItalic(XmlSyntaxParser::isItalic(attributes.value("style").toString()));
-        } else if (reader.name() == "quotations") {
+        } else if (reader.name().toString() == "quotations") {
           attributes = reader.attributes();
           cFormat.setForeground(
               XmlSyntaxParser::intToRgb(attributes.value("color").toString().toInt()));
@@ -105,7 +105,7 @@ bool XmlSyntaxParser::parse(const QString &f, std::unordered_map<std::string, st
           cFormat.setFontItalic(XmlSyntaxParser::isItalic(attributes.value("style").toString()));
         }
 
-        else if (reader.name() == "function") {
+        else if (reader.name().toString() == "function") {
           QRegularExpression rExp(reader.attributes().value("value").toString());
           rules["function"].push_back(HighlightingRule(rExp, cFormat));
         } else {

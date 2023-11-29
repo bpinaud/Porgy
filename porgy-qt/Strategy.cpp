@@ -20,6 +20,7 @@
 #include <porgy/Strategy.h>
 
 #include <QDataStream>
+#include <QIODevice>
 
 using namespace std;
 

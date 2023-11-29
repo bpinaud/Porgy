@@ -19,6 +19,7 @@
  */
 #include <QDataStream>
 #include <QMimeData>
+#include <QIODevice>
 
 #include <porgy/PortNodeQt.h>
 #include <porgy/Strategy.h>

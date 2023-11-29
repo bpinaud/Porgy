@@ -476,25 +476,26 @@ void StrategyManagementWidget::_initConnections() {
 
   ui->toolbar->_menuNew->addAction(TulipFontIconEngine::pixmap(string("fas-file"),32),
                                    "New strategy", this, SLOT(addNewStrategy()),
-                                   QKeySequence(Qt::CTRL + Qt::ALT + Qt::Key_N));
+                                   QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_N));
   _actionDuplicate = ui->toolbar->_menuNew->addAction("Duplicate selected strategy", this,
                                                       SLOT(duplicateSourceCode()),
-                                                      QKeySequence(Qt::CTRL + Qt::Key_D));
+                                                      QKeySequence(Qt::CTRL | Qt::Key_D));
   _actionDuplicate->setEnabled(false);
   ui->toolbar->_toolButtonHelp->setEnabled(true);
+
   ui->toolbar->_menuNew->addAction("New strategy from derivation tree", this,
                                    SLOT(addStrategyFromSelectedElementsInTraceRoot()),
-                                   QKeySequence(Qt::CTRL + Qt::ALT + Qt::Key_T));
+                                   QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_T));
   ui->toolbar->_menuOpen->addAction(
       TulipFontIconEngine::pixmap(string("fas-folder-open"),32), "Open a strategy",
-      this, SLOT(open()), QKeySequence(Qt::CTRL + Qt::Key_O));
+      this, SLOT(open()), QKeySequence(Qt::CTRL | Qt::Key_O));
   ui->toolbar->_menuOpen->addAction("Open all strategies", this, SLOT(openAllStrategies()),
-                                    QKeySequence(Qt::CTRL + Qt::ALT + Qt::Key_O));
+                                    QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_O));
   ui->toolbar->_menuSave->addAction(TulipFontIconEngine::pixmap(string("mdi-content-save"),32),
                                     "Export selected strategy", this, SLOT(save()),
-                                    QKeySequence(Qt::CTRL + Qt::ALT + Qt::Key_S));
+                                    QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_S));
   ui->toolbar->_menuSave->addAction("Export all strategies", this, SLOT(saveAllStrategies()),
-                                    QKeySequence(Qt::CTRL + Qt::ALT + Qt::Key_A));
+                                    QKeySequence(Qt::CTRL | Qt::ALT | Qt::Key_A));
 
   if (ui->listView->selectionModel()) {
     connect(ui->toolbar->_toolButtonClear, SIGNAL(triggered()), this, SLOT(clear()));
