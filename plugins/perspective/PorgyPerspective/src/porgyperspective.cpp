@@ -574,7 +574,6 @@ void PorgyPerspective::start(tlp::PluginProgress *progress) {
       _ui->actionDebug_mode->setChecked(true);
   }
 
-  showTrayMessage("Porgy Perspective started");
 }
 
 void PorgyPerspective::initMenus() {
