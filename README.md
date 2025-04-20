@@ -1,3 +1,4 @@
+### THIS PROJECT IS NOT ACTIVELY MAINTENED. IT IS NOT COMPATIBLE WITH THE LATEST TULIP RELEASE (V6.0). ###
 # Porgy
 
 PORGY (http://porgy.labri.fr) is a visual and interactive platform for modelling, simulating and analysing complex systems based on graph rewriting.
