@@ -2231,10 +2231,10 @@ void PorgyPerspective::showPythonIDE(Graph *g) {
     if (g == nullptr)
       g = rootGraph;
     gModel = new GraphHierarchiesModel(this);
-    gModel->addGraph(g);
+    gModel->graphImported(g);
     gModel->setCurrentGraph(g);
     pythonIDE->setGraphsModel(gModel);
-    pythonIDE->setProject(_project);
+    pythonIDE->projectNeedsPythonIDE(_project);
 
     _pythonIDEDialog->show();
     _pythonIDEDialog->raise();

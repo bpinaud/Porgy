@@ -209,7 +209,7 @@ bool TraceInformationGraphComponent::eventFilter(QObject *, QEvent *event) {
             }
           }
           if (static_cast<TraceInformationConfigWidget *>(parentInteractor->configurationOptionsWidget())
-                  ->ShowBanProperty()) {)
+                  ->ShowBanProperty()) {
             string BanPropertyName =
                 trace.getTransformationBanPropertyNameProperty()->getEdgeValue(e);
             if (!BanPropertyName.empty()) {

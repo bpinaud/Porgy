@@ -81,6 +81,7 @@ void TracesItemModel::treatGraphEvent(const GraphEvent &graphEvent) {
       if (_columnsFlags.testFlag(NameColumn) && graphEvent.getAttributeName() != string("name")) {
         return;
       }
+      break;
     case GraphEvent::TLP_BEFORE_DEL_SUBGRAPH:
       _toUpdate.erase(const_cast<Graph *>(graphEvent.getSubGraph()));
       AbstractGraphHierachyItemModel::treatGraphEvent(graphEvent);

@@ -14,15 +14,6 @@ SET(PORGY_TULIP_SRC_DIR "/usr/src/tulip" CACHE PATH "Tulip sources tree is manda
 SET(PORGY_RULE_DEBUG_MESSAGES OFF CACHE BOOL "Do you want to activate rule application debugging (lots of output)? [ON|OFF]")
 MARK_AS_ADVANCED(PORGY_RULE_DEBUG_MESSAGES)
 
-IF(NOT MSVC)
-  OPTION(PORGY_USE_CCACHE "Do you want to use ccache to speed up the build process during development ? [OFF|ON]" OFF)
-  FIND_PROGRAM(CCACHE_PROGRAM ccache)
-  IF(PORGY_USE_CCACHE AND CCACHE_PROGRAM)
-      SET(CMAKE_CXX_COMPILER_LAUNCHER "${CCACHE_PROGRAM}")
-      SET(CMAKE_C_COMPILER_LAUNCHER "${CCACHE_PROGRAM}")
-  ENDIF(PORGY_USE_CCACHE AND CCACHE_PROGRAM)
-ENDIF(NOT MSVC)
-
 IF(PORGY_RULE_DEBUG_MESSAGES)
   ADD_DEFINITIONS(-DPORGY_RULE_DEBUG_MESSAGES)
 ENDIF(PORGY_RULE_DEBUG_MESSAGES)
@@ -34,11 +25,6 @@ IF(Boost_VERSION_STRING EQUAL "1.74.0" OR Boost_VERSION_STRING EQUAL "1.75.0")
     message(FATAL_ERROR "Boost ${Boost_VERSION_STRING} detected. Boost versions 1.74 and 1.75 have a bug in spirit. They cannot be used")
 ENDIF(Boost_VERSION_STRING EQUAL "1.74.0" OR Boost_VERSION_STRING EQUAL "1.75.0")
 
-
-# Force build type to release with debug info if none has been provided
-IF(NOT MSVC AND "${CMAKE_BUILD_TYPE}" STREQUAL "")
-  SET(CMAKE_BUILD_TYPE "RelWithDebInfo" CACHE STRING "" FORCE)
-ENDIF(NOT MSVC AND "${CMAKE_BUILD_TYPE}" STREQUAL "")
 
 ## ========================================================
 ## Porgy flags, includes and libraries
@@ -83,7 +69,7 @@ SET(PORGY_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/porgy-qt/include ${CMAKE_CURRE
 SET(PORGY_LIB PorgyQt-${TULIP_MM_VERSION})
 SET(PORGY_LIBS ${PORGY_LIB} ${PORTGRAPH_LIB} ${TULIP_LIBRARIES})
 QTX_SET_INCLUDES_AND_DEFINITIONS()
-FIND_PACKAGE(OpenGL REQUIRED)
+
 add_subdirectory(porgy-qt)
 add_subdirectory(plugins/interactors)
 add_subdirectory(plugins/perspective)

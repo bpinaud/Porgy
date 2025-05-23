@@ -143,7 +143,7 @@ public:
             cerr << __PRETTY_FUNCTION__ << "(" << __LINE__ << "): " << errMsg;
             return false;
           }
-          Graph *newgraph;
+          Graph *newgraph=nullptr;
           old_ds.get<Graph *>(PorgyConstants::newData, newgraph);
           newGraphs.push_back(newgraph);
           pluginProgress->progress(i + 1, maximum_number + 1);
