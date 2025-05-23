@@ -127,7 +127,7 @@ bool PortGraphDelElementComponent::eventFilter(QObject *widget, QEvent *e) {
 void PortGraphDelElementComponent::treatEvent(const tlp::Event &message) {
   const tlp::GraphEvent *gEvt = dynamic_cast<const tlp::GraphEvent *>(&message);
   if (gEvt) {
-    if (gEvt->getType() == tlp::GraphEvent::TLP_DEL_EDGE) {
+    if (gEvt->getType() == tlp::GraphEvent::TLP_BEFORE_DEL_EDGE) {
       delEdge(gEvt->getGraph(), gEvt->getEdge());
     }
   }

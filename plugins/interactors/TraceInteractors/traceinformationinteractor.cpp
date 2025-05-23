@@ -46,7 +46,7 @@ bool TraceInformationInteractor::isCompatible(const string &viewName) const {
   return viewName == PorgyConstants::TRACE_VIEW_NAME;
 }
 
-QWidget *TraceInformationInteractor::configurationWidget() const {
+QWidget *TraceInformationInteractor::configurationOptionsWidget() const {
   return configWidget;
 }
 

@@ -62,7 +62,7 @@ bool MouseAddPortNode::eventFilter(QObject *widget, QEvent *e) {
         return true;
       }
       AddPortNodeConfigurationWidget *config =
-          static_cast<AddPortNodeConfigurationWidget *>(interactor->configurationWidget());
+          static_cast<AddPortNodeConfigurationWidget *>(interactor->configurationOptionsWidget());
       if (config->isEnabled() && config->IsPortNodeSelected()) {
         Graph *_graph = glw->getScene()->getGlGraphComposite()->getInputData()->getGraph();
         unsigned int numberOfNodesToAdd = 1;

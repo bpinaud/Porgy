@@ -62,7 +62,7 @@ void AddPortNode::construct() {
     _configurationWidget->loadPortNodesFromGraph(view()->graph());
   }
 }
-QWidget *AddPortNode::configurationWidget() const {
+QWidget *AddPortNode::configurationOptionsWidget() const {
   if (_configurationWidget->isEnabled()) {
     if (!_configurationWidget->isCurrentGraph(view()->graph())) {
       _configurationWidget->loadPortNodesFromGraph(view()->graph());

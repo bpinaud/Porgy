@@ -1,4 +1,7 @@
-# THIS PROJECT IS NO LONGER ACTIVELY MAINTAINED. IT IS NOT COMPATIBLE WITH TULIP RELEASE (V6.0.X). #
+# THIS PROJECT IS NO LONGER ACTIVELY MAINTAINED. HOWEVER, I AM CURRENTLY PORTING IT TO TULIP RELEASE V6.0.1. #
+
+# PORTING TO TULIP 6. WORK IN PROGRESS #
+
 # Porgy
 
 PORGY (http://porgy.labri.fr) is a visual and interactive platform for modelling, simulating and analysing complex systems based on graph rewriting.
@@ -18,19 +21,17 @@ Using as a starting point the Tulip system (https://tulip.labri.fr), PORGY allow
 
 List of dependencies
 ====================
-- Tulip >= 5.4 with Python support enabled (https://github.com/Tulip-Dev/tulip)
-- Boost 1.60 (see http://www.boost.org/)
-- All dependencies from Tulip especially: 
-  - C++11 compiler
-  - Qt >= 5.6
-  - cmake >= 3.1
-
+- Tulip >= 6.0.1 source code (see https://tulip.labri.fr) and its dependencies:
+  - C++17 compiler
+  - Qt >= 6.5
+  - cmake >= 3.25
+- Boost >= 1.60 (except Boost 1.74 and 1.75) (see http://www.boost.org/)
+  
 Compilation instructions
 =========================
-Porgy could be build along with Tulip or as a standalone project.
+Porgy has to be built along with Tulip.
 
-### Easy: compile Porgy along with Tulip:
-1. Download the current Tulip github code base.
+1. Download the current Tulip code base from Sourceforge.
 
 2. clone the Porgy project in the *externalplugins* directory of the Tulip source tree.
 
@@ -38,25 +39,9 @@ Porgy could be build along with Tulip or as a standalone project.
     Go to this `build` folder, and type `cmake ..` (or `cmake-gui` if you prefer the visual interface of CMake) .
     This will check for all of Tulip and Porgy's dependencies, and warn if some are missing. If dependencies are correctly installed Porgy will find it automatically. If you want to compile in debug (resp. Release) mode set the CMAKE_BUILD_TYPE variable to "Debug" (resp. Release). See the CMake manual for more information.
 
-4. Type `make` to compile. (if you have more than one core, use `-jX`
-   where X is your number of cores + 1). Ninja could be used instead.
+4. Type `make` or `ninja` to compile depending on the tool you have. 
 
-5. To install use `make install`. Porgy will be installed in the Tulip
-   plugins directory found during the configuration process (1). You must have
-   write access to the Tulip plugins directory.
+5. To install use `make install` or `ninja install`.
 
-6. You can remove the program binaries and object files from the source code directory by typing `make clean'.
-
-7. To execute Porgy just launch tulip with the `tulip` command and choose the
-Porgy perspective or use from a command line `tulip_perspective -p Porgy`.
-
-### Compile Porgy on its own
-1. Install Tulip. Download also the associated source files. Source files are mandatory because Porgy needs some header files which are not distributed with the Tulip binaries nor installed when compiling and installing Tulip from source files.
-
-2. Download the latest Porgy github code base.
-
-3. When configuring the build with cmake, set PORGY_TULIP_SRC_DIR to the root directory of the tulip source tree. By default, it is set to `/usr/src/tulip`.
-
-4. You can also set PORGY_USE_CCACHE if you are using ccache.
-
-4. Compile and install as usual.
+6. To execute Porgy just launch tulip with the `tulip` command and choose the
+Porgy perspective or use from a command line `tulip -p Porgy`.

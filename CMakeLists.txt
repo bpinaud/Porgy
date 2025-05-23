@@ -1,10 +1,13 @@
-CMAKE_MINIMUM_REQUIRED(VERSION 3.12)
 project(Porgy VERSION 3.2)
 SET(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR}/cmake)
 
-CMAKE_POLICY(SET CMP0072 NEW)
+#Force the use of Qt6
+SET(TULIP_USE_QT6 ON CACHE BOOL "Use Qt6 instead of Qt5" FORCE)
 
-FIND_PACKAGE( TULIP 5.7.2 REQUIRED )
+if(POLICY CMP0167)
+cmake_policy(SET CMP0167 OLD)
+endif()
+
 SET(TULIP_BINARIES_DIR ${TULIP_DIR}/bin)
 SET(PORGY_TULIP_SRC_DIR "/usr/src/tulip" CACHE PATH "Tulip sources tree is mandatory to compile Porgy. Set the path to the root directory of the Tulip sources.")
 
@@ -53,9 +56,6 @@ IF(UNIX)
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
 ENDIF(UNIX)
 
-# enable C++11
-SET(CMAKE_CXX_STANDARD 11)
-
 SET(PORTGRAPH_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/portgraph/include ${CMAKE_CURRENT_BINARY_DIR}/portgraph/include)
 SET(PORTGRAPH_LIB PortGraph-${TULIP_MM_VERSION})
 SET(PORTGRAPH_LIBS ${PORTGRAPH_LIB} ${TULIP_LIBRARIES})
@@ -76,7 +76,6 @@ add_subdirectory(plugins/general/RuleAlgorithm)
 add_subdirectory(plugins/general/RuleCondition)
 add_subdirectory(plugins/general/TraceIsomorphModels)
 
-FIND_PACKAGE(QtX)
 SET(PorgyCoreInclude ${CMAKE_CURRENT_SOURCE_DIR}/portgraph/include/)
 SET(PorgyCoreBuildInclude ${CMAKE_CURRENT_BINARY_DIR}/portgraph/include/)
 

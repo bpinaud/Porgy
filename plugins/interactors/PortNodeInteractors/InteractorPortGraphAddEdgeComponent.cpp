@@ -101,7 +101,7 @@ bool PortGraphAddEdgeComponent::eventFilter(QObject *widget, QEvent *e) {
       if ((dec.getType(e) == PorgyConstants::NO_TYPE) &&
           (dec.getSide(e) == PorgyConstants::SIDE_LEFT)) {
         dec.getTypeProperty()->setEdgeValue(e, PorgyConstants::ANTI);
-        dstshape->setEdgeValue(e, EdgeExtremityShape::EdgeExtremityShapes::FontAwesomeIcon);
+        dstshape->setEdgeValue(e, EdgeExtremityShape::EdgeExtremityShapes::Icon);
         StringProperty *icon = g->getProperty<StringProperty>("viewIcon");
         icon->setEdgeValue(e, "fas-times");
         arity->setNodeValue(ends.second, arity->getNodeValue(ends.second) - 1);

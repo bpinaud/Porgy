@@ -670,7 +670,7 @@ bool PorgyTlpGraphStructure::graphIsASimplePath(Graph *graph) {
 
   // from one source (indeg=0), we must reach all nodes
   node n = graph->getSource();
-  unordered_map<node, bool> reach;
+  tlp_hash_map<node, bool> reach;
   tlp::markReachableNodes(graph, n, reach, nbEdges, DIRECTED);
   if (reach.size() != graph->numberOfNodes() - 1)
     return false;

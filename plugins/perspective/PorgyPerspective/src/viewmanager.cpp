@@ -46,7 +46,7 @@ tlp::View *ViewManager::createView(const std::string &viewName, tlp::Graph *grap
     view->setGraph(graph);
     view->setState(parameters);
     if (!_model->indexOf(view->graph()).isValid())
-      _model->addGraph(view->graph());
+      _model->graphImported(view->graph());
     _workspace->addPanel(view);
     _workspace->setActivePanel(view);
   } else {

@@ -117,7 +117,7 @@ void TracesWidget::treatEvent(const Event &message) {
   if (message.type() == tlp::Event::TLP_MODIFICATION) {
     const tlp::GraphEvent *gEvt = dynamic_cast<const tlp::GraphEvent *>(&message);
     if (gEvt) {
-      if (gEvt->getType() == tlp::GraphEvent::TLP_DEL_EDGE) {
+      if (gEvt->getType() == tlp::GraphEvent::TLP_BEFORE_DEL_EDGE) {
         edge e = gEvt->getEdge();
         Trace t(gEvt->getGraph());
         if (t.isSimpleTransformationEdge(e)) {

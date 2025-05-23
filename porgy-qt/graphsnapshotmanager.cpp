@@ -227,8 +227,8 @@ void GraphSnapshotManager::treatEvent(const Event &event) {
         case GraphEvent::TLP_ADD_NODES:
         case GraphEvent::TLP_ADD_EDGE:
         case GraphEvent::TLP_ADD_EDGES:
-        case GraphEvent::TLP_DEL_NODE:
-        case GraphEvent::TLP_DEL_EDGE: {
+        case GraphEvent::TLP_BEFORE_DEL_NODE:
+        case GraphEvent::TLP_BEFORE_DEL_EDGE: {
           // Remove preview
           _previews.erase(g);
           _toUpdate.insert(g);

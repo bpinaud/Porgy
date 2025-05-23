@@ -133,7 +133,7 @@ void GraphModficationListener::treatEvent(const tlp::Event &e) {
     case tlp::GraphEvent::TLP_ADD_NODES:
       addNodes(gEvt->getGraph(), gEvt->getNodes());
       break;
-    case tlp::GraphEvent::TLP_DEL_NODE:
+    case tlp::GraphEvent::TLP_BEFORE_DEL_NODE:
       delNode(gEvt->getGraph(), gEvt->getNode());
       break;
     case tlp::GraphEvent::TLP_ADD_EDGE:
@@ -142,7 +142,7 @@ void GraphModficationListener::treatEvent(const tlp::Event &e) {
     case tlp::GraphEvent::TLP_ADD_EDGES:
       addEdges(gEvt->getGraph(), gEvt->getEdges());
       break;
-    case tlp::GraphEvent::TLP_DEL_EDGE:
+    case tlp::GraphEvent::TLP_BEFORE_DEL_EDGE:
       delEdge(gEvt->getGraph(), gEvt->getEdge());
       break;
     case tlp::GraphEvent::TLP_ADD_LOCAL_PROPERTY:

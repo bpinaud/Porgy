@@ -123,7 +123,7 @@ bool TraceInformationGraphComponent::eventFilter(QObject *, QEvent *event) {
           if (trace.isMetaNode(ends.first) &&
               trace.isMetaNode(ends.second)) { // si l'arête ne pointe pas vers
                                                // un noeud failure
-            if (static_cast<TraceInformationConfigWidget *>(parentInteractor->configurationWidget())
+            if (static_cast<TraceInformationConfigWidget *>(parentInteractor->configurationOptionsWidget())
                     ->ShowInstance()) { // est-ce que Instance est coché dans la
                                         // configuration
               Graph *instance = trace.getInstanceForTransformation(e);
@@ -134,7 +134,7 @@ bool TraceInformationGraphComponent::eventFilter(QObject *, QEvent *event) {
               text.append("<br/>");
             }
           }
-          if (static_cast<TraceInformationConfigWidget *>(parentInteractor->configurationWidget())
+          if (static_cast<TraceInformationConfigWidget *>(parentInteractor->configurationOptionsWidget())
                   ->ShowPProperty()) {
             string pPropertyName = trace.getTransformationPPropertyNameProperty()->getEdgeValue(e);
             text.append(QString("<b>Focus Property:</b> "));
@@ -143,7 +143,7 @@ bool TraceInformationGraphComponent::eventFilter(QObject *, QEvent *event) {
             }
             text.append("<br/>");
           }
-          if (static_cast<TraceInformationConfigWidget *>(parentInteractor->configurationWidget())
+          if (static_cast<TraceInformationConfigWidget *>(parentInteractor->configurationOptionsWidget())
                   ->ShowBanProperty()) {
             string BanPropertyName =
                 trace.getTransformationBanPropertyNameProperty()->getEdgeValue(e);
@@ -199,7 +199,7 @@ bool TraceInformationGraphComponent::eventFilter(QObject *, QEvent *event) {
             text.append(tlpStringToQString(BanPropertyName));
         } else {
           text.append(QString("<p align=\"center\">Strategy</p><br/>"));
-          if (static_cast<TraceInformationConfigWidget *>(parentInteractor->configurationWidget())
+          if (static_cast<TraceInformationConfigWidget *>(parentInteractor->configurationOptionsWidget())
                   ->ShowPProperty()) {
             string pPropertyName = trace.getTransformationPPropertyNameProperty()->getEdgeValue(e);
             if (!pPropertyName.empty()) {
@@ -208,8 +208,8 @@ bool TraceInformationGraphComponent::eventFilter(QObject *, QEvent *event) {
               text.append("<br/>");
             }
           }
-          if (static_cast<TraceInformationConfigWidget *>(parentInteractor->configurationWidget())
-                  ->ShowBanProperty()) {
+          if (static_cast<TraceInformationConfigWidget *>(parentInteractor->configurationOptionsWidget())
+                  ->ShowBanProperty()) {)
             string BanPropertyName =
                 trace.getTransformationBanPropertyNameProperty()->getEdgeValue(e);
             if (!BanPropertyName.empty()) {

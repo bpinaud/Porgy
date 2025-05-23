@@ -33,7 +33,7 @@ public:
                     PorgyConstants::CATEGORY_NAME)
   TraceInformationInteractor(const tlp::PluginContext *);
   ~TraceInformationInteractor() override;
-  QWidget *configurationWidget() const override;
+  QWidget *configurationOptionsWidget() const override;
   bool isCompatible(const std::string &viewName) const override;
   void construct() override;
   void install(QObject *target) override;

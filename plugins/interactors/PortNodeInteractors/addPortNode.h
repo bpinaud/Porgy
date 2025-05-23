@@ -37,7 +37,7 @@ public:
   ~AddPortNode() override;
   QCursor cursor() const  override;
   void construct() override;
-  QWidget *configurationWidget() const override;
+  QWidget *configurationOptionsWidget() const override;
   bool isCompatible(const std::string &) const override;
 };
 
