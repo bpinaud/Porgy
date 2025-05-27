@@ -241,7 +241,7 @@ bool runStrategyElement::operator()(const StrategyElement::while_datastruct &wds
           StrategyElement(StrategyElement::while_datastruct(get<0>(wds), get<1>(wds), num)));
     } else {
       v1.push_back(StrategyElement(
-          StrategyElement::while_datastruct(get<0>(wds), get<1>(wds), optional<unsigned>())));
+          StrategyElement::while_datastruct(get<0>(wds), get<1>(wds), boost::optional<unsigned>())));
     }
     get<1>(ifds) = v1;
     v.push_back(StrategyElement(ifds));

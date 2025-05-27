@@ -23,6 +23,7 @@
 #include "abstracttraceview.h"
 
 #include <portgraph/PorgyConstants.h>
+#include <porgy/porgysettings.h>
 
 #include <tulip/GlScene.h>
 

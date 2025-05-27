@@ -25,6 +25,8 @@
 #include "VisualPropertiesMorphing.h"
 #include "porgyAnimationconfigurationwidget.h"
 
+#include <porgy/PorgyInteractors.h>
+
 #include <tulip/DrawingTools.h>
 #include <tulip/GlGraphComposite.h>
 #include <tulip/Interactor.h>

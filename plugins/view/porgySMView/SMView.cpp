@@ -35,6 +35,8 @@
 #include <portgraph/PortNodeBase.h>
 #include <portgraph/Trace.h>
 
+#include <porgy/PorgyInteractors.h>
+
 #include <QGraphicsView>
 #include <QMenu>
 

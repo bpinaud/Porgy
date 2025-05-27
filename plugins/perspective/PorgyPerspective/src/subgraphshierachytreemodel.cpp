@@ -207,11 +207,13 @@ void SubgraphsHierachyTreeModel::treatGraphEvent(const GraphEvent &graphEvent) {
       if (_columnsFlags.testFlag(NameColumn) && graphEvent.getAttributeName() != string("name")) {
         return;
       }
+      break;
     case GraphEvent::TLP_ADD_NODE:
     case GraphEvent::TLP_ADD_NODES:
       if (_columnsFlags.testFlag(NodesNumberColumn)) {
         return;
       }
+      break;
     case GraphEvent::TLP_ADD_EDGE:
     case GraphEvent::TLP_ADD_EDGES:
       if (_columnsFlags.testFlag(EdgesNumberColumn)) {

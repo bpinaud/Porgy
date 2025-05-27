@@ -40,6 +40,7 @@
 #include <porgy/Strategy.h>
 #include <porgy/pluginparametersconfigurationdialog.h>
 #include <porgy/porgymimedata.h>
+#include <porgy/PorgyInteractors.h>
 
 #include <QDragEnterEvent>
 #include <QDragMoveEvent>

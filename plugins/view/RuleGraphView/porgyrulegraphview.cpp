@@ -42,6 +42,7 @@
 #include <portgraph/PortNode.h>
 
 #include <porgy/porgymimedata.h>
+#include <porgy/PorgyInteractors.h>
 
 #include <QDragEnterEvent>
 #include <QDropEvent>
