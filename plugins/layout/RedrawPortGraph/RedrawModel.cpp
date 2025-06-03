@@ -101,7 +101,7 @@ public:
 
     addDependency(PorgyConstants::GEM, PorgyConstants::GEM_VERSION);
     addDependency(PorgyConstants::SUGIYAMA, "1.5");
-    addDependency("Connected Component Packing", "1.0");
+    addDependency("Connected Components Packing", "1.0");
     addDependency("FM^3 (OGDF)", "1.2");
 
     addInParameter<StringCollection>("Layout", paramHelp[0], LAYOUT_ALGO);
@@ -158,7 +158,7 @@ public:
         dataSet->set("layout", result);
         // dataSet->set<double>("x border", 1.0f);
         // dataSet->set<double>("y border", 1.0f);
-        if (!sub->applyPropertyAlgorithm("Connected Component Packing", result, errMsg,
+        if (!sub->applyPropertyAlgorithm("Connected Components Packing", result, errMsg,
                                          dataSet,pluginProgress)) {
           cerr << __PRETTY_FUNCTION__ << ":" << __LINE__ << "Fast Overlap Removal: " << errMsg
                << endl;

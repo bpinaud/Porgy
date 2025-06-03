@@ -226,7 +226,7 @@ class RedrawRule : public LayoutAlgorithm {
     dataSet->set("layout", result);
     dataSet->set<double>("x border", 3.0f);
     dataSet->set<double>("y border", 3.0f);
-    if (!g->applyPropertyAlgorithm("Connected Component Packing", result, errMsg, dataSet,pluginProgress)) {
+    if (!g->applyPropertyAlgorithm("Connected Components Packing", result, errMsg, dataSet,pluginProgress)) {
       cerr << __PRETTY_FUNCTION__ << ":" << __LINE__ << "Pb avec Fast Overlap Removal: " << errMsg
            << endl;
       return false;
@@ -251,7 +251,7 @@ public:
 
   RedrawRule(const tlp::PluginContext *context) : LayoutAlgorithm(context), _dec(nullptr) {
     addDependency("FM^3 (OGDF)", "1.2");
-    addDependency("Connected Component Packing", "1.0");
+    addDependency("Connected Components Packing", "1.0");
     addDependency("Fast Overlap Removal", "1.3");
 
     addInOutParameter<SizeProperty>("node size", paramHelp[0], "viewSize");

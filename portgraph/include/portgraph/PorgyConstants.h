@@ -199,7 +199,7 @@ const static char minimum_number_of_instances[] = "Minimum number of instances t
 // const static std::string all_instances_found="All LHS instances already found
 // before";
 const static char isCondition[] = "Is Condition?";
-const static char applyConnectedComponentPacking[] = "Apply Connected Component Packing?";
+const static char applyConnectedComponentPacking[] = "Apply Connected Components Packing?";
 const static char newData[] = "new data";
 const static char newModelAll[] = "new model vector";
 const static char layoutNewModel[] = "Layout new model";
